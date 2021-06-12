@@ -1,0 +1,8 @@
+<?php
+
+$cocots_db_host='localhost';
+$cocots_db_port='3306';
+$cocots_db_name='cocots_dev';
+$cocots_db_prefix='cocots_';
+$cocots_db_user='cocots';
+$cocots_db_pass='cocots';
