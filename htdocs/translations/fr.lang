@@ -1,0 +1,7 @@
+title = Créer un site
+website_name = Nom du site web
+email = Adresse mail
+email_example = mail@domaine.fr
+website_type = Type de site web
+plugin_list = Liste des plugins à activer
+validate = Valider

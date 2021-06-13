@@ -15,27 +15,27 @@ require('./lib/init.php');
       <form id="contactform" method="POST">
         <p class="contact">
           <label for="name">
-            <?php echo $app->loc->translate('site_name') ?>
+            <?php echo $app->loc->translate('website_name') ?>
           </label>
         </p>
-        <input id="name" name="name" placeholder="<?php echo $app->loc->translate('site_name') ?>" required="" tabindex="1" type="text">
+        <input id="name" name="name" placeholder="<?php echo $app->loc->translate('website_name') ?>" required="" tabindex="1" type="text">
 
         <p class="contact">
           <label for="email">
-            <?php echo $app->loc->translate('mail') ?>
+            <?php echo $app->loc->translate('email') ?>
           </label>
         </p>
-        <input id="email" name="email" placeholder="<?php echo $app->loc->translate('mail_example') ?>" required="" type="email">
+        <input id="email" name="email" placeholder="<?php echo $app->loc->translate('email_example') ?>" required="" type="email">
 
         <fieldset>
           <label>
-            <?php echo $app->loc->translate('site_type') ?>
+            <?php echo $app->loc->translate('website_type') ?>
           </label>
           <label class="site-type">
             <select class="select-style" name="site_type">
-              <option value=""><?php echo $app->loc->translate('site_type') ?></option>
-              <option value="01"><?php echo $app->loc->translate('site_type_1') ?></option>
-              <option value="02"><?php echo $app->loc->translate('site_type_2') ?></option>
+              <option value=""><?php echo $app->loc->translate('website_type') ?></option>
+              <option value="01"><?php echo $app->loc->translate('website_type_1') ?></option>
+              <option value="02"><?php echo $app->loc->translate('website_type_2') ?></option>
             </select>
           </label>
         </fieldset>

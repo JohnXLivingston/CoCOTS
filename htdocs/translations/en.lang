@@ -1,0 +1,7 @@
+title = Create website
+website_name = Website name
+email = email
+email_example = email@domain.com
+website_type = Website type
+plugin_list = Plugins to activate
+validate = Validate
