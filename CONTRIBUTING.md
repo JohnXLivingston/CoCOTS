@@ -2,7 +2,7 @@
 
 ## Install dev environment
 
-Pre-requisite: debial-like LAMP. User must be sudoer. User and group www-date have to exists.
+Pre-requisite: debian-like LAMP. User must be sudoer. User and group www-date have to exists.
 
 To install:
 
