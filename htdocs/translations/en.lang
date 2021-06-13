@@ -5,3 +5,6 @@ email_example = email@domain.com
 website_type = Website type
 plugin_list = Plugins to activate
 validate = Validate
+
+website_type_1 = Type 1
+website_type_2 = Type 2

@@ -4,14 +4,10 @@ if(!_COCOTS_INITIALIZED) {
   return;
 }
 
-require_once(COCOTS_ROOT_DIR . 'lib/forms/fields.php');
+require_once(COCOTS_ROOT_DIR . 'lib/forms/abstract.php');
 
-class CreationForm {
-  private $app;
-  private $fields = array();
-
-  public function __construct($app) {
-    $this->app = $app;
+class CreationForm extends Form {
+  protected function initFields() {
     $this->fields['website_name'] = new TextField('website_name', array(
       'required' => true,
       'label' => $this->app->loc->translate('website_name'),
@@ -20,18 +16,17 @@ class CreationForm {
 
     $this->fields['email'] = new EmailField('email', array(
       'required' => true,
-      'label' => $this->app->loc->translate('website_name'),
+      'label' => $this->app->loc->translate('email'),
       'placeholder' => $this->app->loc->translate('email_example')
     ));
-  }
 
-  public function getField($name) {
-    return $this->fields[$name];
-  }
-
-  public function readPost() {
-    foreach ($this->fields as $field) {
-      $field->readPost();
+    $website_types = $this->app->presets->websiteTypes();
+    if ($website_types) {
+      $this->fields['website_type'] = new SelectField('website_type', array(
+        'required' => true,
+        'label' => $this->app->loc->translate('website_type'),
+        'options' => $website_types
+      ));
     }
   }
 }

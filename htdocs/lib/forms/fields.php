@@ -35,7 +35,10 @@ abstract class Field {
   }
 
   public function getLabelHtml() {
-    return htmlspecialchars($this->getLabel());
+    $html = '<label for="' . htmlspecialchars($this->name) . '">';
+    $html.= htmlspecialchars($this->getLabel());
+    $html.= '</label>';
+    return $html;
   }
 
   public function readPost() {
@@ -64,7 +67,7 @@ abstract class Field {
     return $html;
   }
 
-  abstract function html();
+  abstract public function html();
 }
 
 abstract class InputField extends Field {
@@ -105,10 +108,46 @@ class TextField extends InputField {
   }
 }
 
-class EmailField extends InputField {
+class EmailField extends TextField {
   public function getAttributes() {
     $attrs = parent::getAttributes();
     $attrs['type'] = 'email';
     return $attrs;
+  }
+}
+
+class SelectField extends Field {
+  protected $options = array();
+
+  public function __construct($name, $options) {
+    parent::__construct($name, $options);
+    if(is_array($options['options'])) {
+      $this->options = $options['options'];
+    }
+  }
+
+  public function getAttributes() {
+    $attrs = parent::getAttributes();
+    $attrs['name'] = $this->name;
+    return $attrs;
+  }
+
+  function html() {
+    $html = '<select ' . $this->attributesHtml() . '>';
+    $html.= '<option value=""';
+    if (!isset($this->value)) {
+      $html.= ' selected="selected" ';
+    }
+    $html.= '></option>';
+    foreach ($this->options as $idx => $option) {
+      $html.= '<option value="' . htmlspecialchars($option['value']) . '" ';
+      if (isset($this->value) && $this->value === $option['value']) {
+        $html.= ' selected="selected" ';
+      }
+      $option_label = isset($option['label']) ? $option['label'] : $option['value'];
+      $html.= '>' . htmlspecialchars($option_label) . '</option>';
+    }
+    $html.= '</select>';
+    return $html;
   }
 }

@@ -19,36 +19,26 @@ if ($_POST['submit']) {
   </head>
   <body>
     <div class="form">
-      <form id="contactform" method="POST">
-        <p class="contact">
-          <label for="website_name">
-            <?php echo $form->getField('website_name')->getLabelHtml(); ?>
-          </label>
+      <form method="POST">
+        <p>
+          <?php echo $form->getField('website_name')->getLabelHtml(); ?>
+          <?php echo $form->getField('website_name')->html(); ?>
         </p>
-        <?php echo $form->getField('website_name')->html(); ?>
 
-        <p class="contact">
-          <label for="email">
-            <?php echo $form->getField('email')->getLabelHtml(); ?>
-          </label>
+        <p>
+          <?php echo $form->getField('email')->getLabelHtml(); ?>
+          <?php echo $form->getField('email')->html(); ?>
         </p>
-        <?php echo $form->getField('email')->html(); ?>
 
-        <fieldset>
-          <label>
-            <?php echo $app->loc->translate('website_type') ?>
-          </label>
-          <label class="site-type">
-            <select class="select-style" name="site_type">
-              <option value=""><?php echo $app->loc->translate('website_type') ?></option>
-              <option value="01"><?php echo $app->loc->translate('website_type_1') ?></option>
-              <option value="02"><?php echo $app->loc->translate('website_type_2') ?></option>
-            </select>
-          </label>
-        </fieldset>
+        <?php if ($form->hasField('website_type')) { ?>
+          <p>
+            <?php echo $form->getField('website_type')->getLabelHtml(); ?>
+            <?php echo $form->getField('website_type')->html(); ?>
+          </p>
+        <?php } ?>
 
         <div>
-            <p class="contact">
+            <p>
               <label>
                 <?php echo $app->loc->translate('plugin_list') ?>
               </label>

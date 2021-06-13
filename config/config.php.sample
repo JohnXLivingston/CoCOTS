@@ -8,3 +8,9 @@ define("COCOTS_DB_USER", 'cocots');
 define("COCOTS_DB_PASS", 'cocots');
 
 define("COCOTS_DEFAULT_LANGUAGE", 'en');
+
+// Change this to a file path to a php class implemeting the CocotsPreset class.
+// If you provide only the filename, it will be looking in the htdocs/lib/presets/ dir.
+define("COCOTS_PRESETS_PATH", 'example.php');
+// Change this to the classname to use for presets.
+define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
