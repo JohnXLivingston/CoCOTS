@@ -89,6 +89,7 @@ print "\n";
 
 # Install Apache Configuration
 #------------------------------
+print "Installation Apache configuration...\n";
 $ret = `sudo cp -pr "apache2/cocots-dev.conf" "$APACHE_CONFIG_FILE" && sudo chown root:root "$APACHE_CONFIG_FILE" && sudo chmod 644 "$APACHE_CONFIG_FILE"`;
 if ($? != 0) { die "Failed to install $APACHE_CONFIG_FILE.\n"; }
 
@@ -99,6 +100,7 @@ $ret = `sudo sed -i 's/{{COCOTS_NAME}}/$NAME/g' "$APACHE_CONFIG_FILE"`;
 
 # Install dirs
 #------------------------------
+print "Creating dirs...\n";
 $ret=`sudo mkdir -p "$INSTALL_DIR" && sudo chown root:root "$INSTALL_DIR" && sudo chmod 755 "$INSTALL_DIR"`;
 if ($? != 0) { die "Failed to create dir $INSTALL_DIR.\n"; }
 
@@ -108,14 +110,18 @@ if ($? != 0) { die "Failed to create dir $INSTALL_CONFIG_DIR.\n"; }
 
 # Create config file if not here.
 #------------------------------
-if (! -f $INSTALL_CONFIG_DIR . 'config.php') {
-  my $INSTALL_CONFIG_FILE = $INSTALL_CONFIG_DIR . 'config.php';
+my $INSTALL_CONFIG_FILE = $INSTALL_CONFIG_DIR . 'config.php';
+if (! -f $INSTALL_CONFIG_FILE) {
+  print "Adding a configuration file...\n";
   $ret=`sudo cp config/config.php.sample "$INSTALL_CONFIG_FILE" && sudo chown root:root "$INSTALL_CONFIG_FILE" && sudo chmod 644 "$INSTALL_CONFIG_FILE"`;
   if ($? != 0) { die "Failed to create config file.\n"; }
+} else {
+  print "Configuration file already here.\n";
 }
 
 # Copy source files
 #------------------------------
+print "Copying htdocs files...\n";
 my $INSTALL_HTDOCS_DIR = $INSTALL_DIR . 'htdocs';
 $ret=`sudo rm -rf "$INSTALL_HTDOCS_DIR"`;
 if ($? != 0) { die "Failed to delete htdocs.\n"; }
@@ -124,5 +130,7 @@ $ret=`sudo cp -pr "htdocs" "$INSTALL_HTDOCS_DIR" && sudo chown -R $INSTALL_USER:
 if ($? != 0) { die "Failed to copy htdocs.\n"; }
 $ret=`sudo chmod -R u+rwX,go+rX,go-w "$INSTALL_HTDOCS_DIR"`;
 if ($? != 0) { die "Failed to set htdocs chmod.\n"; }
+
+print "Installation complete.\n";
 
 0;
