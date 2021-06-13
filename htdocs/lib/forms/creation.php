@@ -4,7 +4,7 @@ if(!_COCOTS_INITIALIZED) {
   return;
 }
 
-require_once(COCOTS_ROOT_DIR . 'lib/forms/fields/class.php');
+require_once(COCOTS_ROOT_DIR . 'lib/forms/fields.php');
 
 class CreationForm {
   private $app;
