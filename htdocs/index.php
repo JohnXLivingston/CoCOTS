@@ -1,5 +1,12 @@
 <?php
 require('./lib/init.php');
+
+$form = $app->getForm('creation');
+
+if ($_POST['submit']) {
+  $form->readPost();
+}
+
 ?><!DOCTYPE html>
 <html
   lang="<?php echo $app->loc->currentLang(); ?>"
@@ -14,18 +21,18 @@ require('./lib/init.php');
     <div class="form">
       <form id="contactform" method="POST">
         <p class="contact">
-          <label for="name">
-            <?php echo $app->loc->translate('website_name') ?>
+          <label for="website_name">
+            <?php echo $form->getField('website_name')->getLabelHtml(); ?>
           </label>
         </p>
-        <input id="name" name="name" placeholder="<?php echo $app->loc->translate('website_name') ?>" required="" tabindex="1" type="text">
+        <?php echo $form->getField('website_name')->html(); ?>
 
         <p class="contact">
           <label for="email">
-            <?php echo $app->loc->translate('email') ?>
+            <?php echo $form->getField('email')->getLabelHtml(); ?>
           </label>
         </p>
-        <input id="email" name="email" placeholder="<?php echo $app->loc->translate('email_example') ?>" required="" type="email">
+        <?php echo $form->getField('email')->html(); ?>
 
         <fieldset>
           <label>
