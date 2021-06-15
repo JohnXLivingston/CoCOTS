@@ -3,8 +3,12 @@ website_name = Website name
 email = email
 email_example = email@domain.com
 website_type = Website type
-plugin_list = Plugins to activate
+plugins_list = Plugins to activate
 validate = Validate
 
 website_type_1 = Type 1
 website_type_2 = Type 2
+website_plugin_1 = Plugin 1
+website_plugin_2 = Plugin 2
+website_plugin_3 = Plugin 3
+website_plugin_4 = Plugin 4

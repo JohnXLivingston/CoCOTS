@@ -151,3 +151,50 @@ class SelectField extends Field {
     return $html;
   }
 }
+
+class CheckboxField extends Field {
+  protected $disabled = false;
+  protected $default = false;
+
+  public function __construct($name, $options) {
+    parent::__construct($name, $options);
+    $this->value = false;
+    if(isset($options['disabled'])) {
+      $this->disabled = boolval($options['disabled']);
+    }
+    if(isset($options['default'])) {
+      $this->default = boolval($options['default']);
+    }
+  }
+
+  public function getValue() {
+    if ($this->disabled) {
+      return $this->default;
+    }
+    return $this->value;
+  }
+
+  public function setValue($value) {
+    if ($this->disabled) { return $this; }
+    $this->value = boolval($value);
+    return $this;
+  }
+
+  public function getAttributes() {
+    $attrs = parent::getAttributes();
+    $attrs['name'] = $this->name;
+    $attrs['type'] = 'checkbox';
+    $attrs['value'] = '1';
+    if ($this->getValue()) {
+      $attrs['checked'] = 'checked';
+    }
+    if ($this->disabled) {
+      $attrs['disabled'] = 'disabled';
+    }
+    return $attrs;
+  }
+
+  function html() {
+    return '<input ' . $this->attributesHtml() . '>';
+  }
+}

@@ -37,17 +37,24 @@ if ($_POST['submit']) {
           </p>
         <?php } ?>
 
-        <div>
-            <p>
+        <?php
+          $plugins_fields = $form->getPluginsFields();
+          if (count($plugins_fields) > 0) {
+            ?>
               <label>
-                <?php echo $app->loc->translate('plugin_list') ?>
+                <?php echo $app->loc->translate('plugins_list') ?>
               </label>
-            </p>
-            <div>
-                <input type="checkbox" id="plugin_noizetier" name="plugin_noizetier">
-                <label for="plugin_noizetier">NoiZetier</label>
-            </div>
-        </div>
+              <ul>
+                <?php foreach($plugins_fields as $idx => $plugin_field) { ?>
+                  <li>
+                    <?php echo $plugin_field->html(); ?>
+                    <?php echo $plugin_field->getLabelHtml(); ?>
+                  </li>
+                <?php } ?>
+              </ul>
+            <?php
+          }
+        ?>
         <input class="button" name="submit" id="submit" tabindex="5" value="<?php echo $app->loc->translate('validate') ?>" type="submit">
       </form>
     </div>

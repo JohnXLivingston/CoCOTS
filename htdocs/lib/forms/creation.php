@@ -7,6 +7,8 @@ if(!_COCOTS_INITIALIZED) {
 require_once(COCOTS_ROOT_DIR . 'lib/forms/abstract.php');
 
 class CreationForm extends Form {
+  protected $plugins_fields = array();
+
   protected function initFields() {
     $this->fields['website_name'] = new TextField('website_name', array(
       'required' => true,
@@ -28,5 +30,25 @@ class CreationForm extends Form {
         'options' => $website_types
       ));
     }
+
+    $website_plugins = $this->app->presets->websitePlugins();
+    if ($website_plugins) {
+      foreach($website_plugins as $idx => $plugin) {
+        if (!preg_match('/^\w+$/', $plugin['value'])) {
+          throw new Exception('Invalid plugin name: ' . $plugin['value']);
+        }
+        $fname = 'plugin_' . $plugin['value'];
+        $this->fields[$fname] = new CheckboxField($fname, array(
+          'label' => $plugin['label'],
+          'disabled' => boolval($plugin['disabled']),
+          'default' => boolval($plugin['default'])
+        ));
+        array_push($this->plugins_fields, $this->fields[$fname]);
+      }
+    }
+  }
+
+  public function getPluginsFields() {
+    return $this->plugins_fields;
   }
 }

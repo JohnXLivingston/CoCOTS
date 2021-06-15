@@ -14,4 +14,9 @@ abstract class CocotsPresets {
    * @return types null || array({value: '...', label: '...'})
    */
   abstract public function websiteTypes();
+
+  /**
+   * @return plugins null || array({value: '...', label: '...', default: true|false, disabled: true})
+   */
+  abstract public function websitePlugins();
 }
