@@ -19,7 +19,14 @@ This will:
 Then, you need to create the database:
 
 ```bash
-# TODO
+sudo mysql
+```
+
+```mysql
+CREATE DATABASE cocots_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE USER 'cocots_dev'@'localhost' IDENTIFIED BY 'cocots';
+GRANT ALL PRIVILEGES ON cocots_dev.* TO 'cocots_dev'@'localhost';
+FLUSH PRIVILEGES;
 ```
 
 Enable the 9876 port on your apache configuratio by adding `Listing 9876` in /etc/apache2/ports.conf.
@@ -31,3 +38,5 @@ sudo a2ensite cocots && sudo systemctl reload apache2
 ```
 
 The website will be accessible on [http://localhost:9876](http://localhost:9876).
+
+To initialize the Database for the first time, go to the admin page: [http://localhost:9876/admin/](http://localhost:9876/admin/).

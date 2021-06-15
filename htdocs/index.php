@@ -1,5 +1,7 @@
 <?php
 require('./lib/init.php');
+$app = new Application();
+
 
 $form = $app->getForm('creation');
 
@@ -14,7 +16,7 @@ if ($_POST['submit']) {
 >
   <head>
       <meta charset="UTF-8">
-      <title><?php echo $app->loc->translate('title') ?></title>
+      <title><?php echo htmlspecialchars($app->loc->translate('title')) ?></title>
       <link rel="stylesheet" href="static/styles.css">
   </head>
   <body>

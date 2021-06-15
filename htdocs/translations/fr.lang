@@ -1,4 +1,5 @@
 title = Créer un site
+admin_title = Administration des sites web
 website_name = Nom du site web
 email = Adresse mail
 email_example = mail@domaine.fr

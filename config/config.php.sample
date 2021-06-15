@@ -1,10 +1,8 @@
 <?php
 
-define("COCOTS_DB_HOST", 'localhost');
-define("COCOTS_DB_PORT", '3306');
-define("COCOTS_DB_NAME", 'cocots_dev');
+define("COCOTS_DB_PDO_STRING", 'mysql:dbname=cocots_dev;host=localhost');
 define("COCOTS_DB_PREFIX", 'cocots_');
-define("COCOTS_DB_USER", 'cocots');
+define("COCOTS_DB_USER", 'cocots_dev');
 define("COCOTS_DB_PASS", 'cocots');
 
 define("COCOTS_DEFAULT_LANGUAGE", 'en');

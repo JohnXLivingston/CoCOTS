@@ -1,4 +1,5 @@
 title = Create website
+admin_title = Websites Administration
 website_name = Website name
 email = email
 email_example = email@domain.com
