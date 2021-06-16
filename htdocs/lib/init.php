@@ -45,17 +45,18 @@ class Application {
       // To avoid DB params leak, throw another Exception.
       throw new Error('Database connection error.');
     }
-    $this->testDB();
+    $this->testDBVersion('cocots', 1, 'createTableVersion');
   }
 
-  protected function testDB() {
+  protected function testDBVersion($name, $required_version, $method) {
     try {
       $sql = 'SELECT `version` FROM `' . COCOTS_DB_PREFIX . 'version` WHERE ';
-      $sql.= '`application` = :application';
+      $sql.= '`name` = :name';
       $sth = $this->db->prepare($sql);
-      $sth->execute(array(':application' => 'cocots'));
+      $sth->bindValue(':name', $name);
+      $sth->execute();
     } catch (PDOException $e) {
-      if ($e->getCode() === '42S02') { // ER_NO_SUCH_TABLE
+      if ($name === 'cocots' && $e->getCode() === '42S02') { // ER_NO_SUCH_TABLE
         // This means that the DB is not created...
         $sth = null;
       } else {
@@ -63,33 +64,50 @@ class Application {
       }
     }
 
-    $version = null;
-    $row = $sth !== null ? $sth->fetch(PDO::FETCH_ASSOC) : false;
-    if ($row && $row['version'] === '1') {
+    $version = 0;
+    if ($sth) {
+      $row = $sth->fetch(PDO::FETCH_ASSOC);
+      if ($row) {
+        $version = intval($row['version']);
+      }
+    }
+
+    if ($version === $required_version) {
+      // Everything is fine.
       return;
     }
     if ($this->admin) {
-      $this->createDB();
+      $this->$method($version, $required_version);
       return;
     }
-    throw new Error('Database is not correctly initialized.');
+    throw new Error(
+      'Database is not correctly initialized. ' .
+      $name . ' should be in version ' . strval($required_version) . ' but is in ' . strval($version)
+    );
   }
 
-  protected function createDB() {
-    $sql = 'CREATE TABLE IF NOT EXISTS `' . COCOTS_DB_PREFIX . 'version` ( ';
-    $sql.= ' `application` VARCHAR(20) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL, ';
-    $sql.= ' `version` TINYINT(3) UNSIGNED NOT NULL, ';
-    $sql.= ' PRIMARY KEY ( `application` ) ';
-    $sql.= ' ) ';
-    $sql.= ' ENGINE=MyISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ';
-    $this->db->exec($sql);
+  protected function createTableVersion($current_version, $required_version) {
+    if ($current_version === 0) {
+      $sql = 'CREATE TABLE IF NOT EXISTS `' . COCOTS_DB_PREFIX . 'version` ( ';
+      $sql.= ' `name` VARCHAR(20) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL, ';
+      $sql.= ' `version` TINYINT(3) UNSIGNED NOT NULL, ';
+      $sql.= ' PRIMARY KEY ( `name` ) ';
+      $sql.= ' ) ';
+      $sql.= ' ENGINE=MyISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ';
+      $this->db->exec($sql);
+  
+      $sql = 'INSERT IGNORE INTO `' . COCOTS_DB_PREFIX . 'version` ';
+      $sql.= ' (`name`, `version`) VALUES ( :name, :version ) ';
+      $sth = $this->db->prepare($sql);
+      $sth->bindValue(':name', 'cocots');
+      $sth->bindValue(':version', 1);
+      $sth->execute();
 
-    $sql = 'INSERT IGNORE INTO `' . COCOTS_DB_PREFIX . 'version` ';
-    $sql.= ' (`application`, `version`) VALUES ( :application, :version ) ';
-    $sth = $this->db->prepare($sql);
-    $sth->bindValue(':application', 'cocots');
-    $sth->bindValue(':version', 1);
-    $sth->execute();
+      $current_version = 1;
+    }
+    if ( $required_version !== $current_version ) {
+      throw new Error('Unknow required version for cocots');
+    }
   }
 
   public function getForm($form) {
