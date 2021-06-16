@@ -13,3 +13,5 @@ website_plugin_1 = Plugin 1
 website_plugin_2 = Plugin 2
 website_plugin_3 = Plugin 3
 website_plugin_4 = Plugin 4
+
+website_name_constraints = 3 à 40 caractères alphanumériques

@@ -72,10 +72,12 @@ abstract class Field {
 
 abstract class InputField extends Field {
   protected $placeholder = null;
+  protected $title = null;
+  protected $aria_label = null;
 
   public function __construct($name, $options) {
     parent::__construct($name, $options);
-    if(isset($options['placeholder'])) {
+    if (isset($options['placeholder'])) {
       if ($options['placeholder'] === true) {
         // By default, we take the label as placeholder.
         $this->placeholder = $this->label;
@@ -83,13 +85,20 @@ abstract class InputField extends Field {
         $this->placeholder = $options['placeholder'];
       }
     }
+    foreach (array('aria-label', 'title') as $f) {
+      if (isset($options[$f])) {
+        $this->$f = $options[$f];
+      }
+    }
   }
 
   public function getAttributes() {
     $attrs = parent::getAttributes();
     $attrs['name'] = $this->name;
-    if (isset($this->placeholder)) {
-      $attrs['placeholder'] = $this->placeholder;
+    foreach (array('placeholder', 'aria-label', 'title') as $f) {
+      if (isset($this->$f)) {
+        $attrs[$f] = $this->$f;
+      }
     }
     return $attrs;
   }
@@ -100,10 +109,21 @@ abstract class InputField extends Field {
 }
 
 class TextField extends InputField {
+  protected $pattern = null;
+  public function __construct($name, $options) {
+    parent::__construct($name, $options);
+    if (isset($options['pattern'])) {
+      $this->pattern = $options['pattern'];
+    }
+  }
+
   public function getAttributes() {
     $attrs = parent::getAttributes();
     $attrs['type'] = 'text';
     $attrs['value'] = $this->getValue();
+    if (isset($this->pattern)) {
+      $attrs['pattern'] = $this->pattern;
+    }
     return $attrs;
   }
 }

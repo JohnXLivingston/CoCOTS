@@ -13,7 +13,10 @@ class CreationForm extends Form {
     $this->fields['website_name'] = new TextField('website_name', array(
       'required' => true,
       'label' => $this->app->loc->translate('website_name'),
-      'placeholder' => true
+      'placeholder' => true,
+      'pattern' => '[a-z0-9]{3,40}',
+      'title' => $this->app->loc->translate('website_name_constraints'),
+      'aria-label' => $this->app->loc->translate('website_name_constraints')
     ));
 
     $this->fields['email'] = new EmailField('email', array(
