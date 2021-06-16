@@ -5,6 +5,8 @@ define("COCOTS_DB_PREFIX", 'cocots_');
 define("COCOTS_DB_USER", 'cocots_dev');
 define("COCOTS_DB_PASS", 'cocots');
 
+define("COCOTS_ENABLE_DEBUG", true);
+
 define("COCOTS_DEFAULT_LANGUAGE", 'en');
 
 // Change this to a file path to a php class implemeting the CocotsPreset class.

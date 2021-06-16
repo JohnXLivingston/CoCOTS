@@ -54,4 +54,8 @@ class CreationForm extends Form {
   public function getPluginsFields() {
     return $this->plugins_fields;
   }
+
+  public function save() {
+    throw new Error('Not Implemented Yet');
+  }
 }

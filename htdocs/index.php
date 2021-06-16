@@ -8,6 +8,11 @@ try {
   
   if ($_POST['submit']) {
     $form->readPost();
+
+    if ($form->check() && $form->save()) {
+      include(COCOTS_ROOT_DIR . 'pages/saved.php');
+      return;
+    }
   }
 } catch (CocotsSmartException $e) {
   http_response_code(500);
@@ -30,7 +35,7 @@ try {
   </head>
   <body>
     <div class="form">
-      <form method="POST">
+      <form method="POST" <?php if ($app->debug_mode) { ?>novalidate<?php } ?>>
         <p>
           <?php echo $form->getField('website_name')->getLabelHtml(); ?>
           <?php echo $form->getField('website_name')->html(); ?>
@@ -71,5 +76,23 @@ try {
         <input class="button" name="submit" id="submit" tabindex="5" value="<?php echo $app->loc->translate('validate') ?>" type="submit">
       </form>
     </div>
+    <?php
+     if ($app->debug_mode) {
+       $error_messages_html = $form->getErrorMessagesHtml();
+       if (count($error_messages_html) > 0) {
+         ?>
+          <div class="error_messages">
+            <ul>
+              <?php
+                foreach ($error_messages_html as $error_message_html) {
+                  echo '<li>' . $error_message_html . '</li>';
+                }
+              ?>
+            </ul>
+          </div>
+         <?php
+       }
+      ?>
+    <?php } ?>
   </body>
 </html>

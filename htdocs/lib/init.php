@@ -11,9 +11,13 @@ class Application {
   public $loc;
   public $presets;
   public $db;
+  public $debug_mode = false;
   protected $admin = false; // Are we on an authenticated admin page?
 
   public function __construct($admin = false) {
+    if (COCOTS_ENABLE_DEBUG && $_GET['debug'] === '1') {
+      $this->debug_mode = true;
+    }
     if ($admin === true) {
       $this->admin = true;
     }

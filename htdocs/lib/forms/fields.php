@@ -8,6 +8,7 @@ abstract class Field {
   protected $name;
   protected $label;
   protected $value;
+  protected $error_codes = array();
   protected $required = false;
 
   public function __construct($name, $options) {
@@ -68,6 +69,21 @@ abstract class Field {
   }
 
   abstract public function html();
+
+  public function check() {
+    $value = $this->getValue();
+    if ($this->isRequired()) {
+      if (!isset($value) || strval($value) === '') {
+        array_push($this->error_codes, 'error_field_required');
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public function getErrorCodes() {
+    return $this->error_codes;
+  }
 }
 
 abstract class InputField extends Field {
@@ -126,6 +142,23 @@ class TextField extends InputField {
     }
     return $attrs;
   }
+
+  public function check() {
+    if (!parent::check()) {
+      return false;
+    }
+
+    if ($this->pattern) {
+      $value = $this->getValue();
+      $string = isset($value) ? strval($value) : '';
+      if (!preg_match('/^' . $this->pattern . '$/', $string)) {
+        array_push($this->error_codes, 'error_field_pattern');
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
 
 class EmailField extends TextField {
@@ -133,6 +166,20 @@ class EmailField extends TextField {
     $attrs = parent::getAttributes();
     $attrs['type'] = 'email';
     return $attrs;
+  }
+
+  public function check() {
+    if (!parent::check()) {
+      return false;
+    }
+
+    $value = $this->getValue();
+    if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+      array_push($this->error_codes, 'error_field_email_invalid');
+      return false;
+    }
+
+    return true;
   }
 }
 
@@ -169,6 +216,26 @@ class SelectField extends Field {
     }
     $html.= '</select>';
     return $html;
+  }
+
+  public function check() {
+    if (!parent::check()) {
+      return false;
+    }
+
+    $value = $this->getValue();
+    $value_found = false;
+    foreach ($this->options as $option) {
+      if ($option['value'] === $value) {
+        $value_found = true;
+      }
+    }
+    if (!$value_found) {
+      array_push($this->error_codes, 'error_field_select_invalid_value');
+      return false;
+    }
+
+    return true;
   }
 }
 
@@ -216,5 +283,16 @@ class CheckboxField extends Field {
 
   function html() {
     return '<input ' . $this->attributesHtml() . '>';
+  }
+
+  public function check() {
+    if (!parent::check()) {
+      return false;
+    }
+
+    if ($this->isRequired() && $this->getValue() !== true) {
+      array_push($this->error_codes, 'error_field_required');
+      return false;
+    }
   }
 }

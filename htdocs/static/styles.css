@@ -92,3 +92,7 @@
 .form input.button:hover {
   background-color: #2a78f6;
 }
+
+.error_messages {
+  color: red;
+}

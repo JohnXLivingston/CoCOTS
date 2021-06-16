@@ -40,3 +40,13 @@ sudo a2ensite cocots && sudo systemctl reload apache2
 The website will be accessible on [http://localhost:9876](http://localhost:9876).
 
 To initialize the Database for the first time, go to the admin page: [http://localhost:9876/admin/](http://localhost:9876/admin/).
+
+## Debug mode
+
+You can enable the debug_mode by adding `?debug=1` to the url.
+In debug_mode:
+
+* Front-end field validation will be disabled
+* Form error messages will be printed at the end of the page
+
+You can enable/disable the debug_mode by defining the constant COCOTS_ENABLE_DEBUG in your config.php file.
