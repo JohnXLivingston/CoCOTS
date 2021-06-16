@@ -1,6 +1,16 @@
 <?php
 require('../lib/init.php');
-$app = new Application(true);
+try {
+  global $app;
+  $app = new Application(true);
+} catch (CocotsSmartException $e) {
+  http_response_code(500);
+  echo $e->printErrorPage();
+  return;
+} catch (Exception $e) {
+  http_response_code(500);
+  return;
+}
 
 
 ?><!DOCTYPE html>
@@ -11,7 +21,7 @@ $app = new Application(true);
   <head>
       <meta charset="UTF-8">
       <title><?php echo htmlspecialchars($app->loc->translate('admin_title')) ?></title>
-      <link rel="stylesheet" href="../static/styles.css">
+      <link rel="stylesheet" href="/static/styles.css">
   </head>
   <body>
     TODO.

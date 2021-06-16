@@ -1,12 +1,21 @@
 <?php
 require('./lib/init.php');
-$app = new Application();
-
-
-$form = $app->getForm('creation');
-
-if ($_POST['submit']) {
-  $form->readPost();
+try {
+  global $app;
+  $app = new Application();
+  
+  $form = $app->getForm('creation');
+  
+  if ($_POST['submit']) {
+    $form->readPost();
+  }
+} catch (CocotsSmartException $e) {
+  http_response_code(500);
+  echo $e->printErrorPage();
+  return;
+} catch (Exception $e) {
+  http_response_code(500);
+  return;
 }
 
 ?><!DOCTYPE html>
@@ -17,7 +26,7 @@ if ($_POST['submit']) {
   <head>
       <meta charset="UTF-8">
       <title><?php echo htmlspecialchars($app->loc->translate('title')) ?></title>
-      <link rel="stylesheet" href="static/styles.css">
+      <link rel="stylesheet" href="/static/styles.css">
   </head>
   <body>
     <div class="form">

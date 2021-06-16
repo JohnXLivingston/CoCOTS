@@ -3,8 +3,9 @@
 define('_COCOTS_INITIALIZED', true);
 define('COCOTS_ROOT_DIR', realpath(__DIR__ . '/..') . '/');
 
-require(COCOTS_ROOT_DIR . '../config/config.php');
-require(COCOTS_ROOT_DIR . 'lib/i18n.php');
+require_once(COCOTS_ROOT_DIR . '../config/config.php');
+require_once(COCOTS_ROOT_DIR . 'lib/exceptions.php');
+require_once(COCOTS_ROOT_DIR . 'lib/i18n.php');
 
 class Application {
   public $loc;
@@ -81,9 +82,13 @@ class Application {
       $this->$method($version, $required_version);
       return;
     }
-    throw new Error(
+
+    error_log(
       'Database is not correctly initialized. ' .
       $name . ' should be in version ' . strval($required_version) . ' but is in ' . strval($version)
+    );
+    throw new CocotsSmartException(
+      'The database was not correctly installed.'
     );
   }
 
