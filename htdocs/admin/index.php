@@ -7,9 +7,9 @@ try {
   http_response_code(500);
   echo $e->printErrorPage();
   exit(0);
-} catch (Exception $e) {
+} catch (Exception | Error $e) {
   http_response_code(500);
-  exit(0);
+  exit(1);
 }
 
 

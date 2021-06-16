@@ -9,9 +9,11 @@ try {
   if ($_POST['submit']) {
     $form->readPost();
 
-    if ($form->check() && $form->save()) {
-      require(COCOTS_ROOT_DIR . 'pages/saved.php');
-      exit(0);
+    if ($form->check()) {
+      if ($form->save()) {
+        require(COCOTS_ROOT_DIR . 'pages/saved.php');
+        exit(0);
+      }
     }
   }
 } catch (CocotsSmartException $e) {
@@ -20,7 +22,7 @@ try {
   exit(0);
 } catch (Exception $e) {
   http_response_code(500);
-  exit(0);
+  exit(1);
 }
 
 ?><!DOCTYPE html>

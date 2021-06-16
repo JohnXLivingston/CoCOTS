@@ -294,5 +294,7 @@ class CheckboxField extends Field {
       array_push($this->error_codes, 'error_field_required');
       return false;
     }
+
+    return true;
   }
 }
