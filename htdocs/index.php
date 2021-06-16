@@ -52,9 +52,10 @@ try {
           $plugins_fields = $form->getPluginsFields();
           if (count($plugins_fields) > 0) {
             ?>
-              <label>
+            <fieldset>
+              <legend>
                 <?php echo $app->loc->translate('plugins_list') ?>
-              </label>
+              </legend>
               <ul>
                 <?php foreach($plugins_fields as $idx => $plugin_field) { ?>
                   <li>
@@ -63,6 +64,7 @@ try {
                   </li>
                 <?php } ?>
               </ul>
+            </fieldset>
             <?php
           }
         ?>
