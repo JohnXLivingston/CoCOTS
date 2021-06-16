@@ -10,17 +10,17 @@ try {
     $form->readPost();
 
     if ($form->check() && $form->save()) {
-      include(COCOTS_ROOT_DIR . 'pages/saved.php');
-      return;
+      require(COCOTS_ROOT_DIR . 'pages/saved.php');
+      exit(0);
     }
   }
 } catch (CocotsSmartException $e) {
   http_response_code(500);
   echo $e->printErrorPage();
-  return;
+  exit(0);
 } catch (Exception $e) {
   http_response_code(500);
-  return;
+  exit(0);
 }
 
 ?><!DOCTYPE html>

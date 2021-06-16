@@ -6,10 +6,10 @@ try {
 } catch (CocotsSmartException $e) {
   http_response_code(500);
   echo $e->printErrorPage();
-  return;
+  exit(0);
 } catch (Exception $e) {
   http_response_code(500);
-  return;
+  exit(0);
 }
 
 
