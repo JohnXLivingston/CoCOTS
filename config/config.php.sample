@@ -5,6 +5,9 @@ define("COCOTS_DB_PREFIX", 'cocots_');
 define("COCOTS_DB_USER", 'cocots_dev');
 define("COCOTS_DB_PASS", 'cocots');
 
+define("COCOTS_ADMIN_USER", "admin");
+define("COCOTS_ADMIN_PASSWORD", "secretpassw0rd");
+
 define("COCOTS_ENABLE_DEBUG", true);
 
 define("COCOTS_DEFAULT_LANGUAGE", 'en');

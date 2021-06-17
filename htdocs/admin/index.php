@@ -1,7 +1,17 @@
 <?php
 require('../lib/init.php');
 try {
-  global $app;
+  $authenticated = false;
+  if (($_SERVER['PHP_AUTH_USER'] ?? '') === COCOTS_ADMIN_USER && ($_SERVER['PHP_AUTH_PW'] ?? '') === COCOTS_ADMIN_PASSWORD) {
+    $authenticated = true;
+  }
+  if (!$authenticated) {
+    header('WWW-Authenticate: Basic realm="My Realm"');
+    http_response_code(401);
+    echo 'Unauthorized';
+    exit;
+  }
+
   $app = new Application(true);
 } catch (CocotsSmartException $e) {
   http_response_code(500);
