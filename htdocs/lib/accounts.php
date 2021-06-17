@@ -48,6 +48,15 @@ class Accounts {
     return $row;
   }
 
+  public function list() {
+    $sql = 'SELECT * FROM `' . COCOTS_DB_PREFIX . 'account` ';
+    $sql.= ' ORDER BY `name` ';
+    $sth = $this->app->db->prepare($sql);
+    $sth->execute();
+    $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+    return $rows;
+  }
+
   public function create($account_info) {
     $columns = array(
       'name',

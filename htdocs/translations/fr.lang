@@ -25,3 +25,13 @@ error_on_save = Une erreur est survenue à la sauvegarde
 
 request_transmitted = Votre requête a été transmise.
 will_be_notified_when_approved = Vous serez prévenu par mail quand elle sera validée.
+
+account_id = ID
+account_name = Nom
+account_email = Mail
+account_plugins = Plugins
+account_status = Statut
+account_creation_date = Création
+account_activation_date = Activation
+account_deactivation_date = Désactivation
+account_deletion_date = Suppression
