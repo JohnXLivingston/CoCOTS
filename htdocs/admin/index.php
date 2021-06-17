@@ -25,6 +25,9 @@ try {
       // TODO: add a confirmation step.
       if (!$app->accounts->activate($id)) {
         $error_message = $app->loc->translate('account_status_failed');
+      } else {
+        header('Location: ' . $_SERVER["PHP_SELF"]);
+        exit;
       }
     }
   }
