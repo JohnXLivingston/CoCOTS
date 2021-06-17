@@ -19,7 +19,7 @@ class Accounts {
       $sql.= ' `email` VARCHAR(255) NOT NULL, ';
       $sql.= ' `type` VARCHAR(255) DEFAULT NULL, ';
       $sql.= ' `plugins` JSON DEFAULT \'[]\', ';
-      $sql.= ' `status` VARCHAR(20) DEFAULT \'waiting\', '; // waiting | active | disabled | deleted
+      $sql.= ' `status` VARCHAR(20) DEFAULT \'waiting\', '; // waiting | active | disabled | deleted | rejected
       $sql.= ' `creation_date` DATETIME NOT NULL DEFAULT NOW(), ';
       $sql.= ' `activation_date` DATETIME DEFAULT NULL, ';
       $sql.= ' `deactivation_date` DATETIME DEFAULT NULL, ';
@@ -34,7 +34,7 @@ class Accounts {
       $current_version = 1;
     }
     if ($required_version !== $current_version) {
-      throw new Error('Unknow required version for cocots_account');
+      throw new Exception('Unknow required version for cocots_account');
     }
   }
 
@@ -48,12 +48,13 @@ class Accounts {
     return $row;
   }
 
-  // public function create($account_info) {
-  //   $fields = array();
-  //   $sql = 'INSERT INTO `' . COCOTS_DB_PREFIX . 'account` ';
-  //   $sql.= ' ( `' . implode('`, `', $fields) . '` ) ';
-  //   $sql.= ' VALUES ( :'. implode(', :', $fields) . ' ) ';
-  //   $sth = $this->db->app->prepare($sql);
+  public function create($account_info) {
+    throw new Exception('Not Implemented Yet');
+    // $fields = array();
+    // $sql = 'INSERT INTO `' . COCOTS_DB_PREFIX . 'account` ';
+    // $sql.= ' ( `' . implode('`, `', $fields) . '` ) ';
+    // $sql.= ' VALUES ( :'. implode(', :', $fields) . ' ) ';
+    // $sth = $this->db->app->prepare($sql);
 
-  // }
+  }
 }

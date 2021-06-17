@@ -47,7 +47,7 @@ class Application {
       $this->db->exec('SET CHARACTER SET utf8mb4');
     } catch (PDOException $e) {
       // To avoid DB params leak, throw another Exception.
-      throw new Error('Database connection error.');
+      throw new Exception('Database connection error.');
     }
     $this->testDBVersion('cocots', 1, 'createTableVersion');
     $this->testDBVersion('cocots_account', 1, 'createTableAccount');
@@ -109,7 +109,7 @@ class Application {
       $current_version = 1;
     }
     if ($required_version !== $current_version) {
-      throw new Error('Unknow required version for cocots');
+      throw new Exception('Unknow required version for cocots');
     }
   }
 

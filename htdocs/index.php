@@ -3,6 +3,7 @@ require('./lib/init.php');
 try {
   $app = new Application();
   $saved = false;
+  $error_on_save = false;
   
   $form = $app->getForm('creation');
   
@@ -12,6 +13,8 @@ try {
     if ($form->check()) {
       if ($form->save()) {
         $saved = true;
+      } else {
+        $error_on_save = true;
       }
     }
   }
@@ -83,6 +86,13 @@ try {
             }
           ?>
           <input class="button" name="submit" id="submit" tabindex="5" value="<?php echo $app->loc->translate('validate') ?>" type="submit">
+          <?php
+            if ($error_on_save) {
+              ?><div class="error form-error-annotation">
+                <?php echo $app->loc->translate('error_on_save'); ?>
+              </div><?php
+            }
+          ?>
         </form>
       </div>
       <?php

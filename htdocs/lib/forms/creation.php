@@ -58,7 +58,7 @@ class CreationForm extends Form {
   protected function getWebsiteHostname() {
     $name_field = $this->fields['website_name']->getValue();
     if (!filter_var(COCOTS_HOSTING_DOMAIN, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
-      throw new Error('Missing or invalid config COCOTS_HOSTING_DOMAIN');
+      throw new Exception('Missing or invalid config COCOTS_HOSTING_DOMAIN');
     }
     return $name_field . '.' . COCOTS_HOSTING_DOMAIN;
   }
@@ -77,6 +77,40 @@ class CreationForm extends Form {
   }
 
   public function save() {
-    throw new Error('Not Implemented Yet');
+    try {
+      $name = $this->getWebsiteHostname();
+      $email = $this->fields['email']->getValue();
+      if (isset($this->fields['website_type'])) {
+        $type = $this->fields['website_type']->getValue();
+      } else {
+        $type = null;
+      }
+      $plugins_fields = $this->getPluginsFields();
+      if (count($plugins_fields) > 0) {
+        $a = array();
+        foreach ($plugins_fields as $plugin_field) {
+          if ($plugin_field->getValue()) {
+            array_push($a, $plugin_field->getName());
+          }
+        }
+        $plugins = json_encode($a);
+      } else {
+        $plugins = null;
+      }
+      $account_info = array(
+        'name' => $name,
+        'email' => $email,
+        'type' => $type,
+        'plugins' => $plugins
+      );
+
+      $this->app->accounts->create($account_info);
+
+      return true;
+    } catch (Exception $e) {
+      // We don't want to loose the form content. So we are catching exceptions...
+      error_log($e);
+      return false;
+    }
   }
 }

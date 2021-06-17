@@ -21,6 +21,7 @@ error_field_email_invalid = Invalid email
 error_field_select_invalid_value = Invalid value
 
 error_website_name_already_exists = This name is already in use
+error_on_save = An error occured when saving data
 
 request_transmitted = Your request has been transmitted.
 will_be_notified_when_approved = You will be notified by email when it is validated.
