@@ -13,7 +13,7 @@ class Application {
   protected $admin = false; // Are we on an authenticated admin page?
 
   public function __construct($admin = false) {
-    if (COCOTS_ENABLE_DEBUG && $_GET['debug'] === '1') {
+    if (COCOTS_ENABLE_DEBUG && ($_GET['debug'] ?? '') === '1') {
       $this->debug_mode = true;
     }
     if ($admin === true) {

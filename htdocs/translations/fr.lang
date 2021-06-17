@@ -29,9 +29,16 @@ will_be_notified_when_approved = Vous serez prévenu par mail quand elle sera va
 account_id = ID
 account_name = Nom
 account_email = Mail
+account_type = Type
 account_plugins = Plugins
 account_status = Statut
 account_creation_date = Création
 account_activation_date = Activation
 account_deactivation_date = Désactivation
 account_deletion_date = Suppression
+
+account_action = Action
+
+account_action_status_active = Activer
+
+account_status_failed = Erreur au changement de statut

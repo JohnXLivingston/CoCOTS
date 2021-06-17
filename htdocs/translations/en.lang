@@ -29,9 +29,16 @@ will_be_notified_when_approved = You will be notified by email when it is valida
 account_id = ID
 account_name = Name
 account_email = Email
+account_type = Type
 account_plugins = Plugins
 account_status = Status
 account_creation_date = Creation
 account_activation_date = Activation
 account_deactivation_date = Deactivation
 account_deletion_date = Deletion
+
+account_action = Action
+
+account_action_status_active = Activate
+
+account_status_failed = Error on account status update

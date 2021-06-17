@@ -19,7 +19,7 @@ class Accounts {
       $sql.= ' `email` VARCHAR(255) NOT NULL, ';
       $sql.= ' `type` VARCHAR(255) DEFAULT NULL, ';
       $sql.= ' `plugins` JSON DEFAULT \'[]\', ';
-      $sql.= ' `status` VARCHAR(20) DEFAULT \'waiting\', '; // waiting | active | disabled | deleted | rejected
+      $sql.= ' `status` VARCHAR(20) DEFAULT \'waiting\', '; // waiting | processing | active | disabled | deleted | rejected
       $sql.= ' `creation_date` DATETIME NOT NULL DEFAULT NOW(), ';
       $sql.= ' `activation_date` DATETIME DEFAULT NULL, ';
       $sql.= ' `deactivation_date` DATETIME DEFAULT NULL, ';
@@ -36,6 +36,17 @@ class Accounts {
     if ($required_version !== $current_version) {
       throw new Exception('Unknow required version for cocots_account');
     }
+  }
+
+  public function getById($id) {
+    $sql = 'SELECT * FROM `' . COCOTS_DB_PREFIX . 'account` WHERE ';
+    $sql.= '`id` = :id';
+    $sth = $this->app->db->prepare($sql);
+    $sth->execute(array(
+      'id' => $id
+    ));
+    $row = $sth->fetch(PDO::FETCH_ASSOC);
+    return $row;
   }
 
   public function getByName($name) {
@@ -69,5 +80,38 @@ class Accounts {
     $sql.= ' VALUES ( :'. implode(', :', $columns) . ' ) ';
     $sth = $this->app->db->prepare($sql);
     $sth->execute($account_info);
+  }
+
+  protected function _updateStatus($id, $status, $date_field=null) {
+    $sql = 'UPDATE `' . COCOTS_DB_PREFIX . 'account` ';
+    $sql.= ' SET `status`=:status ';
+    if ($date_field) {
+      $sql.= ' , `' . $date_field . '`=NOW() ';
+    }
+    $sql.= ' WHERE `id`=:id';
+    $sth = $this->app->db->prepare($sql);
+    $sth->execute(array(
+      'id' => $id,
+      'status' => $status
+    ));
+  }
+  
+  public function activate($id) {
+    $account = $this->getById($id);
+    if (!$account) {
+      error_log('Account ' . $id . ' not found.');
+      return false;
+    }
+
+    if ($account['status'] !== 'waiting' && $account['status'] !== 'disabled') {
+      error_log('Can activate account ' . $account['id'] . ' because its status is ' . $account['status']);
+      return false;
+    }
+
+    $this->_updateStatus($id, 'processing');
+
+    $this->_updateStatus($id, 'active', 'activation_date');
+
+    return true;
   }
 }

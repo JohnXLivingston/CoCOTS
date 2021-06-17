@@ -14,6 +14,21 @@ try {
 
   $app = new Application(true);
 
+  $error_message = false;
+  $confirmation_message = false; // TODO: add a confirmation mecanism.
+
+  $action = $_POST['action'] ?? false;
+  if ($action === 'set_status') {
+    $id = $_POST['id'] ?? false;
+    $status = $_POST['status'] ?? false;
+    if ($id && $status) {
+      // TODO: add a confirmation step.
+      if (!$app->accounts->activate($id)) {
+        $error_message = $app->loc->translate('account_status_failed');
+      }
+    }
+  }
+
   $accounts = $app->accounts->list();
 
 } catch (CocotsSmartException $e) {
@@ -25,6 +40,15 @@ try {
   exit(1);
 }
 
+function display_status_button($id, $value, $label) {
+  global $app;
+  ?><form method="POST">
+    <input type="hidden" name="action" value="set_status">
+    <input type="hidden" name="status" value="<?php echo htmlspecialchars($value); ?>">
+    <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
+    <input type="submit" value="<?php echo $app->loc->translate('validate') ?>">
+  </form><?php
+}
 
 ?><!DOCTYPE html>
 <html
@@ -38,6 +62,11 @@ try {
       <link rel="stylesheet" href="/static/styles_admin.css">
   </head>
   <body>
+    <?php if ($error_message) { ?>
+      <div class="error_messages">
+        <?php echo htmlspecialchars($error_message); ?>
+      </div>
+    <?php } ?>
     <table>
       <tr>
         <th><?php echo $app->loc->translate('account_id'); ?></th>
@@ -50,6 +79,7 @@ try {
         <th><?php echo $app->loc->translate('account_activation_date'); ?></th>
         <th><?php echo $app->loc->translate('account_deactivation_date'); ?></th>
         <th><?php echo $app->loc->translate('account_deletion_date'); ?></th>
+        <th><?php echo $app->loc->translate('account_action'); ?></th>
       </tr>
       <?php foreach ($accounts as $account) { ?>
         <tr>
@@ -66,6 +96,11 @@ try {
           <td><?php echo htmlspecialchars($account['activation_date']); ?></td>
           <td><?php echo htmlspecialchars($account['deactivation_date']); ?></td>
           <td><?php echo htmlspecialchars($account['deletion_date']); ?></td>
+          <td><?php
+            if ($account['status'] === 'waiting') {
+              display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
+            }
+          ?></td>
         </tr>
       <?php } ?>
     </table>
