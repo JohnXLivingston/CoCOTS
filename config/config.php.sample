@@ -14,3 +14,5 @@ define("COCOTS_DEFAULT_LANGUAGE", 'en');
 define("COCOTS_PRESETS_PATH", 'example.php');
 // Change this to the classname to use for presets.
 define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
+
+define("COCOTS_HOSTING_DOMAIN", 'example.com');

@@ -19,3 +19,8 @@ error_field_required = Ce champ est requis
 error_field_pattern = Valeur invalide
 error_field_email_invalid = Email invalide
 error_field_select_invalid_value = Valeur invalide
+
+error_website_name_already_exists = Ce nom est déjà utilisé
+
+request_transmitted = Votre requête a été transmise.
+will_be_notified_when_approved = Vous serez prévenu par mail quand elle sera validée.

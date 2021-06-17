@@ -55,6 +55,27 @@ class CreationForm extends Form {
     return $this->plugins_fields;
   }
 
+  protected function getWebsiteHostname() {
+    $name_field = $this->fields['website_name']->getValue();
+    if (!filter_var(COCOTS_HOSTING_DOMAIN, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+      throw new Error('Missing or invalid config COCOTS_HOSTING_DOMAIN');
+    }
+    return $name_field . '.' . COCOTS_HOSTING_DOMAIN;
+  }
+
+  public function check() {
+    if (!parent::check()) {
+      return false;
+    }
+    
+    $existing_account = $this->app->accounts->getByName($this->getWebsiteHostname());
+    if ($existing_account) {
+      $this->fields['website_name']->addErrorCode('error_website_name_already_exists');
+      return false;
+    }
+    return true;
+  }
+
   public function save() {
     throw new Error('Not Implemented Yet');
   }

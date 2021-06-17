@@ -56,6 +56,9 @@ abstract class Field {
     if ($this->isRequired()) {
       $attrs['required'] = 'required';
     }
+    if (count($this->error_codes) > 0) {
+      $attrs['class'] = 'error';
+    }
     return $attrs;
   }
 
@@ -74,7 +77,7 @@ abstract class Field {
     $value = $this->getValue();
     if ($this->isRequired()) {
       if (!isset($value) || strval($value) === '') {
-        array_push($this->error_codes, 'error_field_required');
+        $this->addErrorCode('error_field_required');
         return false;
       }
     }
@@ -83,6 +86,14 @@ abstract class Field {
 
   public function getErrorCodes() {
     return $this->error_codes;
+  }
+
+  public function hasErrorCode($error_code) {
+    return in_array($error_code, $this->error_codes, true);
+  }
+
+  public function addErrorCode($error_code) {
+    array_push($this->error_codes, $error_code);
   }
 }
 
@@ -152,7 +163,7 @@ class TextField extends InputField {
       $value = $this->getValue();
       $string = isset($value) ? strval($value) : '';
       if (!preg_match('/^' . $this->pattern . '$/', $string)) {
-        array_push($this->error_codes, 'error_field_pattern');
+        $this->addErrorCode('error_field_pattern');
         return false;
       }
     }
@@ -175,7 +186,7 @@ class EmailField extends TextField {
 
     $value = $this->getValue();
     if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-      array_push($this->error_codes, 'error_field_email_invalid');
+      $this->addErrorCode('error_field_email_invalid');
       return false;
     }
 
@@ -231,7 +242,7 @@ class SelectField extends Field {
       }
     }
     if (!$value_found) {
-      array_push($this->error_codes, 'error_field_select_invalid_value');
+      $this->addErrorCode('error_field_select_invalid_value');
       return false;
     }
 
@@ -291,7 +302,7 @@ class CheckboxField extends Field {
     }
 
     if ($this->isRequired() && $this->getValue() !== true) {
-      array_push($this->error_codes, 'error_field_required');
+      $this->addErrorCode('error_field_required');
       return false;
     }
 

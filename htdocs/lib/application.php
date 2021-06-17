@@ -8,6 +8,7 @@ class Application {
   public $loc;
   public $presets;
   public $db;
+  public $accounts;
   public $debug_mode = false;
   protected $admin = false; // Are we on an authenticated admin page?
 
@@ -19,6 +20,7 @@ class Application {
       $this->admin = true;
     }
     $this->loc = new I18n(COCOTS_DEFAULT_LANGUAGE);
+    $this->accounts = new Accounts($this);
     $this->loadPresets();
     $this->connectToDB();
   }
@@ -112,33 +114,10 @@ class Application {
   }
 
   protected function createTableAccount($current_version, $required_version) {
-    if ($current_version === 0) {
-      $sql = 'CREATE TABLE IF NOT EXISTS `' . COCOTS_DB_PREFIX . 'account` ( ';
-      $sql.= ' `id` MEDIUMINT NOT NULL AUTO_INCREMENT, ';
-      $sql.= ' `name` VARCHAR(255) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL, ';
-      $sql.= ' `email` VARCHAR(255) NOT NULL, ';
-      $sql.= ' `type` VARCHAR(255) DEFAULT NULL, ';
-      $sql.= ' `plugins` JSON DEFAULT \'[]\', ';
-      $sql.= ' `status` VARCHAR(20) DEFAULT \'waiting\', '; // waiting | active | disabled | deleted
-      $sql.= ' `creation_date` DATETIME NOT NULL DEFAULT NOW(), ';
-      $sql.= ' `activation_date` DATETIME DEFAULT NULL, ';
-      $sql.= ' `deactivation_date` DATETIME DEFAULT NULL, ';
-      $sql.= ' `deletion_date` DATETIME DEFAULT NULL, ';
-      $sql.= ' PRIMARY KEY ( `id` ), ';
-      $sql.= ' UNIQUE INDEX ( `name` ) ';
-      $sql.= ' ) ';
-      $sql.= ' ENGINE=MyISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ';
-      $this->db->exec($sql);
-
-      $this->setDBVersion('cocots_account', 1);
-      $current_version = 1;
-    }
-    if ($required_version !== $current_version) {
-      throw new Error('Unknow required version for cocots_account');
-    }
+    $this->accounts->createTable($current_version, $required_version);
   }
 
-  protected function setDBVersion($name, $version) {
+  public function setDBVersion($name, $version) {
     $sql = 'INSERT `' . COCOTS_DB_PREFIX . 'version` ';
     $sql.= ' (`name`, `version`) VALUES ( :name, :version ) ';
     $sql.= ' ON DUPLICATE KEY UPDATE `version`=:version ';
