@@ -43,8 +43,8 @@ class CreationForm extends Form {
         $fname = 'plugin_' . $plugin['value'];
         $this->fields[$fname] = new CheckboxField($fname, array(
           'label' => $plugin['label'],
-          'disabled' => boolval($plugin['disabled']),
-          'default' => boolval($plugin['default'])
+          'disabled' => boolval($plugin['disabled'] ?? false),
+          'default' => boolval($plugin['default'] ?? false)
         ));
         array_push($this->plugins_fields, $this->fields[$fname]);
       }

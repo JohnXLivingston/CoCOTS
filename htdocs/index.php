@@ -7,7 +7,7 @@ try {
   
   $form = $app->getForm('creation');
   
-  if ($_POST['submit']) {
+  if ($_POST['submit'] ?? false) {
     $form->readPost();
 
     if ($form->check()) {

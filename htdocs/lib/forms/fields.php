@@ -14,7 +14,7 @@ abstract class Field {
   public function __construct($name, $options) {
     $this->name = $name;
     $this->value = null;
-    if ($options['required'] === true) {
+    if (($options['required'] ?? false) === true) {
       $this->required = true;
     }
     if (isset($options['label'])) {
@@ -47,7 +47,7 @@ abstract class Field {
   }
 
   public function readPost() {
-    $this->setValue($_POST[$this->name]);
+    $this->setValue($_POST[$this->name] ?? '');
   }
 
   public function isRequired() {
