@@ -59,7 +59,7 @@ try {
           <td><?php echo htmlspecialchars($account['type']); ?></td>
           <td><?php
             $plugins = json_decode($account['plugins'] ?? '[]');
-            echo implode(', ', $plugins);
+            echo htmlspecialchars(implode(', ', $plugins));
           ?></td>
           <td><?php echo htmlspecialchars($account['status']); ?></td>
           <td><?php echo htmlspecialchars($account['creation_date']); ?></td>
