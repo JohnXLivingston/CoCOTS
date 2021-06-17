@@ -43,4 +43,9 @@ class CocotsExamplePresets extends CocotsPresets {
       )
     );
   }
+
+  public function activateAccount($account) {
+    error_log('Activating account ' . $account['name']);
+    return true;
+  }
 }

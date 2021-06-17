@@ -110,6 +110,8 @@ class Accounts {
 
     $this->_updateStatus($id, 'processing');
 
+    $this->app->presets->activateAccount($account);
+
     $this->_updateStatus($id, 'active', 'activation_date');
 
     return true;

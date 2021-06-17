@@ -19,4 +19,10 @@ abstract class CocotsPresets {
    * @return plugins null || array({value: '...', label: '...', default: true|false, disabled: true})
    */
   abstract public function websitePlugins();
+
+  /**
+   * @param $account
+   * @return success boolean
+   */
+  abstract public function activateAccount($account);
 }
