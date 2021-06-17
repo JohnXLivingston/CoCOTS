@@ -107,7 +107,7 @@ class CreationForm extends Form {
       $this->app->accounts->create($account_info);
 
       return true;
-    } catch (Exception $e) {
+    } catch (Exception | Error $e) {
       // We don't want to loose the form content. So we are catching exceptions...
       error_log($e);
       return false;

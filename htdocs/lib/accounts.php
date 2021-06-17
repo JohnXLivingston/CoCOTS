@@ -49,12 +49,16 @@ class Accounts {
   }
 
   public function create($account_info) {
-    throw new Exception('Not Implemented Yet');
-    // $fields = array();
-    // $sql = 'INSERT INTO `' . COCOTS_DB_PREFIX . 'account` ';
-    // $sql.= ' ( `' . implode('`, `', $fields) . '` ) ';
-    // $sql.= ' VALUES ( :'. implode(', :', $fields) . ' ) ';
-    // $sth = $this->db->app->prepare($sql);
-
+    $columns = array(
+      'name',
+      'email',
+      'type',
+      'plugins'
+    );
+    $sql = 'INSERT INTO `' . COCOTS_DB_PREFIX . 'account` ';
+    $sql.= ' ( `' . implode('`, `', $columns) . '` ) ';
+    $sql.= ' VALUES ( :'. implode(', :', $columns) . ' ) ';
+    $sth = $this->app->db->prepare($sql);
+    $sth->execute($account_info);
   }
 }
