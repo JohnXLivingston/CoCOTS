@@ -96,7 +96,7 @@ function display_status_button($id, $value, $label) {
       <?php foreach ($accounts as $account) { ?>
         <tr>
           <td><?php echo htmlspecialchars($account['id']); ?></td>
-          <td><?php echo htmlspecialchars($account['name']); ?></td>
+          <td><?php echo htmlspecialchars($account['name'] . '.' . $account['domain']); ?></td>
           <td><?php echo htmlspecialchars($account['email']); ?></td>
           <td><?php echo htmlspecialchars($account['type']); ?></td>
           <td><?php
