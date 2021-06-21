@@ -33,8 +33,9 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
   }
 
   protected function writeAccountVars($account, $state) {
-    if (!filter_var($account['name'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
-      error_log('Account name is not a valid domain name: "' . $account['name'] . '"');
+    $url = $account['name'] . '.' . $account['domain'];
+    if (!filter_var($url, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+      error_log('Account url is not a valid domain name: "' . $url . '"');
       return false;
     }
 
@@ -42,13 +43,13 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
     if (substr($file_name, -1) !== '/') {
       $file_name.= '/';
     }
-    $file_name.= $account['name'];
+    $file_name.= $url;
 
     $content = <<<EOF
 mutu__users:
-  - name: '{$account["name"]}'
+  - name: 'account_{$account["name"]}'
     state: '$state'
-    domains: [ '{$account["name"]}' ]
+    domains: [ '{$url}' ]
     spip: True
 
 EOF;

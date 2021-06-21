@@ -16,6 +16,7 @@ class Accounts {
       $sql = 'CREATE TABLE IF NOT EXISTS `' . COCOTS_DB_PREFIX . 'account` ( ';
       $sql.= ' `id` MEDIUMINT NOT NULL AUTO_INCREMENT, ';
       $sql.= ' `name` VARCHAR(255) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL, ';
+      $sql.= ' `domain` VARCHAR(255) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL, ';
       $sql.= ' `email` VARCHAR(255) NOT NULL, ';
       $sql.= ' `type` VARCHAR(255) DEFAULT NULL, ';
       $sql.= ' `plugins` JSON DEFAULT \'[]\', ';
@@ -80,6 +81,7 @@ class Accounts {
   public function create($account_info) {
     $columns = array(
       'name',
+      'domain',
       'email',
       'type',
       'plugins'

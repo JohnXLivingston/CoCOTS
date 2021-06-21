@@ -68,14 +68,16 @@ class CreationForm extends Form {
       return false;
     }
 
+    $name = $this->fields['website_name']->getValue();
+
     if (defined('COCOTS_RESERVED_NAMES') && is_array(COCOTS_RESERVED_NAMES)) {
-      if (in_array($this->fields['website_name']->getValue(), COCOTS_RESERVED_NAMES)) {
+      if (in_array($name, COCOTS_RESERVED_NAMES)) {
         $this->fields['website_name']->addErrorCode('error_website_name_already_exists');
         return false;
       }
     }
     
-    $existing_account = $this->app->accounts->getByName($this->getWebsiteHostname());
+    $existing_account = $this->app->accounts->getByName($name);
     if ($existing_account) {
       $this->fields['website_name']->addErrorCode('error_website_name_already_exists');
       return false;
@@ -85,7 +87,8 @@ class CreationForm extends Form {
 
   public function save() {
     try {
-      $name = $this->getWebsiteHostname();
+      $name = $this->fields['website_name']->getValue();
+      $domain = COCOTS_HOSTING_DOMAIN;
       $email = $this->fields['email']->getValue();
       if (isset($this->fields['website_type'])) {
         $type = $this->fields['website_type']->getValue();
@@ -106,6 +109,7 @@ class CreationForm extends Form {
       }
       $account_info = array(
         'name' => $name,
+        'domain' => $domain,
         'email' => $email,
         'type' => $type,
         'plugins' => $plugins
