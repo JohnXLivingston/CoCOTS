@@ -25,4 +25,10 @@ abstract class CocotsPresets {
    * @return success boolean
    */
   abstract public function activateAccount($account);
+
+  /**
+   * @param $account
+   * @return success boolean
+   */
+  abstract public function disableAccount($account);
 }

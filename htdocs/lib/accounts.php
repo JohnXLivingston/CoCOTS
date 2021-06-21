@@ -19,7 +19,16 @@ class Accounts {
       $sql.= ' `email` VARCHAR(255) NOT NULL, ';
       $sql.= ' `type` VARCHAR(255) DEFAULT NULL, ';
       $sql.= ' `plugins` JSON DEFAULT \'[]\', ';
-      $sql.= ' `status` VARCHAR(20) DEFAULT \'waiting\', '; // waiting | processing | active | disabled | deleted | rejected
+      // Status:
+      // - waiting: account request just received
+      // - processing: temporary status while account is activated
+      // - active: account is active
+      // - processing_disabled: temporary status while account is being deactivated
+      // - disabled: account has been deactivated
+      // - processing_deleted: temporary status while account is being deleted
+      // - deleted: account has been removed
+      // - rejected: account has been rejected, and never activated
+      $sql.= ' `status` VARCHAR(40) DEFAULT \'waiting\', ';
       $sql.= ' `creation_date` DATETIME NOT NULL DEFAULT NOW(), ';
       $sql.= ' `activation_date` DATETIME DEFAULT NULL, ';
       $sql.= ' `deactivation_date` DATETIME DEFAULT NULL, ';
@@ -104,7 +113,7 @@ class Accounts {
     }
 
     if ($account['status'] !== 'waiting' && $account['status'] !== 'disabled') {
-      error_log('Can activate account ' . $account['id'] . ' because its status is ' . $account['status']);
+      error_log('Cant activate account ' . $account['id'] . ' because its status is ' . $account['status']);
       return false;
     }
 
@@ -113,6 +122,27 @@ class Accounts {
     $this->app->presets->activateAccount($account);
 
     $this->_updateStatus($id, 'active', 'activation_date');
+
+    return true;
+  }
+
+  public function disable($id) {
+    $account = $this->getById($id);
+    if (!$account) {
+      error_log('Account ' . $id . ' not found.');
+      return false;
+    }
+
+    if ($account['status'] !== 'active') {
+      error_log('Cant disable account ' . $account['id'] . ' because its status is ' . $account['status']);
+      return false;
+    }
+
+    $this->_updateStatus($id, 'processing_disabled');
+
+    $this->app->presets->disableAccount($account);
+
+    $this->_updateStatus($id, 'disabled', 'deactivation_date');
 
     return true;
   }

@@ -23,11 +23,20 @@ try {
     $status = $_POST['status'] ?? false;
     if ($id && $status) {
       // TODO: add a confirmation step.
-      if (!$app->accounts->activate($id)) {
-        $error_message = $app->loc->translate('account_status_failed');
-      } else {
-        header('Location: ' . $_SERVER["PHP_SELF"]);
-        exit;
+      if ($status === 'active') {
+        if (!$app->accounts->activate($id)) {
+          $error_message = $app->loc->translate('account_status_failed');
+        } else {
+          header('Location: ' . $_SERVER["PHP_SELF"]);
+          exit;
+        }
+      } elseif ($status === 'disabled') {
+        if (!$app->accounts->disable($id)) {
+          $error_message = $app->loc->translate('account_status_failed');
+        } else {
+          header('Location: ' . $_SERVER["PHP_SELF"]);
+          exit;
+        }
       }
     }
   }
@@ -49,7 +58,7 @@ function display_status_button($id, $value, $label) {
     <input type="hidden" name="action" value="set_status">
     <input type="hidden" name="status" value="<?php echo htmlspecialchars($value); ?>">
     <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
-    <input type="submit" value="<?php echo $app->loc->translate('validate') ?>">
+    <input type="submit" value="<?php echo $label; ?>">
   </form><?php
 }
 
@@ -100,8 +109,10 @@ function display_status_button($id, $value, $label) {
           <td><?php echo htmlspecialchars($account['deactivation_date']); ?></td>
           <td><?php echo htmlspecialchars($account['deletion_date']); ?></td>
           <td><?php
-            if ($account['status'] === 'waiting') {
+            if ($account['status'] === 'waiting' || $account['status'] === 'disabled') {
               display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
+            } elseif ($account['status'] === 'active') {
+              display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_status_disabled'));
             }
           ?></td>
         </tr>
