@@ -29,6 +29,12 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       error_log('Folder ' . COCOTS_PRESETS_ANSIBLE_VAR_PATH . ' is not writable');
       return false;
     }
+    if (defined('COCOTS_PRESETS_ANSIBLE_NAME_PREFIX')) {
+      if (!preg_match('/^[a-z]+_?$/', '' . COCOTS_PRESETS_ANSIBLE_NAME_PREFIX)) {
+        error_log('Invalid COCOTS_PRESETS_ANSIBLE_NAME_PREFIX constant');
+        return false;
+      }
+    }
     return true;
   }
 
@@ -45,9 +51,14 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
     }
     $file_name.= $url;
 
+    $name_prefix = '';
+    if (defined('COCOTS_PRESETS_ANSIBLE_NAME_PREFIX')) {
+      $name_prefix = COCOTS_PRESETS_ANSIBLE_NAME_PREFIX;
+    }
+
     $content = <<<EOF
 mutu__users:
-  - name: 'account_{$account["name"]}'
+  - name: '{$name_prefix}{$account["name"]}'
     state: '$state'
     domains: [ '{$url}' ]
     spip: True

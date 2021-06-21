@@ -24,5 +24,6 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 // define("COCOTS_PRESETS_PATH", 'ansible.php');
 // define("COCOTS_PRESETS_CLASS", 'CocotsAnsibleSpipPresets');
 // define("COCOTS_PRESETS_ANSIBLE_VAR_PATH", '/xxx/host_vars/domain/'); // The path to the folder where files should be created
+// define("COCOTS_PRESETS_ANSIBLE_NAME_PREFIX", 'account_'); // optionnal prefix for username, dbname, mysql user name, ...
 
 define("COCOTS_HOSTING_DOMAIN", 'example.com');
