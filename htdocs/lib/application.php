@@ -88,7 +88,7 @@ class Application {
 
     error_log(
       'Database is not correctly initialized. ' .
-      $name . ' should be in version ' . strval($required_version) . ' but is in ' . strval($version)
+      $name . ' should be in version ' . strval($required_version) . ' but is ' . strval($version)
     );
     throw new CocotsSmartException(
       'The database was not correctly installed.'
