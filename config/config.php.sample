@@ -12,6 +12,8 @@ define("COCOTS_ENABLE_DEBUG", true);
 
 define("COCOTS_DEFAULT_LANGUAGE", 'en');
 
+define("COCOTS_RESERVED_NAMES", array('admin'));
+
 // Change this to a file path to a php class implemeting the CocotsPreset class.
 // If you provide only the filename, it will be looking in the htdocs/lib/presets/ dir.
 define("COCOTS_PRESETS_PATH", 'example.php');

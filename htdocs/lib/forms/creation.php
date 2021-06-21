@@ -67,6 +67,13 @@ class CreationForm extends Form {
     if (!parent::check()) {
       return false;
     }
+
+    if (defined('COCOTS_RESERVED_NAMES') && is_array(COCOTS_RESERVED_NAMES)) {
+      if (in_array($this->fields['website_name']->getValue(), COCOTS_RESERVED_NAMES)) {
+        $this->fields['website_name']->addErrorCode('error_website_name_already_exists');
+        return false;
+      }
+    }
     
     $existing_account = $this->app->accounts->getByName($this->getWebsiteHostname());
     if ($existing_account) {
