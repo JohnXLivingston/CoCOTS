@@ -40,6 +40,7 @@ sudo a2ensite cocots && sudo systemctl reload apache2
 The website will be accessible on [http://localhost:9876](http://localhost:9876).
 
 To initialize the Database for the first time, go to the admin page: [http://localhost:9876/admin/](http://localhost:9876/admin/).
+As username use `admin`, and see in the config file for the password.
 
 ## Debug mode
 
