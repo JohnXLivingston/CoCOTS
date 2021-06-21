@@ -18,4 +18,9 @@ define("COCOTS_PRESETS_PATH", 'example.php');
 // Change this to the classname to use for presets.
 define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 
+// Example for Spip/Ansible (to use with this repo https://code.globenet.org/gn/sitesetagerises/ansible):
+// define("COCOTS_PRESETS_PATH", 'ansible.php');
+// define("COCOTS_PRESETS_CLASS", 'CocotsAnsibleSpipPresets');
+// define("COCOTS_PRESETS_ANSIBLE_VAR_PATH", '/xxx/host_vars/domain/'); // The path to the folder where files should be created
+
 define("COCOTS_HOSTING_DOMAIN", 'example.com');

@@ -1,6 +1,6 @@
 <?php
 
-if(!_COCOTS_INITIALIZED) {
+if(!defined('_COCOTS_INITIALIZED')) {
   return;
 }
 
@@ -10,6 +10,14 @@ abstract class CocotsPresets {
   public function __construct($app){
     $this->app = $app;
   }
+
+  /**
+   * @return configOk boolean
+   */
+  public function checkConfig() {
+    return true;
+  }
+
   /**
    * @return types null || array({value: '...', label: '...'})
    */

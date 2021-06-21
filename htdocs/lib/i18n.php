@@ -1,6 +1,6 @@
 <?php
 
-if(!_COCOTS_INITIALIZED) {
+if(!defined('_COCOTS_INITIALIZED')) {
   return;
 }
 

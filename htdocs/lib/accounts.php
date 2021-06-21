@@ -1,6 +1,6 @@
 <?php
 
-if(!_COCOTS_INITIALIZED) {
+if(!defined('_COCOTS_INITIALIZED')) {
   return;
 }
 
@@ -117,9 +117,17 @@ class Accounts {
       return false;
     }
 
+    if (!$this->app->presets->checkConfig()) {
+      error_log('The preset is not correctly configured.');
+      return false;
+    }
+
     $this->_updateStatus($id, 'processing');
 
-    $this->app->presets->activateAccount($account);
+    if (!$this->app->presets->activateAccount($account)) {
+      error_log('Failed to activate the account ' . $id);
+      return false;
+    }
 
     $this->_updateStatus($id, 'active', 'activation_date');
 
@@ -138,9 +146,17 @@ class Accounts {
       return false;
     }
 
+    if (!$this->app->presets->checkConfig()) {
+      error_log('The preset is not correctly configured.');
+      return false;
+    }
+
     $this->_updateStatus($id, 'processing_disabled');
 
-    $this->app->presets->disableAccount($account);
+    if (!$this->app->presets->disableAccount($account)) {
+      error_log('Failed to disable the account ' . $id);
+      return false;
+    }
 
     $this->_updateStatus($id, 'disabled', 'deactivation_date');
 
