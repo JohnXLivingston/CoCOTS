@@ -14,7 +14,7 @@ website_plugin_2 = Plugin 2
 website_plugin_3 = Plugin 3
 website_plugin_4 = Plugin 4
 
-website_name_constraints = 3 to 40 alphanumeric characters
+website_name_constraints = 3 to 40 lowercase alphanumeric characters
 error_field_required = This field is mandatory
 error_field_pattern = Invalid value
 error_field_email_invalid = Invalid email
