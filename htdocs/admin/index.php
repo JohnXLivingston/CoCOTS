@@ -6,7 +6,7 @@ try {
     $authenticated = true;
   }
   if (!$authenticated) {
-    header('WWW-Authenticate: Basic realm="My Realm"');
+    header('WWW-Authenticate: Basic realm="CoCOTS", charset="UTF-8"');
     http_response_code(401);
     echo 'Unauthorized';
     exit;
