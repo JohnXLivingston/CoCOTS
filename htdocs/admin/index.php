@@ -27,14 +27,14 @@ try {
         if (!$app->accounts->activate($id)) {
           $error_message = $app->loc->translate('account_status_failed');
         } else {
-          header('Location: ' . $_SERVER["PHP_SELF"]);
+          header('Location: ' . $app->getBaseUrl() . '/admin');
           exit;
         }
       } elseif ($status === 'disabled') {
         if (!$app->accounts->disable($id)) {
           $error_message = $app->loc->translate('account_status_failed');
         } else {
-          header('Location: ' . $_SERVER["PHP_SELF"]);
+          header('Location: ' . $app->getBaseUrl() . '/admin');
           exit;
         }
       }
