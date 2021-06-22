@@ -74,11 +74,13 @@ EOF;
   }
 
   public function activateAccount($account) {
-    return $this->writeAccountVars($account, 'present');
+    $state = defined('COCOTS_PRESETS_ANSIBLE_STATE_ENABLED') ? COCOTS_PRESETS_ANSIBLE_STATE_ENABLED : 'enabled';
+    return $this->writeAccountVars($account, $state);
   }
 
   public function disableAccount($account) {
-    return $this->writeAccountVars($account, 'absent');
+    $state = defined('COCOTS_PRESETS_ANSIBLE_STATE_DISABLED') ? COCOTS_PRESETS_ANSIBLE_STATE_DISABLED : 'disabled';
+    return $this->writeAccountVars($account, $state);
   }
 }
 
