@@ -70,8 +70,8 @@ function display_status_button($id, $value, $label) {
   <head>
       <meta charset="UTF-8">
       <title><?php echo htmlspecialchars($app->loc->translate('admin_title')) ?></title>
-      <link rel="stylesheet" href="/static/styles.css">
-      <link rel="stylesheet" href="/static/styles_admin.css">
+      <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
+      <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles_admin.css">
   </head>
   <body>
     <?php if ($error_message) { ?>

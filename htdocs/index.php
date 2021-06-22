@@ -35,7 +35,7 @@ try {
   <head>
       <meta charset="UTF-8">
       <title><?php echo htmlspecialchars($app->loc->translate('title')) ?></title>
-      <link rel="stylesheet" href="/static/styles.css">
+      <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
   </head>
   <body>
     <?php if (!$saved) { ?>

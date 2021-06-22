@@ -1,5 +1,7 @@
 <?php
 
+define("COCOTS_URL", "http://localhost:9876");
+
 define("COCOTS_DB_PDO_STRING", 'mysql:dbname=cocots_dev;host=localhost');
 define("COCOTS_DB_PREFIX", 'cocots_');
 define("COCOTS_DB_USER", 'cocots_dev');

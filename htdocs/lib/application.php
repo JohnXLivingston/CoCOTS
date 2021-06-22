@@ -25,6 +25,10 @@ class Application {
     $this->connectToDB();
   }
 
+  public function getBaseUrl() {
+    return '' . COCOTS_URL;
+  }
+
   protected function loadPresets() {
     $path = COCOTS_PRESETS_PATH;
     if (!$path) {
