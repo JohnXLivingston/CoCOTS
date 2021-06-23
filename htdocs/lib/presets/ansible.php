@@ -49,7 +49,7 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
     if (substr($file_name, -1) !== '/') {
       $file_name.= '/';
     }
-    $file_name.= $url;
+    $file_name.= $url . '.yml';
 
     $name_prefix = '';
     if (defined('COCOTS_PRESETS_ANSIBLE_NAME_PREFIX')) {
