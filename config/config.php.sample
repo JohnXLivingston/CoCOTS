@@ -25,7 +25,7 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 // Example for Spip/Ansible (to use with this repo https://code.globenet.org/gn/sitesetagerises/ansible):
 // define("COCOTS_PRESETS_PATH", 'ansible.php');
 // define("COCOTS_PRESETS_CLASS", 'CocotsAnsibleSpipPresets');
-// define("COCOTS_PRESETS_ANSIBLE_VAR_PATH", '/xxx/host_vars/domain/'); // The path to the folder where files should be created
+// define("COCOTS_PRESETS_ANSIBLE_VAR_PATH", '/xxx/host_vars/'); // The path to the folder where files should be created
 // define("COCOTS_PRESETS_ANSIBLE_NAME_PREFIX", 'account_'); // optionnal prefix for username, dbname, mysql user name, ...
 // define("COCOTS_PRESETS_ANSIBLE_STATE_ENABLED", 'enabled'); // optionnal state value to write in ansible vars
 // define("COCOTS_PRESETS_ANSIBLE_STATE_DISABLED", 'disabled'); // optionnal state value to write in ansible vars
