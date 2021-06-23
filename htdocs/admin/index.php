@@ -4,6 +4,10 @@ try {
   $authenticated = false;
   if (($_SERVER['PHP_AUTH_USER'] ?? '') === COCOTS_ADMIN_USER && ($_SERVER['PHP_AUTH_PW'] ?? '') === COCOTS_ADMIN_PASSWORD) {
     $authenticated = true;
+  } else if (isset($_SERVER['PHP_AUTH_PW'])) {
+    // Writing log so we can set a fail2ban rule.
+    $ip = $_SERVER['REMOTE_ADDR'];
+    error_log('CoCOTS admin failed login from IP "' . $ip . '", using login "' . $_SERVER['PHP_AUTH_USER'] . '".');
   }
   if (!$authenticated) {
     header('WWW-Authenticate: Basic realm="CoCOTS", charset="UTF-8"');
