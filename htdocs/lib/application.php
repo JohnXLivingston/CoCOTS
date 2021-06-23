@@ -10,23 +10,32 @@ class Application {
   public $db;
   public $accounts;
   public $debug_mode = false;
-  protected $admin = false; // Are we on an authenticated admin page?
 
-  public function __construct($admin = false) {
+  public function __construct() {
     if (COCOTS_ENABLE_DEBUG && ($_GET['debug'] ?? '') === '1') {
       $this->debug_mode = true;
-    }
-    if ($admin === true) {
-      $this->admin = true;
     }
     $this->loc = new I18n(COCOTS_DEFAULT_LANGUAGE);
     $this->accounts = new Accounts($this);
     $this->loadPresets();
-    $this->connectToDB();
   }
 
   public function getBaseUrl() {
     return '' . COCOTS_URL;
+  }
+
+  public function getDomain() {
+    $url = parse_url($this->getBaseUrl());
+    return $url['host'];
+  }
+
+  public function isHttps() {
+    return preg_match('/^https:/', $this->getBaseUrl());
+  }
+
+  public function getLogoutUrl() {
+    $url = $this->getBaseUrl() . '/admin/?logout=1';
+    return $url;
   }
 
   protected function loadPresets() {
@@ -44,7 +53,7 @@ class Application {
     $this->presets = new $classname($this);
   }
 
-  protected function connectToDB() {
+  public function connectToDB($migrate = false) {
     try {
       $this->db = new PDO(COCOTS_DB_PDO_STRING, COCOTS_DB_USER, COCOTS_DB_PASS);
       $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -53,11 +62,11 @@ class Application {
       // To avoid DB params leak, throw another Exception.
       throw new Exception('Database connection error.');
     }
-    $this->testDBVersion('cocots', 1, 'createTableVersion');
-    $this->testDBVersion('cocots_account', 1, 'createTableAccount');
+    $this->testDBVersion('cocots', 1, 'createTableVersion', $migrate);
+    $this->testDBVersion('cocots_account', 1, 'createTableAccount', $migrate);
   }
 
-  protected function testDBVersion($name, $required_version, $method) {
+  protected function testDBVersion($name, $required_version, $method, $migrate = false) {
     try {
       $sql = 'SELECT `version` FROM `' . COCOTS_DB_PREFIX . 'version` WHERE ';
       $sql.= '`name` = :name';
@@ -85,7 +94,7 @@ class Application {
       // Everything is fine.
       return;
     }
-    if ($this->admin) {
+    if ($migrate) {
       $this->$method($version, $required_version);
       return;
     }

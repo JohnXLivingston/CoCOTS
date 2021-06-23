@@ -1,22 +1,13 @@
 <?php
 require('../lib/init.php');
 try {
-  $authenticated = false;
-  if (($_SERVER['PHP_AUTH_USER'] ?? '') === COCOTS_ADMIN_USER && ($_SERVER['PHP_AUTH_PW'] ?? '') === COCOTS_ADMIN_PASSWORD) {
-    $authenticated = true;
-  } else if (isset($_SERVER['PHP_AUTH_PW'])) {
-    // Writing log so we can set a fail2ban rule.
-    $ip = $_SERVER['REMOTE_ADDR'];
-    error_log('CoCOTS admin failed login from IP "' . $ip . '", using login "' . $_SERVER['PHP_AUTH_USER'] . '".');
-  }
-  if (!$authenticated) {
-    header('WWW-Authenticate: Basic realm="CoCOTS", charset="UTF-8"');
-    http_response_code(401);
-    echo 'Unauthorized';
-    exit;
-  }
-
   $app = new Application(true);
+  require(COCOTS_ROOT_DIR . 'admin/login.php'); // Ensure the user is logged in.
+
+  if (!$_SESSION['login']) {
+    throw new Exception('Should be connected');
+  }
+  $app->connectToDB(true);
 
   $error_message = false;
   $confirmation_message = false; // TODO: add a confirmation mecanism.
@@ -78,6 +69,12 @@ function display_status_button($id, $value, $label) {
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles_admin.css">
   </head>
   <body>
+    <ul class="top-menu">
+      <li><h1><?php echo htmlspecialchars($app->loc->translate('admin_title')) ?></h1></li>
+      <li><a class="logout" href="<?php echo $app->getLogoutUrl(); ?>">
+        <?php echo $app->loc->translate('logout'); ?>
+      </a></li>
+    </ul>
     <?php if ($error_message) { ?>
       <div class="error_messages">
         <?php echo htmlspecialchars($error_message); ?>

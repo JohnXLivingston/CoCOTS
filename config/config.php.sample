@@ -9,6 +9,7 @@ define("COCOTS_DB_PASS", 'cocots');
 
 define("COCOTS_ADMIN_USER", "admin");
 define("COCOTS_ADMIN_PASSWORD", "secretpassw0rd");
+define("COCOTS_ADMIN_SESSION_NAME", "cocots");
 
 define("COCOTS_ENABLE_DEBUG", true);
 

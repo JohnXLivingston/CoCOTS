@@ -43,3 +43,10 @@ account_action_status_active = Activate
 account_action_status_disabled = Disable
 
 account_status_failed = Error on account status update
+
+logout = Logout
+login = Login
+login_title = Login
+login_error = Bad credentials
+login_user = Username
+login_password = Password

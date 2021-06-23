@@ -2,6 +2,8 @@
 require('./lib/init.php');
 try {
   $app = new Application();
+  $app->connectToDB(false);
+
   $saved = false;
   $error_on_save = false;
   
