@@ -80,9 +80,11 @@ if ($INSTALL_DIR ne "/var/www/$NAME/") {
   }
 }
 
+my $SOURCE_DIRECTORY = getcwd() . '/';
+
 print "Installing dev environment...\n";
 print "Project name: $NAME\n";
-print "Current directory: ".getcwd()."\n";
+print "Current directory (source): $SOURCE_DIRECTORY\n";
 print "Target directory: $INSTALL_DIR\n";
 print "Apache file: $APACHE_CONFIG_FILE\n";
 print "\n";
@@ -101,7 +103,7 @@ $ret = `sudo sed -i 's/{{COCOTS_NAME}}/$NAME/g' "$APACHE_CONFIG_FILE"`;
 # Install dirs
 #------------------------------
 print "Creating dirs...\n";
-$ret=`sudo mkdir -p "$INSTALL_DIR" && sudo chown root:root "$INSTALL_DIR" && sudo chmod 755 "$INSTALL_DIR"`;
+$ret=`sudo mkdir -p "$INSTALL_DIR" && sudo chown $INSTALL_USER:$INSTALL_GROUP "$INSTALL_DIR" && sudo chmod 755 "$INSTALL_DIR"`;
 if ($? != 0) { die "Failed to create dir $INSTALL_DIR.\n"; }
 
 my $INSTALL_CONFIG_DIR = $INSTALL_DIR . 'config/';
@@ -130,6 +132,36 @@ $ret=`sudo cp -pr "htdocs" "$INSTALL_HTDOCS_DIR" && sudo chown -R $INSTALL_USER:
 if ($? != 0) { die "Failed to copy htdocs.\n"; }
 $ret=`sudo chmod -R u+rwX,go+rX,go-w "$INSTALL_HTDOCS_DIR"`;
 if ($? != 0) { die "Failed to set htdocs chmod.\n"; }
+
+# Install Composer
+#------------------------------
+print "Installing composer...\n";
+my $INSTALL_BIN_DIR = $INSTALL_DIR . 'bin';
+if (! -d $INSTALL_BIN_DIR) {
+  $ret=`sudo mkdir -p "$INSTALL_BIN_DIR" && sudo chown -R $INSTALL_USER:$INSTALL_GROUP "$INSTALL_BIN_DIR"`;
+  if ($? != 0) { die "Failed to create bin dir.\n"; }
+}
+if (! -f $INSTALL_BIN_DIR . '/composer.phar') {
+  my $INSTALL_COMPOSER_SOURCE = $SOURCE_DIRECTORY . 'build/install-composer.sh';
+  $ret=`sudo cp "$INSTALL_COMPOSER_SOURCE" "$INSTALL_BIN_DIR/install-composer.sh" && cd "$INSTALL_BIN_DIR" && sudo -u $INSTALL_USER sh ./install-composer.sh && sudo rm "$INSTALL_BIN_DIR/install-composer.sh" && cd -`;
+  if ($? != 0) { die "Failed to install composer: $ret.\n"; }
+} else {
+  print "Composer is already installed.\n";
+}
+
+# Install Composer packages
+#------------------------------
+print "Installing composer packages...\n";
+my $INSTALL_VENDOR_DIR = $INSTALL_DIR . 'vendor';
+if (! -d $INSTALL_VENDOR_DIR) {
+  $ret=`sudo mkdir -p "$INSTALL_VENDOR_DIR" && sudo chown -R $INSTALL_USER:$INSTALL_GROUP "$INSTALL_VENDOR_DIR"`;
+  if ($? != 0) { die "Failed to create vendor dir.\n"; }
+}
+my $INSTALL_COMPOSERJSON_FILE = $INSTALL_DIR . 'composer.json';
+$ret=`sudo cp -p "composer.json" "$INSTALL_COMPOSERJSON_FILE" && sudo chown $INSTALL_USER:$INSTALL_GROUP "$INSTALL_COMPOSERJSON_FILE"`;
+if ($? != 0) { die "Failed to copy composer.json.\n"; }
+$ret=`sudo -u $INSTALL_USER -- sh -c 'cd "$INSTALL_DIR" && php bin/composer.phar update && cd - '`;
+if ($? != 0) { die "Failed to update composer packages: $ret.\n"; }
 
 print "Installation complete.\n";
 
