@@ -160,7 +160,7 @@ if (! -d $INSTALL_VENDOR_DIR) {
 my $INSTALL_COMPOSERJSON_FILE = $INSTALL_DIR . 'composer.json';
 $ret=`sudo cp -p "composer.json" "$INSTALL_COMPOSERJSON_FILE" && sudo chown $INSTALL_USER:$INSTALL_GROUP "$INSTALL_COMPOSERJSON_FILE"`;
 if ($? != 0) { die "Failed to copy composer.json.\n"; }
-$ret=`sudo -u $INSTALL_USER -- sh -c 'cd "$INSTALL_DIR" && php bin/composer.phar update && cd - '`;
+$ret=`sudo -u $INSTALL_USER -- sh -c 'cd "$INSTALL_DIR" && COMPOSER_HOME="${INSTALL_DIR}" php bin/composer.phar update && cd - '`;
 if ($? != 0) { die "Failed to update composer packages: $ret.\n"; }
 
 print "Installation complete.\n";

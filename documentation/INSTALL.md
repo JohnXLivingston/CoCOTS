@@ -15,7 +15,7 @@ sudo -u www-data mkdir bin;
 cd bin;
 sudo -u www-data sh ../build/install-composer.sh;
 cd ..;
-sudo -u www-data php bin/composer.phar update;
+sudo -u www-data COMPOSER_HOME=${PWD} php bin/composer.phar update;
 ```
 
 ### DB installation
