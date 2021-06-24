@@ -91,6 +91,16 @@ class Accounts {
     $sql.= ' VALUES ( :'. implode(', :', $columns) . ' ) ';
     $sth = $this->app->db->prepare($sql);
     $sth->execute($account_info);
+
+    $message = '';
+    $message.= $this->app->loc->translate('new_account_message') . "\n\n";
+
+    $message.= $this->app->loc->translate('website_name') . ': ' . $account_info['name'] . "\n";
+    $message.= $this->app->loc->translate('website_domain') . ': ' . $account_info['domain'] . "\n\n";
+
+    $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
+    $message.= $this->app->loc->translate('new_account_signature') . "\n\n";
+    $this->app->notifyAdmins($this->app->loc->translate('new_account_subject'), $message);
   }
 
   protected function _updateStatus($id, $status, $date_field=null) {

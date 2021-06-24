@@ -2,6 +2,7 @@
 
 define('_COCOTS_INITIALIZED', true);
 define('COCOTS_ROOT_DIR', realpath(__DIR__ . '/..') . '/');
+define('COCOTS_VENDOR_DIR', realpath(__DIR__ . '/../../vendor') . '/');
 
 header("X-Frame-Options: deny");
 header("Content-Security-Policy: "

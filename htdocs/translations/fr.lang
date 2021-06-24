@@ -1,6 +1,7 @@
 title = Créer un site
 admin_title = Administration des sites web
 website_name = Nom du site web
+website_domain = Domaine du site web
 email = Adresse mail
 email_example = mail@domaine.fr
 website_type = Type de site web
@@ -50,3 +51,7 @@ login_title = Connection
 login_error = Mauvais identifiants
 login_user = Identifiant
 login_password = Mot de passe
+
+new_account_subject = Nouvelle demande de création de compte
+new_account_message = Une nouvelle demande de création de compte a été faite.
+new_account_signature = Cordialement.

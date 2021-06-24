@@ -147,4 +147,28 @@ class Application {
     }
     throw new Exception('Invalid form name');
   }
+
+  protected function getMailer() {
+    // Including this lib only when necessary.
+    require_once(COCOTS_ROOT_DIR . 'lib/mail.php');
+    return getMailer();
+  }
+
+  public function notifyAdmins($subject, $message) {
+    if (!defined('COCOTS_MAIL_ADMINS') || !COCOTS_MAIL_ADMINS || count(COCOTS_MAIL_ADMINS) === 0) {
+      return;
+    }
+    $mail = $this->getMailer();
+    foreach (COCOTS_MAIL_ADMINS as $address) {
+      $mail->addAddress($address);
+    }
+    $mail->Subject = (defined('COCOTS_MAIL_PREFIX') ? COCOTS_MAIL_PREFIX : '') . $subject;
+    $mail->Body = $message;
+    try {
+      $mail->send();
+    } catch (Exception $e) {
+      error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}.");
+      // Failing mail should not make fail the query.
+    }
+  }
 }

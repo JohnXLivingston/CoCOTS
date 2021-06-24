@@ -1,6 +1,7 @@
 title = Create website
 admin_title = Websites Administration
 website_name = Website name
+website_domain = Website domain
 email = email
 email_example = email@domain.com
 website_type = Website type
@@ -50,3 +51,7 @@ login_title = Login
 login_error = Bad credentials
 login_user = Username
 login_password = Password
+
+new_account_subject = New account request
+new_account_message = A new account request was made.
+new_account_signature = Best regards.

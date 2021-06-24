@@ -7,6 +7,17 @@ define("COCOTS_DB_PREFIX", 'cocots_');
 define("COCOTS_DB_USER", 'cocots_dev');
 define("COCOTS_DB_PASS", 'cocots');
 
+define("COCOTS_MAIL_FROM", "noreply@example.com");
+define("COCOTS_MAIL_SMTP_HOST", "localhost");
+define("COCOTS_MAIL_SMTP_PORT", "465");
+define("COCOTS_MAIL_SMTP_SECURE", 'ssl'); // false | 'ssl' | 'tls'
+define("COCOTS_MAIL_SMTP_AUTH", true);
+define("COCOTS_MAIL_SMTP_AUTH_USER", "user@example.com");
+define("COCOTS_MAIL_SMTP_AUTH_PASS", "pass");
+define("COCOTS_MAIL_SMTP_DEBUG", true);
+define("COCOTS_MAIL_ADMINS", array('admin@example.com')); // List of admins mails to notify. If empty, no notification will be send.
+define("COCOTS_MAIL_PREFIX", "[CoCOTS] "); // Optionnal prefix to add to mail subjets. false if no prefix.
+
 define("COCOTS_ADMIN_USER", "admin");
 define("COCOTS_ADMIN_PASSWORD", "secretpassw0rd");
 define("COCOTS_ADMIN_SESSION_NAME", "cocots");
