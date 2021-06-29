@@ -96,11 +96,6 @@ function display_status_button($id, $value, $label) {
         <th><?php echo $app->loc->translate('account_type'); ?></th>
         <th><?php echo $app->loc->translate('account_plugins'); ?></th>
         <th><?php echo $app->loc->translate('account_status'); ?></th>
-        <th><?php echo $app->loc->translate('account_creation_date'); ?></th>
-        <th><?php echo $app->loc->translate('account_activation_date'); ?></th>
-        <th><?php echo $app->loc->translate('account_deactivation_date'); ?></th>
-        <th><?php echo $app->loc->translate('account_deletion_date'); ?></th>
-        <th><?php echo $app->loc->translate('account_rejection_date'); ?></th>
         <th><?php echo $app->loc->translate('account_action'); ?></th>
       </tr>
       <?php foreach ($accounts as $account) { ?>
@@ -113,12 +108,19 @@ function display_status_button($id, $value, $label) {
             $plugins = json_decode($account['plugins'] ?? '[]');
             echo htmlspecialchars(implode(', ', $plugins));
           ?></td>
-          <td><?php echo htmlspecialchars($account['status']); ?></td>
-          <td><?php echo htmlspecialchars($account['creation_date']); ?></td>
-          <td><?php echo htmlspecialchars($account['activation_date']); ?></td>
-          <td><?php echo htmlspecialchars($account['deactivation_date']); ?></td>
-          <td><?php echo htmlspecialchars($account['deletion_date']); ?></td>
-          <td><?php echo htmlspecialchars($account['rejection_date']); ?></td>
+          <td>
+            <?php echo htmlspecialchars($account['status']); ?>
+            <?php
+              foreach (array('creation_date', 'activation_date', 'deactivation_date', 'deletion_date', 'rejection_date') as $date_field) {
+                if (!isset($account[$date_field])) { continue; }
+                echo '<div class="status_date ' . $date_field . '">';
+                echo $app->loc->translate('account_' . $date_field);
+                echo ': ';
+                echo htmlspecialchars($account[$date_field]);
+                echo '</div>';
+              }
+            ?>
+          </td>
           <td><?php
             if ($account['status'] === 'waiting') {
               display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));

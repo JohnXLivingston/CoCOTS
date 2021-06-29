@@ -8,3 +8,7 @@ ul.top-menu {
   justify-content: space-between;
   list-style-type: none;
 }
+
+.status_date {
+  white-space: nowrap;
+}
