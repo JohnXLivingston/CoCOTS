@@ -53,4 +53,8 @@ class CocotsExamplePresets extends CocotsPresets {
     error_log('Disabling account ' . $account['name']);
     return true;
   }
+
+  public function checkAccount($account) {
+    return true;
+  }
 }

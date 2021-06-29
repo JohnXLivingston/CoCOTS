@@ -55,3 +55,19 @@ login_password = Password
 new_account_subject = New account request
 new_account_message = A new account request was made.
 new_account_signature = Best regards.
+
+failed_account_subject = Account update failed
+failed_account_message = An account update failed.
+failed_account_signature = Best regards.
+
+disabled_account_subject = An account has been disabled
+disabled_account_message = This account has been disabled.
+disabled_account_signature = Best regards.
+
+deleted_account_subject = An account has been deleted
+deleted_account_message = This account has been deleted.
+deleted_account_signature = Best regards.
+
+account_created_subject = You website was created.
+account_created_message = Your website was created. You can now connect to it by clicking on this link:
+account_created_signature = Best regards.

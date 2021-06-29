@@ -30,13 +30,19 @@ abstract class CocotsPresets {
 
   /**
    * @param $account
-   * @return success boolean
+   * @return success boolean | 'waiting'
    */
   abstract public function activateAccount($account);
 
   /**
    * @param $account
-   * @return success boolean
+   * @return success boolean | 'waiting'
    */
   abstract public function disableAccount($account);
+
+  /**
+   * @param $account
+   * @return success boolean | 'waiting'
+   */
+  abstract public function checkAccount($account);
 }

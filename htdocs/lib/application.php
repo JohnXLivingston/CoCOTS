@@ -171,4 +171,23 @@ class Application {
       // Failing mail should not make fail the query.
     }
   }
+
+  public function notifyAccountCreated($account, $subject, $message) {
+    $mail = $this->getMailer();
+    $mail->addAddress($account['email']);
+    if (defined('COCOTS_MAIL_ADMINS') && count(COCOTS_MAIL_ADMINS) > 0) {
+      foreach (COCOTS_MAIL_ADMINS as $address) {
+        $mail->addBCC($address);
+      }
+    }
+
+    $mail->Subject = (defined('COCOTS_MAIL_PREFIX') ? COCOTS_MAIL_PREFIX : '') . $subject;
+    $mail->Body = $message;
+    try {
+      $mail->send();
+    } catch (Exception $e) {
+      error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}.");
+      // Failing mail should not make fail the query.
+    }
+  }
 }

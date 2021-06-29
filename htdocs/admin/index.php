@@ -1,7 +1,8 @@
 <?php
+require('../lib/headers.php');
 require('../lib/init.php');
 try {
-  $app = new Application(true);
+  $app = new Application();
   require(COCOTS_ROOT_DIR . 'admin/login.php'); // Ensure the user is logged in.
 
   if (!$_SESSION['login']) {

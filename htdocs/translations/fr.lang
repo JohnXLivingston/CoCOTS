@@ -55,3 +55,19 @@ login_password = Mot de passe
 new_account_subject = Nouvelle demande de création de compte
 new_account_message = Une nouvelle demande de création de compte a été faite.
 new_account_signature = Cordialement.
+
+failed_account_subject = Mise à jour de compte échouée
+failed_account_message = Une mise à jour de compte a échoué.
+failed_account_signature = Cordialement.
+
+disabled_account_subject = Compte désactivé
+disabled_account_message = Ce compte a été désactivé.
+disabled_account_signature = Cordialement.
+
+deleted_account_subject = Compte supprimé
+deleted_account_message = Ce compte a été supprimé.
+deleted_account_signature = Cordialement.
+
+account_created_subject = Votre site a été créé
+account_created_message = Votre site web a bien été créé. Vous pouvez désormais vous y connecter en cliquant sur ce lien :
+account_created_signature = Cordialement.

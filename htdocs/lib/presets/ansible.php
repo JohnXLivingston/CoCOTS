@@ -70,7 +70,7 @@ EOF;
       return false;
     }
 
-    return true;
+    return 'waiting';
   }
 
   public function activateAccount($account) {
@@ -81,6 +81,34 @@ EOF;
   public function disableAccount($account) {
     $state = defined('COCOTS_PRESETS_ANSIBLE_STATE_DISABLED') ? COCOTS_PRESETS_ANSIBLE_STATE_DISABLED : 'disabled';
     return $this->writeAccountVars($account, $state);
+  }
+
+  public function checkAccount($account) {
+    $status = $account['status'];
+    if ($status === 'processing' || $status === 'processing_disabled') {
+      // We have to check for the «ansible_status» file, and check its content.
+      $url = $account['name'] . '.' . $account['domain'];
+      $status_file_name = COCOTS_PRESETS_ANSIBLE_VAR_PATH;
+      if (substr($status_file_name, -1) !== '/') {
+        $status_file_name.= '/';
+      }
+      $status_file_name.= $url . '/ansible_status';
+      if (!file_exists($status_file_name)) {
+        return 'waiting';
+      }
+      $code = file_get_contents($status_file_name);
+      if ($code !== '0') {
+        error_log('Status code for file ' . $status_file_name . ' is ' . $code);
+        return false;
+      }
+      return true;
+    } else if ($status === 'processing_deleted') {
+      error_log('Not Implemented Yet: account deletion');
+      return false;
+    } else {
+      error_log('Calling checkAccount on account ' . $account['id'] . ' which is in an unattended status ' . $status);
+      return false;
+    }
   }
 }
 

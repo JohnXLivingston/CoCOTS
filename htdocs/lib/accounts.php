@@ -29,6 +29,7 @@ class Accounts {
       // - processing_deleted: temporary status while account is being deleted
       // - deleted: account has been removed
       // - rejected: account has been rejected, and never activated
+      // - failed, failed_disabled, failed_deleted: operation failed.
       $sql.= ' `status` VARCHAR(40) DEFAULT \'waiting\', ';
       $sql.= ' `creation_date` DATETIME NOT NULL DEFAULT NOW(), ';
       $sql.= ' `activation_date` DATETIME DEFAULT NULL, ';
@@ -67,6 +68,24 @@ class Accounts {
     $sth->execute();
     $row = $sth->fetch(PDO::FETCH_ASSOC);
     return $row;
+  }
+
+  public function getByStatus($status) {
+    $sql = 'SELECT * FROM `' . COCOTS_DB_PREFIX . 'account` WHERE ';
+    $sql.= '`status` = :status';
+    $sth = $this->app->db->prepare($sql);
+    $sth->bindParam(':status', $status, PDO::PARAM_STR);
+    $sth->execute();
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function getByStatusLike($status_like) {
+    $sql = 'SELECT * FROM `' . COCOTS_DB_PREFIX . 'account` WHERE ';
+    $sql.= '`status` LIKE :status';
+    $sth = $this->app->db->prepare($sql);
+    $sth->bindParam(':status', $status_like, PDO::PARAM_STR);
+    $sth->execute();
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function list() {
@@ -136,12 +155,15 @@ class Accounts {
 
     $this->_updateStatus($id, 'processing');
 
-    if (!$this->app->presets->activateAccount($account)) {
+    $return = $this->app->presets->activateAccount($account);
+    if (!$return) {
       error_log('Failed to activate the account ' . $id);
       return false;
     }
 
-    $this->_updateStatus($id, 'active', 'activation_date');
+    if ($return !== 'waiting') {
+      $this->_updateStatus($id, 'active', 'activation_date');
+    }
 
     return true;
   }
@@ -165,12 +187,83 @@ class Accounts {
 
     $this->_updateStatus($id, 'processing_disabled');
 
-    if (!$this->app->presets->disableAccount($account)) {
+    $return = $this->app->presets->disableAccount($account);
+    if (!$return) {
       error_log('Failed to disable the account ' . $id);
       return false;
     }
 
-    $this->_updateStatus($id, 'disabled', 'deactivation_date');
+    if ($return !== 'waiting') {
+      $this->_updateStatus($id, 'disabled', 'deactivation_date');
+    }
+
+    return true;
+  }
+
+  public function checkProcessing($account) {
+    $id = $account['id'];
+    $return = $this->app->presets->checkAccount($account);
+    if ($return === 'waiting') {
+      // we have to wait...
+      return 'waiting';
+    }
+    if (!$return) {
+      // It failed!
+      error_log('Checking this account processing state has failed: ' . $account['id']);
+      $failed_status = str_replace('processing', 'failed', $account['status']);
+      $this->_updateStatus($id, $failed_status);
+      
+      $message = '';
+      $message.= $this->app->loc->translate('failed_account_message') . "\n\n";
+
+      $message.= $this->app->loc->translate('website_name') . ': ' . $account['name'] . "\n";
+      $message.= $this->app->loc->translate('website_domain') . ': ' . $account['domain'] . "\n\n";
+      $message.= $this->app->loc->translate('account_status') . ': ' . $failed_status . "\n\n";
+
+      $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
+      $message.= $this->app->loc->translate('failed_account_signature') . "\n\n";
+      $this->app->notifyAdmins($this->app->loc->translate('failed_account_subject'), $message);
+
+      return false;
+    }
+
+    if ($account['status'] === 'processing') {
+      $this->_updateStatus($id, 'active', 'activation_date');
+
+      $subject = $this->loc->translate('account_created_subject');
+      $message = '';
+      $message.= $this->loc->translate('account_created_message') . "\n";
+      $message.= 'https://' . $account['name'] . '.' . $account['domain'] . "\n\n";
+      $message.= $this->loc->translate('account_created_signature') . "\n";
+      $this->app->notifyAccountCreated($account);
+    } else if ($account['status'] === 'processing_disabled') {
+      $this->_updateStatus($id, 'disabled', 'deactivation_date');
+
+      $message = '';
+      $message.= $this->app->loc->translate('disabled_account_message') . "\n\n";
+
+      $message.= $this->app->loc->translate('website_name') . ': ' . $account['name'] . "\n";
+      $message.= $this->app->loc->translate('website_domain') . ': ' . $account['domain'] . "\n\n";
+
+      $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
+      $message.= $this->app->loc->translate('disabled_account_signature') . "\n\n";
+      $this->app->notifyAdmins($this->app->loc->translate('disabled_account_subject'), $message);
+    } else if ($account['status'] === 'processing_deleted' ) {
+      $this->_updateStatus($id, 'deleted', 'deletion_date');
+
+      $message = '';
+      $message.= $this->app->loc->translate('deleted_account_message') . "\n\n";
+
+      $message.= $this->app->loc->translate('website_name') . ': ' . $account['name'] . "\n";
+      $message.= $this->app->loc->translate('website_domain') . ': ' . $account['domain'] . "\n\n";
+
+      $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
+      $message.= $this->app->loc->translate('deleted_account_signature') . "\n\n";
+      $this->app->notifyAdmins($this->app->loc->translate('deleted_account_subject'), $message);
+    } else {
+      error_log('Dont know the status ' . $account['status']);
+      return false;
+    }
 
     return true;
   }
