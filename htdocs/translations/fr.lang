@@ -39,6 +39,8 @@ account_deactivation_date = Désactivation
 account_deletion_date = Suppression
 account_rejection_date = Refus
 
+account_activation_mail_sent = Mail d'activation déjà envoyé
+
 account_action = Action
 
 account_action_status_active = Activer

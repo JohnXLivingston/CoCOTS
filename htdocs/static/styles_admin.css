@@ -9,6 +9,10 @@ ul.top-menu {
   list-style-type: none;
 }
 
-.status_date {
+.status-date {
+  white-space: nowrap;
+}
+
+.activation-mail-sent {
   white-space: nowrap;
 }

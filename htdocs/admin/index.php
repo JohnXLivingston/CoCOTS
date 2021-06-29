@@ -113,10 +113,16 @@ function display_status_button($id, $value, $label) {
             <?php
               foreach (array('creation_date', 'activation_date', 'deactivation_date', 'deletion_date', 'rejection_date') as $date_field) {
                 if (!isset($account[$date_field])) { continue; }
-                echo '<div class="status_date ' . $date_field . '">';
+                echo '<div class="status-date">';
                 echo $app->loc->translate('account_' . $date_field);
                 echo ': ';
                 echo htmlspecialchars($account[$date_field]);
+                echo '</div>';
+              }
+
+              if ($account['activation_mail_sent']) {
+                echo '<div class="activation-mail-sent">';
+                echo $app->loc->translate('account_activation_mail_sent');
                 echo '</div>';
               }
             ?>
