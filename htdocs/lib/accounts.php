@@ -230,12 +230,12 @@ class Accounts {
     if ($account['status'] === 'processing') {
       $this->_updateStatus($id, 'active', 'activation_date');
 
-      $subject = $this->loc->translate('account_created_subject');
+      $subject = $this->app->loc->translate('account_created_subject');
       $message = '';
-      $message.= $this->loc->translate('account_created_message') . "\n";
+      $message.= $this->app->loc->translate('account_created_message') . "\n";
       $message.= 'https://' . $account['name'] . '.' . $account['domain'] . "\n\n";
-      $message.= $this->loc->translate('account_created_signature') . "\n";
-      $this->app->notifyAccountCreated($account);
+      $message.= $this->app->loc->translate('account_created_signature') . "\n";
+      $this->app->notifyAccountCreated($account, $subject, $message);
     } else if ($account['status'] === 'processing_disabled') {
       $this->_updateStatus($id, 'disabled', 'deactivation_date');
 

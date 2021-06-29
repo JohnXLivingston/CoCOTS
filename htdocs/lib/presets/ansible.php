@@ -97,6 +97,7 @@ EOF;
         return 'waiting';
       }
       $code = file_get_contents($status_file_name);
+      $code = str_replace(array("\r", "\n"), '', $code);
       if ($code !== '0') {
         error_log('Status code for file ' . $status_file_name . ' is ' . $code);
         return false;
