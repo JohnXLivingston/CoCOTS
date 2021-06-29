@@ -12,24 +12,24 @@ class CreationForm extends Form {
   protected function initFields() {
     $this->fields['website_name'] = new TextField('website_name', array(
       'required' => true,
-      'label' => $this->app->loc->translate('website_name'),
+      'label' => $this->app->loc->translateSafe('website_name'),
       'placeholder' => true,
       'pattern' => '[a-z0-9]{3,40}',
-      'title' => $this->app->loc->translate('website_name_constraints'),
-      'aria-label' => $this->app->loc->translate('website_name_constraints')
+      'title' => $this->app->loc->translateSafe('website_name_constraints'),
+      'aria-label' => $this->app->loc->translateSafe('website_name_constraints')
     ));
 
     $this->fields['email'] = new EmailField('email', array(
       'required' => true,
-      'label' => $this->app->loc->translate('email'),
-      'placeholder' => $this->app->loc->translate('email_example')
+      'label' => $this->app->loc->translateSafe('email'),
+      'placeholder' => $this->app->loc->translateSafe('email_example')
     ));
 
     $website_types = $this->app->presets->websiteTypes();
     if ($website_types) {
       $this->fields['website_type'] = new SelectField('website_type', array(
         'required' => true,
-        'label' => $this->app->loc->translate('website_type'),
+        'label' => $this->app->loc->translateSafe('website_type'),
         'options' => $website_types
       ));
     }
