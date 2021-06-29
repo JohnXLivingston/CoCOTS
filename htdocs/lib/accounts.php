@@ -169,7 +169,7 @@ class Accounts {
       return false;
     }
 
-    if (!in_array($account['status'], array('waiting', 'disabled', 'active'), true)) {
+    if (!in_array($account['status'], array('waiting', 'disabled', 'active', 'failed'), true)) {
       error_log('Cant activate account ' . $account['id'] . ' because its status is ' . $account['status']);
       return false;
     }
@@ -206,7 +206,7 @@ class Accounts {
       return false;
     }
 
-    if (!in_array($account['status'], array('active', 'disabled'), true)) {
+    if (!in_array($account['status'], array('active', 'disabled', 'failed_disabled'), true)) {
       error_log('Cant disable account ' . $account['id'] . ' because its status is ' . $account['status']);
       return false;
     }
