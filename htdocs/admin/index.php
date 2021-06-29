@@ -72,20 +72,20 @@ function display_status_button($id, $value, $label) {
 >
   <head>
       <meta charset="UTF-8">
-      <title><?php echo htmlspecialchars($app->loc->translate('admin_title')) ?></title>
+      <title><?php echo $app->loc->translate('admin_title') ?></title>
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles_admin.css">
   </head>
   <body>
     <ul class="top-menu">
-      <li><h1><?php echo htmlspecialchars($app->loc->translate('admin_title')) ?></h1></li>
+      <li><h1><?php echo $app->loc->translate('admin_title') ?></h1></li>
       <li><a class="logout" href="<?php echo $app->getLogoutUrl(); ?>">
         <?php echo $app->loc->translate('logout'); ?>
       </a></li>
     </ul>
     <?php if ($error_message) { ?>
       <div class="error_messages">
-        <?php echo htmlspecialchars($error_message); ?>
+        <?php echo $error_message; ?>
       </div>
     <?php } ?>
     <table>

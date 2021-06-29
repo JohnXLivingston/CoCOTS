@@ -47,7 +47,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 >
   <head>
       <meta charset="UTF-8">
-      <title><?php echo htmlspecialchars($app->loc->translate('login_title')) ?></title>
+      <title><?php echo $app->loc->translate('login_title') ?></title>
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles_admin.css">
   </head>
@@ -73,7 +73,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
           }
         ?>
         <p>
-          <input type="submit" name="submit" value="<?php echo htmlspecialchars($app->loc->translate('login')); ?>">
+          <input type="submit" name="submit" value="<?php echo $app->loc->translate('login'); ?>">
         </p>
       </fieldset>
     </form>

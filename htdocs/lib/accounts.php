@@ -127,14 +127,14 @@ class Accounts {
     $sth->execute($account_info);
 
     $message = '';
-    $message.= $this->app->loc->translate('new_account_message') . "\n\n";
+    $message.= $this->app->loc->translateSafe('new_account_message') . "\n\n";
 
-    $message.= $this->app->loc->translate('website_name') . ': ' . $account_info['name'] . "\n";
-    $message.= $this->app->loc->translate('website_domain') . ': ' . $account_info['domain'] . "\n\n";
+    $message.= $this->app->loc->translateSafe('website_name') . ': ' . $account_info['name'] . "\n";
+    $message.= $this->app->loc->translateSafe('website_domain') . ': ' . $account_info['domain'] . "\n\n";
 
     $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
-    $message.= $this->app->loc->translate('new_account_signature') . "\n\n";
-    $this->app->notifyAdmins($this->app->loc->translate('new_account_subject'), $message);
+    $message.= $this->app->loc->translateSafe('new_account_signature') . "\n\n";
+    $this->app->notifyAdmins($this->app->loc->translateSafe('new_account_subject'), $message);
   }
 
   protected function _updateStatus($id, $status, $date_field=null) {
@@ -267,15 +267,15 @@ class Accounts {
       $this->_updateStatus($id, $failed_status);
       
       $message = '';
-      $message.= $this->app->loc->translate('failed_account_message') . "\n\n";
+      $message.= $this->app->loc->translateSafe('failed_account_message') . "\n\n";
 
-      $message.= $this->app->loc->translate('website_name') . ': ' . $account['name'] . "\n";
-      $message.= $this->app->loc->translate('website_domain') . ': ' . $account['domain'] . "\n\n";
-      $message.= $this->app->loc->translate('account_status') . ': ' . $failed_status . "\n\n";
+      $message.= $this->app->loc->translateSafe('website_name') . ': ' . $account['name'] . "\n";
+      $message.= $this->app->loc->translateSafe('website_domain') . ': ' . $account['domain'] . "\n\n";
+      $message.= $this->app->loc->translateSafe('account_status') . ': ' . $failed_status . "\n\n";
 
       $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
-      $message.= $this->app->loc->translate('failed_account_signature') . "\n\n";
-      $this->app->notifyAdmins($this->app->loc->translate('failed_account_subject'), $message);
+      $message.= $this->app->loc->translateSafe('failed_account_signature') . "\n\n";
+      $this->app->notifyAdmins($this->app->loc->translateSafe('failed_account_subject'), $message);
 
       return false;
     }
@@ -285,11 +285,11 @@ class Accounts {
 
       // Check if it is a reactivation. Don't send the mail twice.
       if (!$account['activation_mail_sent']) {
-        $subject = $this->app->loc->translate('account_created_subject');
+        $subject = $this->app->loc->translateSafe('account_created_subject');
         $message = '';
-        $message.= $this->app->loc->translate('account_created_message') . "\n";
+        $message.= $this->app->loc->translateSafe('account_created_message') . "\n";
         $message.= 'https://' . $account['name'] . '.' . $account['domain'] . "\n\n";
-        $message.= $this->app->loc->translate('account_created_signature') . "\n";
+        $message.= $this->app->loc->translateSafe('account_created_signature') . "\n";
         $this->app->notifyAccountCreated($account, $subject, $message);
 
         $this->_updateActivationMailSent($account['id'], true);
@@ -299,26 +299,26 @@ class Accounts {
       $this->_updateStatus($id, 'disabled', 'deactivation_date');
 
       $message = '';
-      $message.= $this->app->loc->translate('disabled_account_message') . "\n\n";
+      $message.= $this->app->loc->translateSafe('disabled_account_message') . "\n\n";
 
-      $message.= $this->app->loc->translate('website_name') . ': ' . $account['name'] . "\n";
-      $message.= $this->app->loc->translate('website_domain') . ': ' . $account['domain'] . "\n\n";
+      $message.= $this->app->loc->translateSafe('website_name') . ': ' . $account['name'] . "\n";
+      $message.= $this->app->loc->translateSafe('website_domain') . ': ' . $account['domain'] . "\n\n";
 
       $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
-      $message.= $this->app->loc->translate('disabled_account_signature') . "\n\n";
-      $this->app->notifyAdmins($this->app->loc->translate('disabled_account_subject'), $message);
+      $message.= $this->app->loc->translateSafe('disabled_account_signature') . "\n\n";
+      $this->app->notifyAdmins($this->app->loc->translateSafe('disabled_account_subject'), $message);
     } elseif ($account['status'] === 'processing_deleted' ) {
       $this->_updateStatus($id, 'deleted', 'deletion_date');
 
       $message = '';
-      $message.= $this->app->loc->translate('deleted_account_message') . "\n\n";
+      $message.= $this->app->loc->translateSafe('deleted_account_message') . "\n\n";
 
-      $message.= $this->app->loc->translate('website_name') . ': ' . $account['name'] . "\n";
-      $message.= $this->app->loc->translate('website_domain') . ': ' . $account['domain'] . "\n\n";
+      $message.= $this->app->loc->translateSafe('website_name') . ': ' . $account['name'] . "\n";
+      $message.= $this->app->loc->translateSafe('website_domain') . ': ' . $account['domain'] . "\n\n";
 
       $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
-      $message.= $this->app->loc->translate('deleted_account_signature') . "\n\n";
-      $this->app->notifyAdmins($this->app->loc->translate('deleted_account_subject'), $message);
+      $message.= $this->app->loc->translateSafe('deleted_account_signature') . "\n\n";
+      $this->app->notifyAdmins($this->app->loc->translateSafe('deleted_account_subject'), $message);
     } else {
       error_log('Dont know the status ' . $account['status']);
       return false;
