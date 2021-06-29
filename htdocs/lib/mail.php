@@ -23,7 +23,7 @@ function getMailer() {
   if (COCOTS_MAIL_SMTP_SECURE) {
     if (COCOTS_MAIL_SMTP_SECURE === 'ssl') {
       $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    } else if (COCOTS_MAIL_SMTP_SECURE === 'tls') {
+    } elseif (COCOTS_MAIL_SMTP_SECURE === 'tls') {
       $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     } else {
       throw new Exception('Unknown SMTP SECURE constant: ' . COCOTS_MAIL_SMTP_SECURE);

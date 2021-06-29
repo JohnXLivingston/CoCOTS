@@ -54,7 +54,11 @@ class CocotsExamplePresets extends CocotsPresets {
     return true;
   }
 
-  public function checkAccount($account) {
+  public function checkAccountProcessing($account) {
+    return true;
+  }
+
+  public function resetAccountProcessing($account) {
     return true;
   }
 }

@@ -5,6 +5,7 @@ if(!defined('_COCOTS_INITIALIZED')) {
 }
 
 class Accounts {
+  CONST DBVERSION = 2;
   protected $app;
 
   public function __construct($app) {
@@ -35,14 +36,23 @@ class Accounts {
       $sql.= ' `activation_date` DATETIME DEFAULT NULL, ';
       $sql.= ' `deactivation_date` DATETIME DEFAULT NULL, ';
       $sql.= ' `deletion_date` DATETIME DEFAULT NULL, ';
+      $sql.= ' `activation_mail_sent` BOOLEAN NOT NULL DEFAULT FALSE, ';
       $sql.= ' PRIMARY KEY ( `id` ), ';
       $sql.= ' UNIQUE INDEX ( `name` ) ';
       $sql.= ' ) ';
       $sql.= ' ENGINE=MyISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ';
       $this->app->db->exec($sql);
 
-      $this->app->setDBVersion('cocots_account', 1);
-      $current_version = 1;
+      $this->app->setDBVersion('cocots_account', 2);
+      $current_version = 2;
+    }
+    if ($current_version === 1) {
+      $sql = 'ALTER TABLE `' . COCOTS_DB_PREFIX . 'account` ';
+      $sql.= ' ADD COLUMN IF NOT EXISTS `activation_mail_sent` BOOLEAN NOT NULL DEFAULT FALSE AFTER `deletion_date` ';
+      $this->app->db->exec($sql);
+
+      $this->app->setDBVersion('cocots_account', 2);
+      $current_version = 2;
     }
     if ($required_version !== $current_version) {
       throw new Exception('Unknow required version for cocots_account');
@@ -135,6 +145,17 @@ class Accounts {
       'status' => $status
     ));
   }
+
+  protected function _updateActivationMailSent($id, $bool) {
+    $sql = 'UPDATE `' . COCOTS_DB_PREFIX . 'account` ';
+    $sql.= ' SET `activation_mail_sent`=:activation_mail_sent ';
+    $sql.= ' WHERE `id`=:id';
+    $sth = $this->app->db->prepare($sql);
+    $sth->execute(array(
+      'id' => $id,
+      'activation_mail_sent' => $bool ? true : false
+    ));
+  }
   
   public function activate($id) {
     $account = $this->getById($id);
@@ -143,7 +164,7 @@ class Accounts {
       return false;
     }
 
-    if ($account['status'] !== 'waiting' && $account['status'] !== 'disabled') {
+    if (!in_array($account['status'], array('waiting', 'disabled', 'active'), true)) {
       error_log('Cant activate account ' . $account['id'] . ' because its status is ' . $account['status']);
       return false;
     }
@@ -153,6 +174,11 @@ class Accounts {
       return false;
     }
 
+    if (!$this->app->presets->resetAccountProcessing($account)) {
+      error_log('Failed to reset the account processing for account ' . $account['id']);
+      return false;
+    }
+    
     $this->_updateStatus($id, 'processing');
 
     $return = $this->app->presets->activateAccount($account);
@@ -175,13 +201,18 @@ class Accounts {
       return false;
     }
 
-    if ($account['status'] !== 'active') {
+    if (!in_array($account['status'], array('active', 'disabled'), true)) {
       error_log('Cant disable account ' . $account['id'] . ' because its status is ' . $account['status']);
       return false;
     }
 
     if (!$this->app->presets->checkConfig()) {
       error_log('The preset is not correctly configured.');
+      return false;
+    }
+
+    if (!$this->app->presets->resetAccountProcessing($account)) {
+      error_log('Failed to reset the account processing for account ' . $account['id']);
       return false;
     }
 
@@ -202,7 +233,7 @@ class Accounts {
 
   public function checkProcessing($account) {
     $id = $account['id'];
-    $return = $this->app->presets->checkAccount($account);
+    $return = $this->app->presets->checkAccountProcessing($account);
     if ($return === 'waiting') {
       // we have to wait...
       return 'waiting';
@@ -230,13 +261,19 @@ class Accounts {
     if ($account['status'] === 'processing') {
       $this->_updateStatus($id, 'active', 'activation_date');
 
-      $subject = $this->app->loc->translate('account_created_subject');
-      $message = '';
-      $message.= $this->app->loc->translate('account_created_message') . "\n";
-      $message.= 'https://' . $account['name'] . '.' . $account['domain'] . "\n\n";
-      $message.= $this->app->loc->translate('account_created_signature') . "\n";
-      $this->app->notifyAccountCreated($account, $subject, $message);
-    } else if ($account['status'] === 'processing_disabled') {
+      // Check if it is a reactivation. Don't send the mail twice.
+      if (!$account['activation_mail_sent']) {
+        $subject = $this->app->loc->translate('account_created_subject');
+        $message = '';
+        $message.= $this->app->loc->translate('account_created_message') . "\n";
+        $message.= 'https://' . $account['name'] . '.' . $account['domain'] . "\n\n";
+        $message.= $this->app->loc->translate('account_created_signature') . "\n";
+        $this->app->notifyAccountCreated($account, $subject, $message);
+
+        $this->_updateActivationMailSent($account['id'], true);
+      }
+
+    } elseif ($account['status'] === 'processing_disabled') {
       $this->_updateStatus($id, 'disabled', 'deactivation_date');
 
       $message = '';
@@ -248,7 +285,7 @@ class Accounts {
       $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
       $message.= $this->app->loc->translate('disabled_account_signature') . "\n\n";
       $this->app->notifyAdmins($this->app->loc->translate('disabled_account_subject'), $message);
-    } else if ($account['status'] === 'processing_deleted' ) {
+    } elseif ($account['status'] === 'processing_deleted' ) {
       $this->_updateStatus($id, 'deleted', 'deletion_date');
 
       $message = '';

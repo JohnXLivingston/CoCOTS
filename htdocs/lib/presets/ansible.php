@@ -83,16 +83,21 @@ EOF;
     return $this->writeAccountVars($account, $state);
   }
 
-  public function checkAccount($account) {
+  protected function ansibleProcessingResultDir($account) {
+    $url = $account['name'] . '.' . $account['domain'];
+    $dir = COCOTS_PRESETS_ANSIBLE_VAR_PATH;
+    if (substr($dir, -1) !== '/') {
+      $dir.= '/';
+    }
+    $dir.= $url . '/';
+    return $dir;
+  }
+
+  public function checkAccountProcessing($account) {
     $status = $account['status'];
     if ($status === 'processing' || $status === 'processing_disabled') {
       // We have to check for the «ansible_status» file, and check its content.
-      $url = $account['name'] . '.' . $account['domain'];
-      $status_file_name = COCOTS_PRESETS_ANSIBLE_VAR_PATH;
-      if (substr($status_file_name, -1) !== '/') {
-        $status_file_name.= '/';
-      }
-      $status_file_name.= $url . '/ansible_status';
+      $status_file_name = $this->ansibleProcessingResultDir($account) . 'ansible_status';
       if (!file_exists($status_file_name)) {
         return 'waiting';
       }
@@ -103,13 +108,24 @@ EOF;
         return false;
       }
       return true;
-    } else if ($status === 'processing_deleted') {
+    } elseif ($status === 'processing_deleted') {
       error_log('Not Implemented Yet: account deletion');
       return false;
     } else {
-      error_log('Calling checkAccount on account ' . $account['id'] . ' which is in an unattended status ' . $status);
+      error_log('Calling checkAccountProcessing on account ' . $account['id'] . ' which is in an unattended status ' . $status);
       return false;
     }
+  }
+
+  public function resetAccountProcessing($account) {
+    $dir = $this->ansibleProcessingResultDir($account);
+    $timestamp = time();
+    foreach (array('ansible_status', 'ansible_output') as $filename) {
+      if (file_exists($dir . $filename)) {
+        rename($dir . $filename, $dir . $filename . '.' . $timestamp);
+      }
+    }
+    return true;
   }
 }
 

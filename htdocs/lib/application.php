@@ -63,7 +63,7 @@ class Application {
       throw new Exception('Database connection error.');
     }
     $this->testDBVersion('cocots', 1, 'createTableVersion', $migrate);
-    $this->testDBVersion('cocots_account', 1, 'createTableAccount', $migrate);
+    $this->testDBVersion('cocots_account', $this->accounts::DBVERSION, 'createTableAccount', $migrate);
   }
 
   protected function testDBVersion($name, $required_version, $method, $migrate = false) {
@@ -136,7 +136,7 @@ class Application {
     $sql.= ' ON DUPLICATE KEY UPDATE `version`=:version ';
     $sth = $this->db->prepare($sql);
     $sth->bindValue(':name', $name);
-    $sth->bindValue(':version', 1);
+    $sth->bindValue(':version', $version);
     $sth->execute();
   }
 

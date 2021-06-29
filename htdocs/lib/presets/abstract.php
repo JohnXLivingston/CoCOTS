@@ -41,8 +41,17 @@ abstract class CocotsPresets {
   abstract public function disableAccount($account);
 
   /**
+   * This function check the account state, depending on deployment method.
+   * For example, if we have to wait for an async script to complete.
    * @param $account
    * @return success boolean | 'waiting'
    */
-  abstract public function checkAccount($account);
+  abstract public function checkAccountProcessing($account);
+
+  /**
+   * This function reset everything so that the account processing can be done again.
+   * @param $account
+   * @return success boolean
+   */
+  abstract public function resetAccountProcessing($account);
 }

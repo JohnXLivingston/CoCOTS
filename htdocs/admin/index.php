@@ -115,6 +115,7 @@ function display_status_button($id, $value, $label) {
               display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
             } elseif ($account['status'] === 'active') {
               display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_status_disabled'));
+              display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));
             }
           ?></td>
         </tr>

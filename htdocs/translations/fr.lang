@@ -42,6 +42,7 @@ account_action = Action
 
 account_action_status_active = Activer
 account_action_status_disabled = Désactiver
+account_action_reprocess = Processer à nouveau
 
 account_status_failed = Erreur au changement de statut
 
