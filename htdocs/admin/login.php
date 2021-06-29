@@ -18,7 +18,7 @@ if (isset($_GET['logout'])) {
   session_destroy();
   unset($_SESSION);
   header('Clear-Site-Data: "*"');
-  header('Location: /admin');
+  header('Location: ' . $app->getAdminUrl());
   exit;
 }
 
@@ -30,7 +30,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
   if ($_POST['login'] === COCOTS_ADMIN_USER && $_POST['password'] === COCOTS_ADMIN_PASSWORD) {
     // Ok!
     $_SESSION['login'] = $_POST['login'];
-    header('Location: /admin');
+    header('Location: ' . $app->getAdminUrl());
     exit;
   }
 

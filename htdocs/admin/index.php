@@ -23,21 +23,21 @@ try {
         if (!$app->accounts->activate($id)) {
           $error_message = $app->loc->translate('account_status_failed');
         } else {
-          header('Location: ' . $app->getBaseUrl() . '/admin');
+          header('Location: ' . $app->getAdminUrl());
           exit;
         }
       } elseif ($status === 'disabled') {
         if (!$app->accounts->disable($id)) {
           $error_message = $app->loc->translate('account_status_failed');
         } else {
-          header('Location: ' . $app->getBaseUrl() . '/admin');
+          header('Location: ' . $app->getAdminUrl());
           exit;
         }
       } elseif ($status === 'rejected') {
         if (!$app->accounts->reject($id)) {
           $error_message = $app->loc->translate('account_status_failed');
         } else {
-          header('Location: ' . $app->getBaseUrl() . '/admin');
+          header('Location: ' . $app->getAdminUrl());
           exit;
         }
       }
@@ -57,7 +57,7 @@ try {
 
 function display_status_button($id, $value, $label) {
   global $app;
-  ?><form method="POST">
+  ?><form method="POST" action="<?php echo $app->getAdminUrl(); ?>">
     <input type="hidden" name="action" value="set_status">
     <input type="hidden" name="status" value="<?php echo htmlspecialchars($value); ?>">
     <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
@@ -78,7 +78,11 @@ function display_status_button($id, $value, $label) {
   </head>
   <body>
     <ul class="top-menu">
-      <li><h1><?php echo $app->loc->translate('admin_title') ?></h1></li>
+      <li>
+        <h1><a href="<?php echo $app->getAdminUrl(); ?>">
+          <?php echo $app->loc->translate('admin_title') ?>
+        </a></h1>
+      </li>
       <li><a class="logout" href="<?php echo $app->getLogoutUrl(); ?>">
         <?php echo $app->loc->translate('logout'); ?>
       </a></li>

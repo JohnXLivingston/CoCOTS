@@ -33,8 +33,19 @@ class Application {
     return preg_match('/^https:/', $this->getBaseUrl());
   }
 
+  public function getAdminUrl() {
+    $url = $this->getBaseUrl() . '/admin/';
+    if ($this->debug_mode) {
+      $url.= '?debug=1';
+    }
+    return $url;
+  }
+
   public function getLogoutUrl() {
     $url = $this->getBaseUrl() . '/admin/?logout=1';
+    if ($this->debug_mode) {
+      $url.= '&debug=1';
+    }
     return $url;
   }
 
