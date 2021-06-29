@@ -36,6 +36,7 @@ class Accounts {
       $sql.= ' `activation_date` DATETIME DEFAULT NULL, ';
       $sql.= ' `deactivation_date` DATETIME DEFAULT NULL, ';
       $sql.= ' `deletion_date` DATETIME DEFAULT NULL, ';
+      $sql.= ' `rejection_date` DATETIME DEFAULT NULL, ';
       $sql.= ' `activation_mail_sent` BOOLEAN NOT NULL DEFAULT FALSE, ';
       $sql.= ' PRIMARY KEY ( `id` ), ';
       $sql.= ' UNIQUE INDEX ( `name` ) ';
@@ -48,7 +49,11 @@ class Accounts {
     }
     if ($current_version === 1) {
       $sql = 'ALTER TABLE `' . COCOTS_DB_PREFIX . 'account` ';
-      $sql.= ' ADD COLUMN IF NOT EXISTS `activation_mail_sent` BOOLEAN NOT NULL DEFAULT FALSE AFTER `deletion_date` ';
+      $sql.= ' ADD COLUMN IF NOT EXISTS `rejection_date` DATETIME DEFAULT NULL AFTER `deletion_date` ';
+      $this->app->db->exec($sql);
+
+      $sql = 'ALTER TABLE `' . COCOTS_DB_PREFIX . 'account` ';
+      $sql.= ' ADD COLUMN IF NOT EXISTS `activation_mail_sent` BOOLEAN NOT NULL DEFAULT FALSE AFTER `rejection_date` ';
       $this->app->db->exec($sql);
 
       $this->app->setDBVersion('cocots_account', 2);
@@ -227,6 +232,23 @@ class Accounts {
     if ($return !== 'waiting') {
       $this->_updateStatus($id, 'disabled', 'deactivation_date');
     }
+
+    return true;
+  }
+
+  public function reject($id) {
+    $account = $this->getById($id);
+    if (!$account) {
+      error_log('Account ' . $id . ' not found.');
+      return false;
+    }
+
+    if (!in_array($account['status'], array('waiting'), true)) {
+      error_log('Cant reject account ' . $account['id'] . ' because its status is ' . $account['status']);
+      return false;
+    }
+
+    $this->_updateStatus($id, 'rejected', 'rejection_date');
 
     return true;
   }

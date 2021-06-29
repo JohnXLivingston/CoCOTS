@@ -33,6 +33,13 @@ try {
           header('Location: ' . $app->getBaseUrl() . '/admin');
           exit;
         }
+      } elseif ($status === 'rejected') {
+        if (!$app->accounts->reject($id)) {
+          $error_message = $app->loc->translate('account_status_failed');
+        } else {
+          header('Location: ' . $app->getBaseUrl() . '/admin');
+          exit;
+        }
       }
     }
   }
@@ -93,6 +100,7 @@ function display_status_button($id, $value, $label) {
         <th><?php echo $app->loc->translate('account_activation_date'); ?></th>
         <th><?php echo $app->loc->translate('account_deactivation_date'); ?></th>
         <th><?php echo $app->loc->translate('account_deletion_date'); ?></th>
+        <th><?php echo $app->loc->translate('account_rejection_date'); ?></th>
         <th><?php echo $app->loc->translate('account_action'); ?></th>
       </tr>
       <?php foreach ($accounts as $account) { ?>
@@ -110,12 +118,20 @@ function display_status_button($id, $value, $label) {
           <td><?php echo htmlspecialchars($account['activation_date']); ?></td>
           <td><?php echo htmlspecialchars($account['deactivation_date']); ?></td>
           <td><?php echo htmlspecialchars($account['deletion_date']); ?></td>
+          <td><?php echo htmlspecialchars($account['rejection_date']); ?></td>
           <td><?php
-            if ($account['status'] === 'waiting' || $account['status'] === 'disabled') {
+            if ($account['status'] === 'waiting') {
+              display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
+              display_status_button($account['id'], 'rejected', $app->loc->translate('account_action_status_rejected'));
+            } elseif ($account['status'] === 'disabled') {
               display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
             } elseif ($account['status'] === 'active') {
               display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_status_disabled'));
               display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));
+            } elseif ($account['status'] === 'failed') {
+              display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));
+            } elseif ($account['status'] === 'failed_disabled') {
+              display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_reprocess'));
             }
           ?></td>
         </tr>

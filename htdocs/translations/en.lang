@@ -37,11 +37,13 @@ account_creation_date = Creation
 account_activation_date = Activation
 account_deactivation_date = Deactivation
 account_deletion_date = Deletion
+account_rejection_date = Rejection
 
 account_action = Action
 
 account_action_status_active = Activate
 account_action_status_disabled = Disable
+account_action_status_rejected = Reject
 account_action_reprocess = Process again
 
 account_status_failed = Error on account status update
