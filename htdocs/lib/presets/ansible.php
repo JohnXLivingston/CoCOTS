@@ -122,7 +122,10 @@ EOF;
     $timestamp = time();
     foreach (array('ansible_status', 'ansible_output') as $filename) {
       if (file_exists($dir . $filename)) {
-        rename($dir . $filename, $dir . $filename . '.' . $timestamp);
+        if (!rename($dir . $filename, $dir . $filename . '.' . $timestamp)) {
+          error_log('Failed renaming file ' . $dir . $filename . ' to ' . $dir . $filename . '.' . $timestamp);
+          return false;
+        }
       }
     }
     return true;
