@@ -90,6 +90,12 @@ form a.cancel {
   text-align: center;
 }
 
+.surrounded {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
 .error_messages {
   color: var(--error-color)
 }
