@@ -43,3 +43,6 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 // define("COCOTS_PRESETS_ANSIBLE_STATE_DISABLED", 'disabled'); // optionnal state value to write in ansible vars
 
 define("COCOTS_HOSTING_DOMAIN", 'example.com');
+
+// The text to display on top of the form, to explain what is this interface.
+define("COCOTS_HELP_TEXT", "This is an example");

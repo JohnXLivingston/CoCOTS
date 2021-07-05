@@ -43,6 +43,11 @@ try {
   <body>
     <?php if (!$saved) { ?>
       <form method="POST" <?php if ($app->debug_mode) { ?>novalidate<?php } ?>>
+        <?php if (defined('COCOTS_HELP_TEXT')) { ?>
+          <p>
+            <?php echo htmlspecialchars(COCOTS_HELP_TEXT); ?>
+          </p>
+        <?php } ?>
         <p>
           <?php echo $form->getField('website_name')->getLabelHtml(); ?>
           <?php echo $form->getField('website_name')->html(); ?>
