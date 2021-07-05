@@ -76,3 +76,12 @@ deleted_account_signature = Best regards.
 account_created_subject = You website was created.
 account_created_message = Your website was created. You can now connect to it by clicking on this link:
 account_created_signature = Best regards.
+
+status_label_waiting = Waiting
+status_label_processing = Processing
+status_label_active = Active
+status_label_processing_disabled = Processing (disabling)
+status_label_disabled = Disabled
+status_label_processing_deleted = Processing (deletion)
+status_label_deleted = Deleted
+status_label_rejected = Rejected

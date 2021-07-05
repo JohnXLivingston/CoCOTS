@@ -64,4 +64,8 @@ class I18n {
   public function translateSafe($label) {
     return $this->translations[$label] ?: $label;
   }
+
+  public function hasTranslation($label) {
+    return isset($this->translations[$label]);
+  }
 }

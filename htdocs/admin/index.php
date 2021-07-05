@@ -142,7 +142,11 @@ function display_status_button($id, $value, $label) {
                     $account_status_class = 'status-error';
                 }
                 echo '<div class="status-label ' . $account_status_class . '">';
-                echo htmlspecialchars($account['status']);
+                if ($app->loc->hasTranslation('status_label_' . $account['status'])) {
+                  echo $app->loc->translate('status_label_' . $account['status']);
+                } else {
+                  echo htmlspecialchars($account['status']);
+                }
                 echo '</div>';
               ?>
               <?php

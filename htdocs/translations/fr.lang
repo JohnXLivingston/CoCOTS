@@ -76,3 +76,12 @@ deleted_account_signature = Cordialement.
 account_created_subject = Votre site a été créé
 account_created_message = Votre site web a bien été créé. Vous pouvez désormais vous y connecter en cliquant sur ce lien :
 account_created_signature = Cordialement.
+
+status_label_waiting = En attente
+status_label_processing = Traitement en cours
+status_label_active = Actif
+status_label_processing_disabled = Traitement en cours (désactivation)
+status_label_disabled = Désactivé
+status_label_processing_deleted = Traitement en cours (suppression)
+status_label_deleted = Supprimé
+status_label_rejected = Refusé
