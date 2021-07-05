@@ -26,6 +26,12 @@ class CreationForm extends Form {
       'placeholder' => $this->app->loc->translateSafe('email_example')
     ));
 
+    $this->fields['confirm_email'] = new EmailField('confirm_email', array(
+      'required' => true,
+      'label' => $this->app->loc->translateSafe('confirm_email'),
+      'placeholder' => $this->app->loc->translateSafe('email_example')
+    ));
+
     $website_types = $this->app->presets->websiteTypes();
     if ($website_types) {
       $this->fields['website_type'] = new SelectField('website_type', array(
@@ -69,6 +75,11 @@ class CreationForm extends Form {
       return false;
     }
 
+    if ($this->fields['email']->getValue() !== $this->fields['confirm_email']->getValue()) {
+      $this->fields['confirm_email']->addErrorCode('error_confirm_email');
+      return false;
+    }
+
     $name = $this->fields['website_name']->getValue();
 
     if (defined('COCOTS_RESERVED_NAMES') && is_array(COCOTS_RESERVED_NAMES)) {
@@ -83,6 +94,7 @@ class CreationForm extends Form {
       $this->fields['website_name']->addErrorCode('error_website_name_already_exists');
       return false;
     }
+
     return true;
   }
 

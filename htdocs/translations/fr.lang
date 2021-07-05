@@ -3,6 +3,7 @@ admin_title = Administration des sites web
 website_name = Nom du site web
 website_domain = Domaine du site web
 email = Adresse mail
+confirm_email = Merci de confirmer votre adresse mail
 email_example = mail@domaine.fr
 website_type = Type de site web
 plugins_list = Liste des plugins à activer
@@ -23,6 +24,7 @@ error_field_email_invalid = Email invalide
 error_field_select_invalid_value = Valeur invalide
 
 error_website_name_already_exists = Ce nom est déjà utilisé
+error_confirm_email = Erreur dans l'adresse mail
 error_on_save = Une erreur est survenue à la sauvegarde
 
 request_transmitted = Votre requête a été transmise.

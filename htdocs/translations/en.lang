@@ -3,6 +3,7 @@ admin_title = Websites Administration
 website_name = Website name
 website_domain = Website domain
 email = email
+confirm_email = Confirm email
 email_example = email@domain.com
 website_type = Website type
 plugins_list = Plugins to activate
@@ -23,6 +24,7 @@ error_field_email_invalid = Invalid email
 error_field_select_invalid_value = Invalid value
 
 error_website_name_already_exists = This name is already in use
+error_confirm_email = Error in the email address
 error_on_save = An error occured when saving data
 
 request_transmitted = Your request has been transmitted.

@@ -69,6 +69,18 @@ try {
           <?php echo $form->getField('email')->html(); ?>
         </p>
 
+        <p>
+          <?php echo $form->getField('confirm_email')->getLabelHtml(); ?>
+          <?php echo $form->getField('confirm_email')->html(); ?>
+        </p>
+        <?php
+          if ($form->getField('confirm_email')->hasErrorCode('error_confirm_email')) {
+            ?><div class="error field-error-annotation">
+              <?php echo $app->loc->translate('error_confirm_email'); ?>
+            </div><?php
+          }
+        ?>
+
         <?php if ($form->hasField('website_type')) { ?>
           <p>
             <?php echo $form->getField('website_type')->getLabelHtml(); ?>
