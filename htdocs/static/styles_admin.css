@@ -1,5 +1,35 @@
+:root {
+  --table-bg-color1: #eeeeee;
+  --table-bg-color2: #dddddd;
+}
+
+form.login-form input {
+  width: 80%;
+}
+
+form.invisible {
+  background: transparent;
+  border: none;
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
 table tr td, table tr th {
-  border: 1px solid black;
+  border: 1px solid var(--field-border-color);
+  padding: 10px;
+}
+
+table tr:nth-child(odd) {
+  background-color: var(--table-bg-color1);
+}
+table tr:nth-child(even) {
+  background-color: var(--table-bg-color2);
 }
 
 ul.top-menu {

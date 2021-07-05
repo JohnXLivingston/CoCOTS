@@ -52,7 +52,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles_admin.css">
   </head>
   <body>
-    <form method="POST">
+    <form method="POST" class="login-form">
       <fieldset>
         <legend><?php echo $app->loc->translate('login') ?></legend>
         <p>

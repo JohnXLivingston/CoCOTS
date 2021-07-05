@@ -63,14 +63,15 @@ form fieldset ul {
 
 form input[type="submit"] {
   background: var(--main-border-color);
-  display: block;
-  padding: 5px;
-  color: var(--button-color);
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 5px;
   border: none;
+  border-radius: 5px;
+  color: var(--button-color);
   cursor: pointer;
+  display: block;
+  font-weight: bold;
+  margin: 2px;
+  padding: 5px;
+  text-decoration: none;
 }
 
 /* form input.button:hover {

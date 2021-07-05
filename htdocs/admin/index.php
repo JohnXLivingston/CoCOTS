@@ -57,7 +57,7 @@ try {
 
 function display_status_button($id, $value, $label) {
   global $app;
-  ?><form method="POST" action="<?php echo $app->getAdminUrl(); ?>">
+  ?><form class="invisible" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
     <input type="hidden" name="action" value="set_status">
     <input type="hidden" name="status" value="<?php echo htmlspecialchars($value); ?>">
     <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
@@ -93,66 +93,70 @@ function display_status_button($id, $value, $label) {
       </div>
     <?php } ?>
     <table>
-      <tr>
-        <th><?php echo $app->loc->translate('account_id'); ?></th>
-        <th><?php echo $app->loc->translate('account_name'); ?></th>
-        <th><?php echo $app->loc->translate('account_email'); ?></th>
-        <th><?php echo $app->loc->translate('account_type'); ?></th>
-        <th><?php echo $app->loc->translate('account_plugins'); ?></th>
-        <th><?php echo $app->loc->translate('account_status'); ?></th>
-        <th><?php echo $app->loc->translate('account_action'); ?></th>
-      </tr>
-      <?php foreach ($accounts as $account) { ?>
+      <thead>
         <tr>
-          <td><?php echo htmlspecialchars($account['id']); ?></td>
-          <td>
-            <?php
-            $account_url_html = htmlspecialchars($account['name'] . '.' . $account['domain']);
-            echo '<a href="https://' . $account_url_html . '" target="_blank">' . $account_url_html . '</a>';
-            ?>
-          </td>
-          <td><?php echo htmlspecialchars($account['email']); ?></td>
-          <td><?php echo htmlspecialchars($account['type']); ?></td>
-          <td><?php
-            $plugins = json_decode($account['plugins'] ?? '[]');
-            echo htmlspecialchars(implode(', ', $plugins));
-          ?></td>
-          <td>
-            <?php echo htmlspecialchars($account['status']); ?>
-            <?php
-              foreach (array('creation_date', 'activation_date', 'deactivation_date', 'deletion_date', 'rejection_date') as $date_field) {
-                if (!isset($account[$date_field])) { continue; }
-                echo '<div class="status-date">';
-                echo $app->loc->translate('account_' . $date_field);
-                echo ': ';
-                echo htmlspecialchars($account[$date_field]);
-                echo '</div>';
-              }
-
-              if ($account['activation_mail_sent']) {
-                echo '<div class="activation-mail-sent">';
-                echo $app->loc->translate('account_activation_mail_sent');
-                echo '</div>';
-              }
-            ?>
-          </td>
-          <td><?php
-            if ($account['status'] === 'waiting') {
-              display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
-              display_status_button($account['id'], 'rejected', $app->loc->translate('account_action_status_rejected'));
-            } elseif ($account['status'] === 'disabled') {
-              display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
-            } elseif ($account['status'] === 'active') {
-              display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_status_disabled'));
-              display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));
-            } elseif ($account['status'] === 'failed') {
-              display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));
-            } elseif ($account['status'] === 'failed_disabled') {
-              display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_reprocess'));
-            }
-          ?></td>
+          <th><?php echo $app->loc->translate('account_id'); ?></th>
+          <th><?php echo $app->loc->translate('account_name'); ?></th>
+          <th><?php echo $app->loc->translate('account_email'); ?></th>
+          <th><?php echo $app->loc->translate('account_type'); ?></th>
+          <th><?php echo $app->loc->translate('account_plugins'); ?></th>
+          <th><?php echo $app->loc->translate('account_status'); ?></th>
+          <th><?php echo $app->loc->translate('account_action'); ?></th>
         </tr>
-      <?php } ?>
+      </thead>
+      <tbody>
+        <?php foreach ($accounts as $account) { ?>
+          <tr>
+            <td><?php echo htmlspecialchars($account['id']); ?></td>
+            <td>
+              <?php
+              $account_url_html = htmlspecialchars($account['name'] . '.' . $account['domain']);
+              echo '<a href="https://' . $account_url_html . '" target="_blank">' . $account_url_html . '</a>';
+              ?>
+            </td>
+            <td><?php echo htmlspecialchars($account['email']); ?></td>
+            <td><?php echo htmlspecialchars($account['type']); ?></td>
+            <td><?php
+              $plugins = json_decode($account['plugins'] ?? '[]');
+              echo htmlspecialchars(implode(', ', $plugins));
+            ?></td>
+            <td>
+              <?php echo htmlspecialchars($account['status']); ?>
+              <?php
+                foreach (array('creation_date', 'activation_date', 'deactivation_date', 'deletion_date', 'rejection_date') as $date_field) {
+                  if (!isset($account[$date_field])) { continue; }
+                  echo '<div class="status-date">';
+                  echo $app->loc->translate('account_' . $date_field);
+                  echo ': ';
+                  echo htmlspecialchars($account[$date_field]);
+                  echo '</div>';
+                }
+
+                if ($account['activation_mail_sent']) {
+                  echo '<div class="activation-mail-sent">';
+                  echo $app->loc->translate('account_activation_mail_sent');
+                  echo '</div>';
+                }
+              ?>
+            </td>
+            <td><?php
+              if ($account['status'] === 'waiting') {
+                display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
+                display_status_button($account['id'], 'rejected', $app->loc->translate('account_action_status_rejected'));
+              } elseif ($account['status'] === 'disabled') {
+                display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
+              } elseif ($account['status'] === 'active') {
+                display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_status_disabled'));
+                display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));
+              } elseif ($account['status'] === 'failed') {
+                display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));
+              } elseif ($account['status'] === 'failed_disabled') {
+                display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_reprocess'));
+              }
+            ?></td>
+          </tr>
+        <?php } ?>
+      </tbody>
     </table>
   </body>
 </html>
