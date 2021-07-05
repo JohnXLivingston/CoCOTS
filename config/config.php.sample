@@ -45,4 +45,5 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 define("COCOTS_HOSTING_DOMAIN", 'example.com');
 
 // The text to display on top of the form, to explain what is this interface.
+// Note: it can contain HTML. You have to correctly escape this.
 define("COCOTS_HELP_TEXT", "This is an example");

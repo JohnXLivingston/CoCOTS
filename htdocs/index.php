@@ -45,7 +45,7 @@ try {
       <form method="POST" <?php if ($app->debug_mode) { ?>novalidate<?php } ?>>
         <?php if (defined('COCOTS_HELP_TEXT')) { ?>
           <p>
-            <?php echo htmlspecialchars(COCOTS_HELP_TEXT); ?>
+            <?php echo COCOTS_HELP_TEXT; ?>
           </p>
         <?php } ?>
         <p>
