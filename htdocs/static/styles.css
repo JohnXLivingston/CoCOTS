@@ -45,7 +45,7 @@ form input[type="checkbox"] {
   width: 40px;
 }
 
-form input:invalid, form select:invalid {
+form input:invalid, form select:invalid, form input.error, form select.error {
   border-color: var(--error-color);
 }
 

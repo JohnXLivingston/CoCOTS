@@ -76,6 +76,7 @@ class CreationForm extends Form {
     }
 
     if ($this->fields['email']->getValue() !== $this->fields['confirm_email']->getValue()) {
+      $this->fields['email']->addErrorCode('error_confirm_email');
       $this->fields['confirm_email']->addErrorCode('error_confirm_email');
       return false;
     }
