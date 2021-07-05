@@ -42,62 +42,60 @@ try {
   </head>
   <body>
     <?php if (!$saved) { ?>
-      <div class="form">
-        <form method="POST" <?php if ($app->debug_mode) { ?>novalidate<?php } ?>>
+      <form method="POST" <?php if ($app->debug_mode) { ?>novalidate<?php } ?>>
+        <p>
+          <?php echo $form->getField('website_name')->getLabelHtml(); ?>
+          <?php echo $form->getField('website_name')->html(); ?>
+        </p>
+        <?php
+          if ($form->getField('website_name')->hasErrorCode('error_website_name_already_exists')) {
+            ?><div class="error field-error-annotation">
+              <?php echo $app->loc->translate('error_website_name_already_exists'); ?>
+            </div><?php
+          }
+        ?>
+
+        <p>
+          <?php echo $form->getField('email')->getLabelHtml(); ?>
+          <?php echo $form->getField('email')->html(); ?>
+        </p>
+
+        <?php if ($form->hasField('website_type')) { ?>
           <p>
-            <?php echo $form->getField('website_name')->getLabelHtml(); ?>
-            <?php echo $form->getField('website_name')->html(); ?>
+            <?php echo $form->getField('website_type')->getLabelHtml(); ?>
+            <?php echo $form->getField('website_type')->html(); ?>
           </p>
-          <?php
-            if ($form->getField('website_name')->hasErrorCode('error_website_name_already_exists')) {
-              ?><div class="error field-error-annotation">
-                <?php echo $app->loc->translate('error_website_name_already_exists'); ?>
-              </div><?php
-            }
-          ?>
+        <?php } ?>
 
-          <p>
-            <?php echo $form->getField('email')->getLabelHtml(); ?>
-            <?php echo $form->getField('email')->html(); ?>
-          </p>
-
-          <?php if ($form->hasField('website_type')) { ?>
-            <p>
-              <?php echo $form->getField('website_type')->getLabelHtml(); ?>
-              <?php echo $form->getField('website_type')->html(); ?>
-            </p>
-          <?php } ?>
-
-          <?php
-            $plugins_fields = $form->getPluginsFields();
-            if (count($plugins_fields) > 0) {
-              ?>
-              <fieldset>
-                <legend>
-                  <?php echo $app->loc->translate('plugins_list') ?>
-                </legend>
-                <ul>
-                  <?php foreach($plugins_fields as $idx => $plugin_field) { ?>
-                    <li>
-                      <?php echo $plugin_field->html(); ?>
-                      <?php echo $plugin_field->getLabelHtml(); ?>
-                    </li>
-                  <?php } ?>
-                </ul>
-              </fieldset>
-              <?php
-            }
-          ?>
-          <input class="button" name="submit" id="submit" tabindex="5" value="<?php echo $app->loc->translate('validate') ?>" type="submit">
-          <?php
-            if ($error_on_save) {
-              ?><div class="error form-error-annotation">
-                <?php echo $app->loc->translate('error_on_save'); ?>
-              </div><?php
-            }
-          ?>
-        </form>
-      </div>
+        <?php
+          $plugins_fields = $form->getPluginsFields();
+          if (count($plugins_fields) > 0) {
+            ?>
+            <fieldset>
+              <legend>
+                <?php echo $app->loc->translate('plugins_list') ?>
+              </legend>
+              <ul>
+                <?php foreach($plugins_fields as $idx => $plugin_field) { ?>
+                  <li>
+                    <?php echo $plugin_field->html(); ?>
+                    <?php echo $plugin_field->getLabelHtml(); ?>
+                  </li>
+                <?php } ?>
+              </ul>
+            </fieldset>
+            <?php
+          }
+        ?>
+        <input name="submit" id="submit" tabindex="5" value="<?php echo $app->loc->translate('validate') ?>" type="submit">
+        <?php
+          if ($error_on_save) {
+            ?><div class="error form-error-annotation">
+              <?php echo $app->loc->translate('error_on_save'); ?>
+            </div><?php
+          }
+        ?>
+      </form>
       <?php
       if ($app->debug_mode) {
         $error_messages_html = $form->getErrorMessagesHtml();

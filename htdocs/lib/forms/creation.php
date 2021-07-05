@@ -12,6 +12,7 @@ class CreationForm extends Form {
   protected function initFields() {
     $this->fields['website_name'] = new TextField('website_name', array(
       'required' => true,
+      'autofocus' => true,
       'label' => $this->app->loc->translateSafe('website_name'),
       'placeholder' => true,
       'pattern' => '[a-z0-9]{3,40}',

@@ -105,6 +105,7 @@ abstract class InputField extends Field {
   protected $placeholder = null;
   protected $title = null;
   protected $aria_label = null;
+  protected $autofocus = false;
 
   public function __construct($name, $options) {
     parent::__construct($name, $options);
@@ -116,6 +117,9 @@ abstract class InputField extends Field {
         $this->placeholder = $options['placeholder'];
       }
     }
+    if (isset($options['autofocus']) && $options['autofocus'] === true) {
+      $this->autofocus = true;
+    }
     foreach (array('aria-label', 'title') as $f) {
       if (isset($options[$f])) {
         $this->$f = $options[$f];
@@ -126,6 +130,9 @@ abstract class InputField extends Field {
   public function getAttributes() {
     $attrs = parent::getAttributes();
     $attrs['name'] = $this->name;
+    if ($this->autofocus) {
+      $attrs['autofocus'] = '';
+    }
     foreach (array('placeholder', 'aria-label', 'title') as $f) {
       if (isset($this->$f)) {
         $attrs[$f] = $this->$f;
