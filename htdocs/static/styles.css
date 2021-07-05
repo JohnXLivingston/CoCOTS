@@ -14,7 +14,7 @@ body {
   background: var(--main-bg-color);
 }
 
-form {
+form, .request-transmitted {
   background: var(--main-bg-color);
   border: 2px solid var(--main-border-color);
   border-radius: 10px;
