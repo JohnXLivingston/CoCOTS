@@ -39,6 +39,26 @@ ul.top-menu {
   list-style-type: none;
 }
 
+.status-label {
+  font-weight: bold;
+}
+
+.status-warning {
+  color: orange;
+}
+
+.status-ok {
+  color: green;
+}
+
+.status-inactive {
+  color: gray;
+}
+
+.status-error {
+  color: red;
+}
+
 .status-date {
   white-space: nowrap;
 }

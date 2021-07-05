@@ -121,7 +121,30 @@ function display_status_button($id, $value, $label) {
               echo htmlspecialchars(implode(', ', $plugins));
             ?></td>
             <td>
-              <?php echo htmlspecialchars($account['status']); ?>
+              <?php
+                $account_status_class = '';
+                switch($account['status']) {
+                  case 'waiting':
+                  case 'processing':
+                  case 'processing_disabled':
+                  case 'processing_deleted':
+                    $account_status_class = 'status-warning';
+                    break;
+                  case 'active':
+                    $account_status_class = 'status-ok';
+                    break;
+                  case 'disabled':
+                  case 'rejected':
+                  case 'deleted':
+                    $account_status_class = 'status-inactive';
+                    break;
+                  default:
+                    $account_status_class = 'status-error';
+                }
+                echo '<div class="status-label ' . $account_status_class . '">';
+                echo htmlspecialchars($account['status']);
+                echo '</div>';
+              ?>
               <?php
                 foreach (array('creation_date', 'activation_date', 'deactivation_date', 'deletion_date', 'rejection_date') as $date_field) {
                   if (!isset($account[$date_field])) { continue; }
