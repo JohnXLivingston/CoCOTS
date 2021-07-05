@@ -18,27 +18,38 @@ try {
     $id = $_POST['id'] ?? false;
     $status = $_POST['status'] ?? false;
     if ($id && $status) {
-      // TODO: add a confirmation step.
-      if ($status === 'active') {
-        if (!$app->accounts->activate($id)) {
-          $error_message = $app->loc->translate('account_status_failed');
-        } else {
-          header('Location: ' . $app->getAdminUrl());
-          exit;
+      if (isset($_POST['confirm']) && $_POST['confirm'] === '1') {
+        if ($status === 'active') {
+          if (!$app->accounts->activate($id)) {
+            $error_message = $app->loc->translate('account_status_failed');
+          } else {
+            header('Location: ' . $app->getAdminUrl());
+            exit;
+          }
+        } elseif ($status === 'disabled') {
+          if (!$app->accounts->disable($id)) {
+            $error_message = $app->loc->translate('account_status_failed');
+          } else {
+            header('Location: ' . $app->getAdminUrl());
+            exit;
+          }
+        } elseif ($status === 'rejected') {
+          if (!$app->accounts->reject($id)) {
+            $error_message = $app->loc->translate('account_status_failed');
+          } else {
+            header('Location: ' . $app->getAdminUrl());
+            exit;
+          }
         }
-      } elseif ($status === 'disabled') {
-        if (!$app->accounts->disable($id)) {
-          $error_message = $app->loc->translate('account_status_failed');
-        } else {
-          header('Location: ' . $app->getAdminUrl());
-          exit;
-        }
-      } elseif ($status === 'rejected') {
-        if (!$app->accounts->reject($id)) {
-          $error_message = $app->loc->translate('account_status_failed');
-        } else {
-          header('Location: ' . $app->getAdminUrl());
-          exit;
+      } else {
+        // We must ask for confirmation
+        $account = $app->accounts->getById($id);
+        if ($account) {
+          $confirmation_message = array(
+            'account' => $account,
+            'status' => $status,
+            'type' => 'set_status'
+          );
         }
       }
     }
@@ -91,6 +102,41 @@ function display_status_button($id, $value, $label) {
       <div class="error_messages">
         <?php echo $error_message; ?>
       </div>
+    <?php } ?>
+    <?php if ($confirmation_message && $confirmation_message['type'] === 'set_status') { ?>
+      <form method="POST" action="<?php echo $app->getAdminUrl(); ?>">
+        <input type="hidden" name="action" value="set_status">
+        <input type="hidden" name="confirm" value="1">
+        <input type="hidden" name="status" value="<?php echo htmlspecialchars($confirmation_message['status']); ?>">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($confirmation_message['account']['id']); ?>">
+        <p>
+          <?php echo $app->loc->translate('confirm_set_status'); ?>
+        </p>
+        <p>
+          <?php echo $app->loc->translate('account_name'); ?>:
+          <?php echo htmlspecialchars($confirmation_message['account']['name'])  . '.' . $confirmation_message['account']['domain'] ?>
+        </p>
+        <p>
+          <?php echo $app->loc->translate('account_status'); ?>:
+          <?php
+            if ($app->loc->hasTranslation('status_label_' . $confirmation_message['account']['status'])) {
+              echo $app->loc->translate('status_label_' . $confirmation_message['account']['status']);
+            } else {
+              echo htmlspecialchars($confirmation_message['account']['status']);
+            }
+
+            echo ' => ';
+
+            if ($app->loc->hasTranslation('status_label_' . $confirmation_message['status'])) {
+              echo $app->loc->translate('status_label_' . $confirmation_message['status']);
+            } else {
+              echo htmlspecialchars($confirmation_message['status']);
+            }
+          ?>
+        </p>
+        <input type="submit" value="<?php echo $app->loc->translate('validate'); ?>">
+        <a class="cancel" href="<?php echo htmlspecialchars($app->getAdminUrl()); ?>"><?php echo $app->loc->translate('cancel'); ?></a>
+      </form>
     <?php } ?>
     <table>
       <thead>

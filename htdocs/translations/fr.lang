@@ -7,6 +7,7 @@ email_example = mail@domaine.fr
 website_type = Type de site web
 plugins_list = Liste des plugins à activer
 validate = Valider
+cancel = Annuler
 
 website_type_1 = Type 1
 website_type_2 = Type 2
@@ -85,3 +86,5 @@ status_label_disabled = Désactivé
 status_label_processing_deleted = Traitement en cours (suppression)
 status_label_deleted = Supprimé
 status_label_rejected = Refusé
+
+confirm_set_status = Merci de confirmer l'action suivante :

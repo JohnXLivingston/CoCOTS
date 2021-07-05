@@ -6,6 +6,8 @@
   --field-focus-border-color: #000;
   --error-color: #FF0000;
   --button-color: #ffffff;
+  --cancel-button-bg-color: #aaaaaa;
+  --cancel-button-color: #fff;
 }
 
 body {
@@ -74,9 +76,19 @@ form input[type="submit"] {
   text-decoration: none;
 }
 
-/* form input.button:hover {
-  background-color: #2a78f6;
-} */
+form a.cancel {
+  background: var(--cancel-button-bg-color);
+  border: none;
+  border-radius: 5px;
+  color: var(--cancel-button-color);
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  margin: 2px;
+  padding: 5px;
+  text-decoration: none;
+  text-align: center;
+}
 
 .error_messages {
   color: var(--error-color)

@@ -7,6 +7,7 @@ email_example = email@domain.com
 website_type = Website type
 plugins_list = Plugins to activate
 validate = Validate
+cancel = Cancel
 
 website_type_1 = Type 1
 website_type_2 = Type 2
@@ -85,3 +86,5 @@ status_label_disabled = Disabled
 status_label_processing_deleted = Processing (deletion)
 status_label_deleted = Deleted
 status_label_rejected = Rejected
+
+confirm_set_status = Please confirm the following action:
