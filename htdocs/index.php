@@ -108,6 +108,21 @@ try {
             <?php
           }
         ?>
+
+        <?php if ($form->hasField('security_question')) { ?>
+          <p>
+            <?php echo $form->getField('security_question')->getLabelHtml(); ?>
+            <?php echo $form->getField('security_question')->html(); ?>
+          </p>
+          <?php
+            if ($form->getField('security_question')->hasErrorCode('error_security_question')) {
+              ?><div class="error field-error-annotation">
+                <?php echo $app->loc->translate('error_security_question'); ?>
+              </div><?php
+            }
+          ?>
+        <?php } ?>
+
         <input name="submit" id="submit" tabindex="5" value="<?php echo $app->loc->translate('validate') ?>" type="submit">
         <?php
           if ($error_on_save) {

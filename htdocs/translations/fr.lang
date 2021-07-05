@@ -25,6 +25,7 @@ error_field_select_invalid_value = Valeur invalide
 
 error_website_name_already_exists = Ce nom est déjà utilisé
 error_confirm_email = Erreur dans l'adresse mail
+error_security_question = Réponse invalide
 error_on_save = Une erreur est survenue à la sauvegarde
 
 request_transmitted = Votre requête a été transmise.

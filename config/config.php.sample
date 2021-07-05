@@ -47,3 +47,9 @@ define("COCOTS_HOSTING_DOMAIN", 'example.com');
 // The text to display on top of the form, to explain what is this interface.
 // Note: it can contain HTML. You have to correctly escape this.
 define("COCOTS_HELP_TEXT", "This is an example");
+
+// An optional key/question that users will have to provide/answer.
+// Note: it can't be HTML.
+define("COCOTS_SECURITY_QUESTION", "What is you favorite color?");
+// possible answers (case sensitive);
+define("COCOTS_SECURITY_ANSWERS", array("Red", "red", "RED"));

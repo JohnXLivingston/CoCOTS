@@ -56,6 +56,14 @@ class CreationForm extends Form {
         array_push($this->plugins_fields, $this->fields[$fname]);
       }
     }
+
+    if (defined('COCOTS_SECURITY_QUESTION')) {
+      $this->fields['security_question'] = new TextField('security_question', array(
+        'required' => true,
+        'label' => strval(COCOTS_SECURITY_QUESTION),
+        'placeholder' => true
+      ));
+    }
   }
 
   public function getPluginsFields() {
@@ -79,6 +87,14 @@ class CreationForm extends Form {
       $this->fields['email']->addErrorCode('error_confirm_email');
       $this->fields['confirm_email']->addErrorCode('error_confirm_email');
       return false;
+    }
+
+    if ($this->hasField('security_question')) {
+      $valid_answers = defined('COCOTS_SECURITY_ANSWERS') ? COCOTS_SECURITY_ANSWERS : array();
+      if (!in_array($this->fields['security_question']->getValue(), $valid_answers, true)) {
+        $this->fields['security_question']->addErrorCode('error_security_question');
+        return false;
+      }
     }
 
     $name = $this->fields['website_name']->getValue();
