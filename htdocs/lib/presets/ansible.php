@@ -100,7 +100,7 @@ EOF;
 
   public function checkAccountProcessing($account) {
     $status = $account['status'];
-    if ($status === 'processing' || $status === 'processing_disabled') {
+    if ($status === 'processing' || $status === 'processing_disabled' || $status === 'processing_deleted') {
       // We have to check for the «ansible_status» file, and check its content.
       $status_file_name = $this->ansibleProcessingResultDir($account) . 'ansible_status';
       if (!file_exists($status_file_name)) {
@@ -113,9 +113,6 @@ EOF;
         return false;
       }
       return true;
-    } elseif ($status === 'processing_deleted') {
-      error_log('Not Implemented Yet: account deletion');
-      return false;
     } else {
       error_log('Calling checkAccountProcessing on account ' . $account['id'] . ' which is in an unattended status ' . $status);
       return false;
