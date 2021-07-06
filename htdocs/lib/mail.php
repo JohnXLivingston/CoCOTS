@@ -28,6 +28,8 @@ function getMailer() {
     } else {
       throw new Exception('Unknown SMTP SECURE constant: ' . COCOTS_MAIL_SMTP_SECURE);
     }
+  } else {
+    $mail->SMTPAutoTLS = false;
   }
   $mail->Port = COCOTS_MAIL_SMTP_PORT;
   if (COCOTS_MAIL_SMTP_DEBUG) {
