@@ -54,6 +54,11 @@ class CocotsExamplePresets extends CocotsPresets {
     return true;
   }
 
+  public function deleteAccount($account) {
+    error_log('Disabling account ' . $account['name']);
+    return true;
+  }
+
   public function checkAccountProcessing($account) {
     return true;
   }

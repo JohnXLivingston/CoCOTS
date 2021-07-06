@@ -83,6 +83,11 @@ EOF;
     return $this->writeAccountVars($account, $state);
   }
 
+  public function deleteAccount($account) {
+    $state = defined('COCOTS_PRESETS_ANSIBLE_STATE_DELETED') ? COCOTS_PRESETS_ANSIBLE_STATE_DELETED : 'deleted';
+    return $this->writeAccountVars($account, $state);
+  }
+
   protected function ansibleProcessingResultDir($account) {
     $url = $account['name'] . '.' . $account['domain'];
     $dir = COCOTS_PRESETS_ANSIBLE_VAR_PATH;

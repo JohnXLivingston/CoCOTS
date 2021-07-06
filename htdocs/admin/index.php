@@ -33,6 +33,13 @@ try {
             header('Location: ' . $app->getAdminUrl());
             exit;
           }
+        } elseif ($status === 'deleted') {
+          if (!$app->accounts->delete($id)) {
+            $error_message = $app->loc->translate('account_status_failed');
+          } else {
+            header('Location: ' . $app->getAdminUrl());
+            exit;
+          }
         } elseif ($status === 'rejected') {
           if (!$app->accounts->reject($id)) {
             $error_message = $app->loc->translate('account_status_failed');
@@ -218,6 +225,7 @@ function display_status_button($id, $value, $label) {
                 display_status_button($account['id'], 'rejected', $app->loc->translate('account_action_status_rejected'));
               } elseif ($account['status'] === 'disabled') {
                 display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
+                display_status_button($account['id'], 'deleted', $app->loc->translate('account_action_status_deleted'));
               } elseif ($account['status'] === 'active') {
                 display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_status_disabled'));
                 display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));

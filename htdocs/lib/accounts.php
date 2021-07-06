@@ -236,6 +236,43 @@ class Accounts {
     return true;
   }
 
+  public function delete($id) {
+    $account = $this->getById($id);
+    if (!$account) {
+      error_log('Account ' . $id . ' not found.');
+      return false;
+    }
+
+    if (!in_array($account['status'], array('disabled', 'deleted', 'failed_deleted'), true)) {
+      error_log('Cant delete account ' . $account['id'] . ' because its status is ' . $account['status']);
+      return false;
+    }
+
+    if (!$this->app->presets->checkConfig()) {
+      error_log('The preset is not correctly configured.');
+      return false;
+    }
+
+    if (!$this->app->presets->resetAccountProcessing($account)) {
+      error_log('Failed to reset the account processing for account ' . $account['id']);
+      return false;
+    }
+
+    $this->_updateStatus($id, 'processing_deleted');
+
+    $return = $this->app->presets->deleteAccount($account);
+    if (!$return) {
+      error_log('Failed to delete the account ' . $id);
+      return false;
+    }
+
+    if ($return !== 'waiting') {
+      $this->_updateStatus($id, 'deleted', 'deletion_date');
+    }
+
+    return true;
+  }
+
   public function reject($id) {
     $account = $this->getById($id);
     if (!$account) {

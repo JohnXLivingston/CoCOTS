@@ -41,6 +41,12 @@ abstract class CocotsPresets {
   abstract public function disableAccount($account);
 
   /**
+   * @param $account
+   * @return success boolean | 'waiting'
+   */
+  abstract public function deleteAccount($account);
+
+  /**
    * This function check the account state, depending on deployment method.
    * For example, if we have to wait for an async script to complete.
    * @param $account
