@@ -33,9 +33,9 @@ class Application {
     return preg_match('/^https:/', $this->getBaseUrl());
   }
 
-  public function getAdminUrl($sort_param = null) {
+  public function getAdminUrl($sort_param = null, $debug_mode = null) {
     $url = $this->getBaseUrl() . '/admin/';
-    if ($this->debug_mode) {
+    if (($this->debug_mode && !isset($debug_mode)) || $debug_mode) {
       $url.= '?debug=1&';
     }
     if (!isset($sort_param) && isset($_GET['sort'])) {

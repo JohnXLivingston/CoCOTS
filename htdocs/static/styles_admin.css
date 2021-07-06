@@ -36,7 +36,7 @@ table tr:nth-child(even) {
   background-color: var(--table-bg-color2);
 }
 
-ul.top-menu {
+ul.top-menu, ul.bottom-menu {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

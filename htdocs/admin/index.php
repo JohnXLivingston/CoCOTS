@@ -263,5 +263,15 @@ function display_sort_title($label, $field, $current_sort_info) {
         <?php } ?>
       </tbody>
     </table>
+    <ul class="bottom-menu">
+      <?php if ($app->debug_mode) { ?>
+        <li><a target="_blank" href="<?php echo $app->getBaseUrl() ?>/script/check_processing.php">Check Processing</a></li>
+      <?php } ?>
+      <li>
+        <a href="<?php echo $app->getAdminUrl(null, $app->debug_mode ? false : true); ?>">
+          Debug <?php echo $app->debug_mode ? 'OFF' : 'ON'; ?>
+        </a>
+      </li>
+    </ul>
   </body>
 </html>
