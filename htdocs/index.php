@@ -50,11 +50,11 @@ try {
         <?php } ?>
         <p>
           <?php echo $form->getField('website_name')->getLabelHtml(); ?>
-          <div class="surrounded">
+          <span class="surrounded">
             <span>https://</span>
             <?php echo $form->getField('website_name')->html(); ?>
             <span>.<?php echo htmlspecialchars(COCOTS_HOSTING_DOMAIN); ?></span>
-          </div>
+          </span>
         </p>
         <?php
           if ($form->getField('website_name')->hasErrorCode('error_website_name_already_exists')) {
