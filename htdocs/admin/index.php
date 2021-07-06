@@ -62,7 +62,8 @@ try {
     }
   }
 
-  $accounts = $app->accounts->list();
+  $sort_info = $app->accounts->readSort($_GET['sort']);
+  $accounts = $app->accounts->list($_GET['sort']);
 
 } catch (CocotsSmartException $e) {
   http_response_code(500);
@@ -81,6 +82,29 @@ function display_status_button($id, $value, $label) {
     <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
     <input type="submit" value="<?php echo $label; ?>">
   </form><?php
+}
+
+function display_sort_title($label, $field, $current_sort_info) {
+  global $app;
+
+  $sort_param = $field . '-';
+  $sort_symbol = '';
+  if ($current_sort_info['field'] === $field) {
+    if ($current_sort_info['direction'] === 'ASC') {
+      $sort_param.= 'desc';
+      $sort_symbol = '&#9661;';
+    } else {
+      $sort_param.= 'asc';
+      $sort_symbol = '&#9651;';
+    }
+  } else {
+    $sort_param.= 'asc';
+  }
+  $url = $app->getAdminUrl($sort_param);
+  echo '<a href="' . htmlspecialchars($url) . '" class="sort">';
+  echo $label;
+  echo '</a>';
+  echo ' ' . $sort_symbol;
 }
 
 ?><!DOCTYPE html>
@@ -148,12 +172,12 @@ function display_status_button($id, $value, $label) {
     <table>
       <thead>
         <tr>
-          <th><?php echo $app->loc->translate('account_id'); ?></th>
-          <th><?php echo $app->loc->translate('account_name'); ?></th>
-          <th><?php echo $app->loc->translate('account_email'); ?></th>
+          <th><?php echo display_sort_title($app->loc->translate('account_id'), 'id', $sort_info); ?></th>
+          <th><?php echo display_sort_title($app->loc->translate('account_name'), 'name', $sort_info); ?></th>
+          <th><?php echo display_sort_title($app->loc->translate('account_email'), 'email', $sort_info); ?></th>
           <th><?php echo $app->loc->translate('account_type'); ?></th>
           <th><?php echo $app->loc->translate('account_plugins'); ?></th>
-          <th><?php echo $app->loc->translate('account_status'); ?></th>
+          <th><?php echo display_sort_title($app->loc->translate('account_status'), 'status', $sort_info); ?></th>
           <th><?php echo $app->loc->translate('account_action'); ?></th>
         </tr>
       </thead>

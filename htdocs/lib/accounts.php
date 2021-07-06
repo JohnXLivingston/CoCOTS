@@ -103,13 +103,33 @@ class Accounts {
     return $sth->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function list() {
+  public function list($sort_param = null) {
+    $sort_info = $this->readSort($sort_param); // This ensure that $sort_info['field'] and $sort_info['direction'] are safe.
+
     $sql = 'SELECT * FROM `' . COCOTS_DB_PREFIX . 'account` ';
-    $sql.= ' ORDER BY `name` ';
+    $sql.= ' ORDER BY `' . $sort_info['field'] . '` ' . $sort_info['direction'] . ' ';
+    if (in_array($sort_info['field'], array('email', 'status'))) { // these fields are not unique... adding a second column
+      $sql.= ' , `name` ' . $sort_info['direction'] . ' ';
+    }
     $sth = $this->app->db->prepare($sql);
     $sth->execute();
     $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
     return $rows;
+  }
+
+  public function readSort($sort_param = null) {
+    $field = 'name';
+    $direction = 'ASC';
+    if (isset($sort_param)) {
+      if (preg_match('/^(id|name|email|status)-(asc|desc)$/', $sort_param, $matches)) {
+        $field = $matches[1];
+        $direction = strtoupper($matches[2]);
+      }
+    }
+    return array(
+      'field' => $field,
+      'direction' => $direction
+    );
   }
 
   public function create($account_info) {

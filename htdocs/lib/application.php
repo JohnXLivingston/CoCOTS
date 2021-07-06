@@ -33,10 +33,17 @@ class Application {
     return preg_match('/^https:/', $this->getBaseUrl());
   }
 
-  public function getAdminUrl() {
+  public function getAdminUrl($sort_param = null) {
     $url = $this->getBaseUrl() . '/admin/';
     if ($this->debug_mode) {
-      $url.= '?debug=1';
+      $url.= '?debug=1&';
+    }
+    if (!isset($sort_param) && isset($_GET['sort'])) {
+      $sort_param = $_GET['sort'];
+    }
+    if (isset($sort_param)) {
+      $url.= substr($url, -1) === '&' ? '' : '?';
+      $url.= 'sort=' . urlencode($sort_param) . '&';
     }
     return $url;
   }
