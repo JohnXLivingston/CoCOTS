@@ -62,8 +62,8 @@ try {
     }
   }
 
-  $sort_info = $app->accounts->readSort($_GET['sort'] ?? null);
-  $accounts = $app->accounts->list($_GET['sort'] ?? null);
+  $sort_info = $app->accounts->readSort(isset($_GET['sort']) ? $_GET['sort'] : null);
+  $accounts = $app->accounts->list(isset($_GET['sort']) ? $_GET['sort'] : null);
 
 } catch (CocotsSmartException $e) {
   http_response_code(500);
