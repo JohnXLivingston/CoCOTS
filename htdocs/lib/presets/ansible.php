@@ -62,10 +62,9 @@ mutu__users:
     state: '$state'
     domains: [ '{$url}' ]
     spip: True
-    admin:
-      name: 'Admin'
-      login: 'admin'
-      email: '{$account['email']}'
+    admin_name: 'Admin'
+    admin_login: 'admin'
+    admin_email: '{$account['email']}'
 
 EOF;
 
