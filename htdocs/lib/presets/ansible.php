@@ -56,6 +56,8 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       $name_prefix = COCOTS_PRESETS_ANSIBLE_NAME_PREFIX;
     }
 
+    $email_escaped = str_replace("'", "''", $account['email']);
+
     $content = <<<EOF
 mutu__users:
   - name: '{$name_prefix}{$account["name"]}'
@@ -64,7 +66,7 @@ mutu__users:
     spip: True
     admin_name: 'Admin'
     admin_login: 'admin'
-    admin_email: '{$account['email']}'
+    admin_email: '{$email_escaped}'
 
 EOF;
 
