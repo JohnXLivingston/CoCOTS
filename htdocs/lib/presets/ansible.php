@@ -60,7 +60,7 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
 
     $spip_branch_line = '';
     if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH')) {
-      $spip_branch_line = 'branch: ' . COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH;
+      $spip_branch_line = "branch: '" . str_replace("'", "''", COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH) . "'";
     }
 
     $content = <<<EOF
