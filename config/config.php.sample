@@ -42,6 +42,7 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 // define("COCOTS_PRESETS_ANSIBLE_STATE_ENABLED", 'enabled'); // optionnal state value to write in ansible vars
 // define("COCOTS_PRESETS_ANSIBLE_STATE_DISABLED", 'disabled'); // optionnal state value to write in ansible vars
 // define("COCOTS_PRESETS_ANSIBLE_STATE_DELETED", 'deleted'); // optionnal state value to write in ansible vars
+// define("COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH", "3.2"); // optionnal spip branch
 
 
 define("COCOTS_HOSTING_DOMAIN", 'example.com');

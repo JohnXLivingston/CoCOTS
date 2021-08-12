@@ -58,15 +58,23 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
 
     $email_escaped = str_replace("'", "''", $account['email']);
 
+    $spip_branch_line = '';
+    if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH')) {
+      $spip_branch_line = 'branch: ' + COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH;
+    }
+
     $content = <<<EOF
 mutu__users:
   - name: '{$name_prefix}{$account["name"]}'
     state: '$state'
     domains: [ '{$url}' ]
     spip: True
-    admin_name: 'Admin'
-    admin_login: 'admin'
-    admin_email: '{$email_escaped}'
+    spip_options:
+      {$spip_branch_line}
+      admin:
+        name: 'Admin'
+        login: 'admin'
+        email: '{$email_escaped}'
 
 EOF;
 
