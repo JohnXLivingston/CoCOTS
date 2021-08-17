@@ -69,7 +69,7 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
     }
     $spip_plugins = '';
     if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS')) {
-      $spip_depots = "plugins: '" . str_replace("'", "''", json_encode(COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS)) . "'";
+      $spip_plugins = "plugins: '" . str_replace("'", "''", json_encode(COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS)) . "'";
     }
 
     $content = <<<EOF
