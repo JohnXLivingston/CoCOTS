@@ -43,6 +43,8 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 // define("COCOTS_PRESETS_ANSIBLE_STATE_DISABLED", 'disabled'); // optionnal state value to write in ansible vars
 // define("COCOTS_PRESETS_ANSIBLE_STATE_DELETED", 'deleted'); // optionnal state value to write in ansible vars
 // define("COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH", "3.2"); // optionnal spip branch
+// define("COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS", ["https://plugins.spip.net/depots/principal.xml"]); // optionnal spip depots
+// define("COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS", ["facteur", "nospam"]); // optionnal spip plugins prefix
 
 
 define("COCOTS_HOSTING_DOMAIN", 'example.com');

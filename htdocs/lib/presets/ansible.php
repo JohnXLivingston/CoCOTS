@@ -63,6 +63,15 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       $spip_branch_line = "branch: '" . str_replace("'", "''", COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH) . "'";
     }
 
+    $spip_depots = '';
+    if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS')) {
+      $spip_depots = "depots: '" . str_replace("'", "''", json_encode(COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS)) . "'";
+    }
+    $spip_plugins = '';
+    if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS')) {
+      $spip_depots = "plugins: '" . str_replace("'", "''", json_encode(COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS)) . "'";
+    }
+
     $content = <<<EOF
 mutu__users:
   - name: '{$name_prefix}{$account["name"]}'
@@ -71,6 +80,8 @@ mutu__users:
     spip: True
     spip_options:
       {$spip_branch_line}
+      {$spip_depots}
+      {$spip_plugins}
       admin:
         name: 'Admin'
         login: 'admin'
