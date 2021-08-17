@@ -65,11 +65,19 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
 
     $spip_depots = '';
     if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS')) {
-      $spip_depots = "depots: '" . str_replace("'", "''", json_encode(COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS)) . "'";
+      $depots_escaped = [];
+      foreach (COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS as $depot) {
+        array_push($depots_escaped, "'" . str_replace("'", "''", $depot) . "'");
+      }
+      $spip_depots = "depots: [" . implode(', ', $depots_escaped) . "]";
     }
     $spip_plugins = '';
     if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS')) {
-      $spip_plugins = "plugins: '" . str_replace("'", "''", json_encode(COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS)) . "'";
+      $plugins_escaped = [];
+      foreach (COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS as $plugin) {
+        array_push($plugins_escaped, "'" . str_replace("'", "''", $plugin) . "'");
+      }
+      $spip_plugins = "plugins: [" . implode(', ', $plugins_escaped) . "]";
     }
 
     $content = <<<EOF
