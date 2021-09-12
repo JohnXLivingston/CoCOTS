@@ -11,7 +11,7 @@ header("Content-Security-Policy: "
   . "object-src 'none'; "
   . "script-src 'self'; "
   . "script-src-attr 'none'; " // NB: not compatible with Firefox (for now).
-  . "style-src 'self'; "
+  . "style-src 'self'" . (defined('COCOTS_CUSTOM_CSS') ? " 'unsafe-inline'" : '') . "; "
   . "upgrade-insecure-requests; ");
 header("Cross-Origin-Embedder-Policy: require-corp");
 header("Cross-Origin-Opener-Policy: same-origin");
