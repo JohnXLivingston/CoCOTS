@@ -26,6 +26,12 @@ define("COCOTS_ENABLE_DEBUG", true);
 
 define("COCOTS_DEFAULT_LANGUAGE", 'en');
 
+define("COCOTS_CUSTOM_CSS", <<<CSS
+/* add some custom css here. For example, customize colors vars */
+CSS
+);
+
+// List of reserved account name.
 define("COCOTS_RESERVED_NAMES", array('admin'));
 
 // Change this to a file path to a php class implemeting the CocotsPreset class.

@@ -39,6 +39,13 @@ try {
       <meta charset="UTF-8">
       <title><?php echo $app->loc->translate('title') ?></title>
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
+      <?php
+        if(defined('COCOTS_CUSTOM_CSS')) {
+          echo '<style>';
+          echo COCOTS_CUSTOM_CSS;
+          echo '</style>';
+        }
+      ?>
   </head>
   <body>
     <?php if (!$saved) { ?>
