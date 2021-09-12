@@ -30,6 +30,7 @@ define("COCOTS_CUSTOM_CSS", <<<CSS
 /* add some custom css here. For example, customize colors vars */
 CSS
 );
+define("COCOTS_CUSTOM_ADMIN_CSS", ''); // same for admin pages.
 
 // List of reserved account name.
 define("COCOTS_RESERVED_NAMES", array('admin'));
