@@ -1,5 +1,4 @@
 <?php
-require('../lib/headers.php');
 require('../lib/init.php');
 try {
   $app = new Application();

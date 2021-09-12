@@ -4,10 +4,6 @@
 *  It will check waiting accounts states.
 */
 
-if (!defined('STDIN')) {
-  // This is a web call.
-  require(realpath(__DIR__ . '/../lib/headers.php'));
-}
 require(realpath(__DIR__ . '/../lib/init.php'));
 $app = new Application();
 $app->connectToDB(false);
