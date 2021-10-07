@@ -79,7 +79,10 @@ function display_status_button($id, $value, $label) {
     <input type="hidden" name="action" value="set_status">
     <input type="hidden" name="status" value="<?php echo htmlspecialchars($value); ?>">
     <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
-    <input type="submit" value="<?php echo $label; ?>">
+    <input type="submit"
+      class="status-button-<?php echo htmlspecialchars($value); ?>"
+      value="<?php echo $label; ?>"
+    >
   </form><?php
 }
 
