@@ -59,6 +59,14 @@ try {
         }
       }
     }
+  } else if ($action === 'send_test_mail') {
+    if (isset($_POST['confirm']) && $_POST['confirm'] === '1') {
+      $app->notifyAdmins('Test mail', 'This is a test.');
+    } else {
+      $confirmation_message = array(
+        'type' => 'send_test_mail'
+      );
+    }
   }
 
   $sort_info = $app->accounts->readSort(isset($_GET['sort']) ? $_GET['sort'] : null);
@@ -179,6 +187,16 @@ function display_sort_title($label, $field, $current_sort_info) {
         <input type="submit" value="<?php echo $app->loc->translate('validate'); ?>">
         <a class="cancel" href="<?php echo htmlspecialchars($app->getAdminUrl()); ?>"><?php echo $app->loc->translate('cancel'); ?></a>
       </form>
+    <?php } else if ($confirmation_message && $confirmation_message['type'] === 'send_test_mail') { ?>
+      <form method="POST" action="<?php echo $app->getAdminUrl(); ?>">
+        <input type="hidden" name="action" value="send_test_mail">
+        <input type="hidden" name="confirm" value="1">
+        <p>
+          Please confirm: sending a mail to «<?php echo htmlspecialchars(join(', ', $app->getAdminMails())); ?>»?
+        </p>
+        <input type="submit" value="<?php echo $app->loc->translate('validate'); ?>">
+        <a class="cancel" href="<?php echo htmlspecialchars($app->getAdminUrl()); ?>"><?php echo $app->loc->translate('cancel'); ?></a>
+      </form>
     <?php } ?>
     <table>
       <thead>
@@ -278,6 +296,13 @@ function display_sort_title($label, $field, $current_sort_info) {
       <?php if (COCOTS_ENABLE_DEBUG) { ?>
         <?php if ($app->debug_mode) { ?>
           <li><a target="_blank" href="<?php echo $app->getBaseUrl() ?>/script/check_processing.php">Check Processing</a></li>
+          <li><form class="invisible" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
+            <input type="hidden" name="action" value="send_test_mail">
+            <input type="submit"
+              class="test-mail-button"
+              value="Send test mail"
+            >
+          </form></li>
         <?php } ?>
         <li>
           <a href="<?php echo $app->getAdminUrl(null, $app->debug_mode ? false : true); ?>">

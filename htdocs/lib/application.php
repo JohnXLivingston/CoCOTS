@@ -33,7 +33,7 @@ class Application {
     return preg_match('/^https:/', $this->getBaseUrl());
   }
 
-  public function getAdminUrl($sort_param = null, $debug_mode = null) {
+  public function getAdminUrl($sort_param = null, $debug_mode = null, $send_test_mail = null) {
     $url = $this->getBaseUrl() . '/admin/';
     if (($this->debug_mode && !isset($debug_mode)) || $debug_mode) {
       $url.= '?debug=1&';
@@ -44,6 +44,10 @@ class Application {
     if (isset($sort_param)) {
       $url.= substr($url, -1) === '&' ? '' : '?';
       $url.= 'sort=' . urlencode($sort_param) . '&';
+    }
+    if (isset($send_test_mail)) {
+      $url.= substr($url, -1) === '&' ? '' : '?';
+      $url.= 'send_test_mail=1&';
     }
     return $url;
   }
@@ -173,11 +177,12 @@ class Application {
   }
 
   public function notifyAdmins($subject, $message) {
-    if (!defined('COCOTS_MAIL_ADMINS') || !COCOTS_MAIL_ADMINS || count(COCOTS_MAIL_ADMINS) === 0) {
+    $addresses = $this->getAdminMails();
+    if (count($addresses) === 0) {
       return;
     }
     $mail = $this->getMailer();
-    foreach (COCOTS_MAIL_ADMINS as $address) {
+    foreach ($addresses as $address) {
       $mail->addAddress($address);
     }
     $mail->Subject = (defined('COCOTS_MAIL_PREFIX') ? COCOTS_MAIL_PREFIX : '') . $subject;
@@ -190,13 +195,19 @@ class Application {
     }
   }
 
+  public function getAdminMails() {
+    if (!defined('COCOTS_MAIL_ADMINS') || !COCOTS_MAIL_ADMINS || !is_array(COCOTS_MAIL_ADMINS)) {
+      return [];
+    }
+    return COCOTS_MAIL_ADMINS;
+  }
+
   public function notifyAccountCreated($account, $subject, $message) {
     $mail = $this->getMailer();
     $mail->addAddress($account['email']);
-    if (defined('COCOTS_MAIL_ADMINS') && count(COCOTS_MAIL_ADMINS) > 0) {
-      foreach (COCOTS_MAIL_ADMINS as $address) {
-        $mail->addBCC($address);
-      }
+    $admin_adresses = $this->getAdminMails();
+    foreach ($admin_adresses as $address) {
+      $mail->addBCC($address);
     }
 
     $mail->Subject = (defined('COCOTS_MAIL_PREFIX') ? COCOTS_MAIL_PREFIX : '') . $subject;
