@@ -22,6 +22,7 @@ function print_usage() {
   echo("  help;                                 print help.\n");
   echo("  moderators list;                      list moderators.\n");
   echo("  moderators create 'mail@example.com'; Creates a moderator, and send invitation mail.\n");
+  echo("  moderators activate 1 'password';     Equivalent to using the invitation link to setup a password. Use the moderator id as key.\n");
   echo("  moderators revoke 1;                  Revokes a moderator by his id.\n");
   echo("  moderators delete 1;                  Delete a moderator by his id. Please prefer revocation, and use only deletion before re-creating.\n");
   echo("\n");
@@ -55,6 +56,24 @@ switch ($scope) {
         }
         
         create_moderator($email);
+        break;
+      case 'activate':
+        if (!$argv[3]) {
+          echo "Missing id.\n";
+          exit(1);
+        }
+        if (!$argv[4]) {
+          echo "Missing password.\n";
+          exit(1);
+        }
+        $id = $argv[3];
+        $password = $argv[4];
+        if (!filter_var($id, FILTER_VALIDATE_INT)) {
+          echo "Invalid id.\n";
+          exit(1);
+        }
+
+        activate_moderator($id, $password);
         break;
       case 'revoke':
         if (!$argv[3]) {
@@ -103,7 +122,7 @@ function list_moderators() {
   $moderators = $app->moderators->list();
   echo "Moderators number: " . count($moderators) . "\n";
   foreach ($moderators as $moderator) {
-    echo "{$moderator['id']} {$moderator['email']} {$moderator['status']}\n";
+    echo "{$moderator['id']}  {$moderator['email']} {$moderator['status']}  pass:{$moderator['password']}  invit:{$moderator['invitation']}\n";
   }
 }
 
@@ -123,6 +142,31 @@ function create_moderator($email) {
 
   $app->moderators->create($email);
   
+  echo "SUCCESS.\n\n";
+  list_moderators();
+}
+
+function activate_moderator($id, $password) {
+  global $app;
+
+  $moderator = $app->moderators->getById($id);
+  if (!$moderator) {
+    echo "Error: moderator {$id} not found.\n";
+    exit(1);
+  }
+
+  if ($moderator['status'] !== 'waiting') {
+    echo "Error: moderator {$id} is not waiting, but '{$moderator['status']}'.\n";
+    exit(1);
+  }
+
+  if (!confirm("Activate moderator n°{$moderator['id']} '{$moderator['email']}'?")) {
+    echo "Aborting...\n";
+    exit(1);
+  }
+
+  $app->moderators->activate($id, $password);
+
   echo "SUCCESS.\n\n";
   list_moderators();
 }

@@ -125,6 +125,21 @@ class Moderators {
     ));
   }
 
+  public function activate($id, $password) {
+
+    $sql = 'UPDATE `' . COCOTS_DB_PREFIX . 'moderator` ';
+    $sql.= ' SET `status`= \'active\' ';
+    $sql.= ' , `activation_date`=NOW() ';
+    $sql.= ' , `password`=:password ';
+    $sql.= ' , `invitation`=NULL ';
+    $sql.= ' WHERE `id`=:id';
+    $sth = $this->app->db->prepare($sql);
+    $sth->execute(array(
+      'id' => $id,
+      'password' => password_hash($password, PASSWORD_DEFAULT)
+    ));
+  }
+
   public function delete($id) {
     $sql = 'DELETE FROM `' . COCOTS_DB_PREFIX . 'moderator` ';
     $sql.= ' WHERE `id`=:id';
