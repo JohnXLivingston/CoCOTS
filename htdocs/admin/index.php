@@ -61,7 +61,7 @@ try {
     }
   } else if ($action === 'send_test_mail') {
     if (isset($_POST['confirm']) && $_POST['confirm'] === '1') {
-      $app->notifyAdmins('Test mail', 'This is a test.');
+      $app->notifyModerators('Test mail', 'This is a test.');
     } else {
       $confirmation_message = array(
         'type' => 'send_test_mail'
@@ -192,7 +192,7 @@ function display_sort_title($label, $field, $current_sort_info) {
         <input type="hidden" name="action" value="send_test_mail">
         <input type="hidden" name="confirm" value="1">
         <p>
-          Please confirm: sending a mail to «<?php echo htmlspecialchars(join(', ', $app->getAdminMails())); ?>»?
+          Please confirm: sending a mail to «<?php echo htmlspecialchars(join(', ', $app->getModeratorsMails())); ?>»?
         </p>
         <input type="submit" value="<?php echo $app->loc->translate('validate'); ?>">
         <a class="cancel" href="<?php echo htmlspecialchars($app->getAdminUrl()); ?>"><?php echo $app->loc->translate('cancel'); ?></a>

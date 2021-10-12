@@ -176,8 +176,8 @@ class Application {
     return getMailer();
   }
 
-  public function notifyAdmins($subject, $message) {
-    $addresses = $this->getAdminMails();
+  public function notifyModerators($subject, $message) {
+    $addresses = $this->getModeratorsMails();
     if (count($addresses) === 0) {
       return;
     }
@@ -195,7 +195,7 @@ class Application {
     }
   }
 
-  public function getAdminMails() {
+  public function getModeratorsMails() {
     if (!defined('COCOTS_MAIL_ADMINS') || !COCOTS_MAIL_ADMINS || !is_array(COCOTS_MAIL_ADMINS)) {
       return [];
     }
@@ -205,8 +205,8 @@ class Application {
   public function notifyAccountCreated($account, $subject, $message) {
     $mail = $this->getMailer();
     $mail->addAddress($account['email']);
-    $admin_adresses = $this->getAdminMails();
-    foreach ($admin_adresses as $address) {
+    $moderators_adresses = $this->getModeratorsMails();
+    foreach ($moderators_adresses as $address) {
       $mail->addBCC($address);
     }
 

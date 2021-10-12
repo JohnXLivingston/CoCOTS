@@ -30,6 +30,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
   if ($_POST['login'] === COCOTS_ADMIN_USER && $_POST['password'] === COCOTS_ADMIN_PASSWORD) {
     // Ok!
     $_SESSION['login'] = $_POST['login'];
+    $_SESSION['superadmin'] = 1;
     header('Location: ' . $app->getAdminUrl());
     exit;
   }

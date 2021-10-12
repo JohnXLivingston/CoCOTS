@@ -154,7 +154,7 @@ class Accounts {
 
     $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
     $message.= $this->app->loc->translateSafe('new_account_signature') . "\n\n";
-    $this->app->notifyAdmins($this->app->loc->translateSafe('new_account_subject'), $message);
+    $this->app->notifyModerators($this->app->loc->translateSafe('new_account_subject'), $message);
   }
 
   protected function _updateStatus($id, $status, $date_field=null) {
@@ -332,7 +332,7 @@ class Accounts {
 
       $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
       $message.= $this->app->loc->translateSafe('failed_account_signature') . "\n\n";
-      $this->app->notifyAdmins($this->app->loc->translateSafe('failed_account_subject'), $message);
+      $this->app->notifyModerators($this->app->loc->translateSafe('failed_account_subject'), $message);
 
       return false;
     }
@@ -363,7 +363,7 @@ class Accounts {
 
       $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
       $message.= $this->app->loc->translateSafe('disabled_account_signature') . "\n\n";
-      $this->app->notifyAdmins($this->app->loc->translateSafe('disabled_account_subject'), $message);
+      $this->app->notifyModerators($this->app->loc->translateSafe('disabled_account_subject'), $message);
     } elseif ($account['status'] === 'processing_deleted' ) {
       $this->_updateStatus($id, 'deleted', 'deletion_date');
 
@@ -375,7 +375,7 @@ class Accounts {
 
       $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
       $message.= $this->app->loc->translateSafe('deleted_account_signature') . "\n\n";
-      $this->app->notifyAdmins($this->app->loc->translateSafe('deleted_account_subject'), $message);
+      $this->app->notifyModerators($this->app->loc->translateSafe('deleted_account_subject'), $message);
     } else {
       error_log('Dont know the status ' . $account['status']);
       return false;
