@@ -126,7 +126,6 @@ class Moderators {
   }
 
   public function activate($id, $password) {
-
     $sql = 'UPDATE `' . COCOTS_DB_PREFIX . 'moderator` ';
     $sql.= ' SET `status`= \'active\' ';
     $sql.= ' , `activation_date`=NOW() ';
@@ -147,5 +146,38 @@ class Moderators {
     $sth->execute(array(
       'id' => $id
     ));
+  }
+
+  public function check($id) {
+    $moderator = $this->getById($id);
+    if (!$moderator) {
+      return false;
+    }
+    if ($moderator['status'] !== 'active') {
+      return false;
+    }
+    if (!$moderator['password']) {
+      error_log('Seems we have moderators active but with no password... This is not expected.');
+      return false;
+    }
+    return true;
+  }
+
+  public function authent($email, $password) {
+    $moderator = $this->getByEmail($email);
+    if (!$moderator) {
+      return false;
+    }
+    if ($moderator['status'] !== 'active') {
+      return false;
+    }
+    if (!$moderator['password']) {
+      error_log('Seems we have moderators active but with no password... This is not expected.');
+      return false;
+    }
+    if (!password_verify($password, $moderator['password'])) {
+      return false;
+    }
+    return $moderator['id'];
   }
 }

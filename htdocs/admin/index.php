@@ -2,12 +2,12 @@
 require('../lib/init.php');
 try {
   $app = new Application();
+  $app->connectToDB(true);
   require(COCOTS_ROOT_DIR . 'admin/login.php'); // Ensure the user is logged in.
 
   if (!$_SESSION['login']) {
     throw new Exception('Should be connected');
   }
-  $app->connectToDB(true);
 
   $error_message = false;
   $confirmation_message = false; // TODO: add a confirmation mecanism.
@@ -293,6 +293,9 @@ function display_sort_title($label, $field, $current_sort_info) {
       </tbody>
     </table>
     <ul class="bottom-menu">
+      <li>
+        <?php echo htmlspecialchars($_SESSION['login']); ?>
+      </li>
       <?php if (COCOTS_ENABLE_DEBUG) { ?>
         <?php if ($app->debug_mode) { ?>
           <li><a target="_blank" href="<?php echo $app->getBaseUrl() ?>/script/check_processing.php">Check Processing</a></li>

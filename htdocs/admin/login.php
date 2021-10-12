@@ -22,15 +22,32 @@ if (isset($_GET['logout'])) {
   exit;
 }
 
-if (isset($_SESSION['login']) && $_SESSION['login'] === COCOTS_ADMIN_USER) {
-  return; // everything is fine.
-}
+if (isset($_SESSION['login'])) {
+  if ($_SESSION['login'] === COCOTS_ADMIN_USER && $_SESSION['superadmin'] === 1) {
+    return; // everything is fine.
+  }
+  if (isset($_SESSION['moderator_id'])) {
+    if ($app->moderators->check($_SESSION['moderator_id'])) {
+      return; // ok!
+    }
+    // must be a revoked moderator...
+    $_SESSION = array();
+  }
+} 
 
 if (isset($_POST['login']) && isset($_POST['password'])) {
   if ($_POST['login'] === COCOTS_ADMIN_USER && $_POST['password'] === COCOTS_ADMIN_PASSWORD) {
     // Ok!
     $_SESSION['login'] = $_POST['login'];
     $_SESSION['superadmin'] = 1;
+    header('Location: ' . $app->getAdminUrl());
+    exit;
+  }
+  $moderator_id = $app->moderators->authent($_POST['login'], $_POST['password']);
+  if ($moderator_id) {
+    // Ok!
+    $_SESSION['login'] = $_POST['login'];
+    $_SESSION['moderator_id'] = $moderator_id;
     header('Location: ' . $app->getAdminUrl());
     exit;
   }
