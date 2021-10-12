@@ -133,6 +133,19 @@ if ($? != 0) { die "Failed to copy htdocs.\n"; }
 $ret=`sudo chmod -R u+rwX,go+rX,go-w "$INSTALL_HTDOCS_DIR"`;
 if ($? != 0) { die "Failed to set htdocs chmod.\n"; }
 
+# Copy cli files
+#------------------------------
+print "Copying cli files...\n";
+my $INSTALL_CLI_DIR = $INSTALL_DIR . 'cli';
+$ret=`sudo rm -rf "$INSTALL_CLI_DIR"`;
+if ($? != 0) { die "Failed to delete cli.\n"; }
+
+$ret=`sudo cp -pr "cli" "$INSTALL_CLI_DIR" && sudo chown -R $INSTALL_USER:$INSTALL_GROUP "$INSTALL_CLI_DIR"`;
+if ($? != 0) { die "Failed to copy cli.\n"; }
+$ret=`sudo chmod -R u+rwX,go+rX,go-w "$INSTALL_CLI_DIR"`;
+$ret=`sudo chmod u+x,g+x,o-x "$INSTALL_CLI_DIR"/*php`;
+if ($? != 0) { die "Failed to set cli chmod.\n"; }
+
 # Install Composer
 #------------------------------
 print "Installing composer...\n";

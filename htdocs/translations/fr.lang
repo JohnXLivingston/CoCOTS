@@ -92,3 +92,8 @@ status_label_deleted = Supprimé
 status_label_rejected = Refusé
 
 confirm_set_status = Merci de confirmer l'action suivante :
+
+new_moderator_subject = Ajout d'un nouveau modérateur.
+new_moderator_message = Ajout d'un nouveau modérateur.
+moderator_email = Adresse mail
+new_moderator_signature = Cordialement.

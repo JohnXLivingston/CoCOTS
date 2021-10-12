@@ -9,6 +9,7 @@ class Application {
   public $presets;
   public $db;
   public $accounts;
+  public $moderators;
   public $debug_mode = false;
 
   public function __construct() {
@@ -17,6 +18,7 @@ class Application {
     }
     $this->loc = new I18n(COCOTS_DEFAULT_LANGUAGE);
     $this->accounts = new Accounts($this);
+    $this->moderators = new Moderators($this);
     $this->loadPresets();
   }
 
@@ -86,6 +88,7 @@ class Application {
     }
     $this->testDBVersion('cocots', 1, 'createTableVersion', $migrate);
     $this->testDBVersion('cocots_account', $this->accounts::DBVERSION, 'createTableAccount', $migrate);
+    $this->testDBVersion('cocots_moderators', $this->moderators::DBVERSION, 'createTableModerator', $migrate);
   }
 
   protected function testDBVersion($name, $required_version, $method, $migrate = false) {
@@ -152,6 +155,10 @@ class Application {
     $this->accounts->createTable($current_version, $required_version);
   }
 
+  protected function createTableModerator($current_version, $required_version) {
+    $this->moderators->createTable($current_version, $required_version);
+  }
+
   public function setDBVersion($name, $version) {
     $sql = 'INSERT `' . COCOTS_DB_PREFIX . 'version` ';
     $sql.= ' (`name`, `version`) VALUES ( :name, :version ) ';
@@ -178,6 +185,15 @@ class Application {
 
   public function notifyModerators($subject, $message) {
     $addresses = $this->getModeratorsMails();
+    return $this->notify($addresses, $subject, $message);
+  }
+
+  public function notifyAdmins($subject, $message) {
+    $addresses = $this->getAdminsMails();
+    return $this->notify($addresses, $subject, $message);
+  }
+
+  public function notify($addresses, $subject, $message) {
     if (count($addresses) === 0) {
       return;
     }
@@ -196,6 +212,12 @@ class Application {
   }
 
   public function getModeratorsMails() {
+    $admins_mails = $this->getAdminsMails();
+    $moderators_mails = $this->moderators->getActiveModeratorsMails();
+    return array_merge($admins_mails, $moderators_mails);
+  }
+
+  public function getAdminsMails() {
     if (!defined('COCOTS_MAIL_ADMINS') || !COCOTS_MAIL_ADMINS || !is_array(COCOTS_MAIL_ADMINS)) {
       return [];
     }

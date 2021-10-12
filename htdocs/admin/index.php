@@ -61,7 +61,7 @@ try {
     }
   } else if ($action === 'send_test_mail') {
     if (isset($_POST['confirm']) && $_POST['confirm'] === '1') {
-      $app->notifyModerators('Test mail', 'This is a test.');
+      $app->notifyAdmins('Test mail', 'This is a test.');
     } else {
       $confirmation_message = array(
         'type' => 'send_test_mail'

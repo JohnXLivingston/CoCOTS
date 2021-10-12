@@ -92,3 +92,9 @@ status_label_deleted = Deleted
 status_label_rejected = Rejected
 
 confirm_set_status = Please confirm the following action:
+
+new_moderator_subject = New moderator.
+new_moderator_message = New moderator.
+moderator_email = Email
+new_moderator_signature = Best regards.
+
