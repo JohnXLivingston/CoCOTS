@@ -21,6 +21,7 @@ function print_usage() {
   echo("List of scope/commands:\n");
   echo("  help;                                 print help.\n");
   echo("  moderators list;                      list moderators.\n");
+  echo("  moderators list verbose;              list moderators with additionnal informations.\n");
   echo("  moderators create 'mail@example.com'; Creates a moderator, and send invitation mail.\n");
   echo("  moderators activate 1 'password';     Equivalent to using the invitation link to setup a password. Use the moderator id as key.\n");
   echo("  moderators revoke 1;                  Revokes a moderator by his id.\n");
@@ -42,7 +43,7 @@ switch ($scope) {
   case 'moderators':
     switch ($command) {
       case 'list':
-        list_moderators();
+        list_moderators(isset($argv[3]) && $argv[3] === 'verbose');
         break;
       case 'create':
         if (!$argv[3]) {
@@ -117,12 +118,23 @@ function confirm($message) {
   return $confirmation === 'y';
 }
 
-function list_moderators() {
+function list_moderators($verbose = false) {
   global $app;
   $moderators = $app->moderators->list();
   echo "Moderators number: " . count($moderators) . "\n";
   foreach ($moderators as $moderator) {
-    echo "{$moderator['id']}  {$moderator['email']} {$moderator['status']}  pass:{$moderator['password']}  invit:{$moderator['invitation']}\n";
+    echo "{$moderator['id']}  {$moderator['email']} {$moderator['status']}";
+    if ($verbose) {
+      echo "  pass:{$moderator['password']}  invit:{$moderator['invitation']}";
+      echo "  creation_date:{$moderator['creation_date']}";
+      if ($moderator['activation_date']) {
+        echo "  activation_date:{$moderator['activation_date']}";
+      }
+      if ($moderator['revocation_date']) {
+        echo "  revocation_date:{$moderator['revocation_date']}";
+      }
+    }
+    echo "\n";
   }
 }
 
