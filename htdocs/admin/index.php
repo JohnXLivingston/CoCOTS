@@ -59,7 +59,7 @@ try {
         }
       }
     }
-  } else if ($action === 'send_test_mail') {
+  } else if ($action === 'send_test_mail' && isset($_SESSION['superadmin']) && $_SESSION['superadmin'] === 1) {
     if (isset($_POST['confirm']) && $_POST['confirm'] === '1') {
       $app->notifyAdmins('Test mail', 'This is a test.');
     } else {
@@ -299,13 +299,15 @@ function display_sort_title($label, $field, $current_sort_info) {
       <?php if (COCOTS_ENABLE_DEBUG) { ?>
         <?php if ($app->debug_mode) { ?>
           <li><a target="_blank" href="<?php echo $app->getBaseUrl() ?>/script/check_processing.php">Check Processing</a></li>
-          <li><form class="invisible" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
-            <input type="hidden" name="action" value="send_test_mail">
-            <input type="submit"
-              class="test-mail-button"
-              value="Send test mail"
-            >
-          </form></li>
+          <?php if (isset($_SESSION['superadmin']) && $_SESSION['superadmin'] === 1) { ?>
+            <li><form class="invisible" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
+              <input type="hidden" name="action" value="send_test_mail">
+              <input type="submit"
+                class="test-mail-button"
+                value="Send test mail"
+              >
+            </form></li>
+          <?php } ?>
         <?php } ?>
         <li>
           <a href="<?php echo $app->getAdminUrl(null, $app->debug_mode ? false : true); ?>">
