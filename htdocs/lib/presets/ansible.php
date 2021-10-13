@@ -86,7 +86,7 @@ mutu__users:
     state: '$state'
     domains: [ '{$url}' ]
     spip: True
-    spip_options:
+    site_options:
       {$spip_branch_line}
       {$spip_depots}
       {$spip_plugins}
