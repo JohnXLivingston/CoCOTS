@@ -95,7 +95,7 @@ class Application {
     }
     $this->testDBVersion('cocots', 1, 'createTableVersion', $migrate);
     $this->testDBVersion('cocots_account', $this->accounts::DBVERSION, 'createTableAccount', $migrate);
-    $this->testDBVersion('cocots_moderators', $this->moderators::DBVERSION, 'createTableModerator', $migrate);
+    $this->testDBVersion('cocots_moderator', $this->moderators::DBVERSION, 'createTableModerator', $migrate);
   }
 
   protected function testDBVersion($name, $required_version, $method, $migrate = false) {
