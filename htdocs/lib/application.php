@@ -54,6 +54,13 @@ class Application {
     return $url;
   }
 
+  public function getInvitUrl($email, $key) {
+    $url = $this->getBaseUrl() . '/admin/invit.php?';
+    $url.= 'email=' . urlencode($email) . '&';
+    $url.= 'key=' . urlencode($key) . '&';
+    return $url;
+  }
+
   public function getLogoutUrl() {
     $url = $this->getBaseUrl() . '/admin/?logout=1';
     if ($this->debug_mode) {
@@ -173,6 +180,10 @@ class Application {
     if ($form === 'creation') {
       require(COCOTS_ROOT_DIR . 'lib/forms/creation.php');
       return new CreationForm($this);
+    }
+    if ($form === 'invit') {
+      require(COCOTS_ROOT_DIR . 'lib/forms/invit.php');
+      return new InvitForm($this);
     }
     throw new Exception('Invalid form name');
   }

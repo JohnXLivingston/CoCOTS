@@ -34,8 +34,8 @@ if (count($argv) === 1) {
   exit(0);
 }
 
-$scope = $argv[1];
-$command = $argv[2];
+$scope = $argv[1] ?? '';
+$command = $argv[2] ?? '';
 switch ($scope) {
   case 'help':
     print_usage();

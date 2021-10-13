@@ -68,6 +68,16 @@ class Moderators {
     $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
     $message.= $this->app->loc->translateSafe('new_moderator_signature') . "\n\n";
     $this->app->notifyAdmins($this->app->loc->translateSafe('new_moderator_subject'), $message);
+
+    // Invitation mail:
+    $invit_url = $this->app->getInvitUrl($email, $invitation_key);
+    $message = '';
+    $message.= $this->app->loc->translateSafe('invit_message') . "\n\n";
+
+    $message.= $this->app->loc->translateSafe('invit_message_url') . ': ' . $invit_url . "\n\n";
+
+    $message.= $this->app->loc->translateSafe('invit_message_signature') . "\n\n";
+    $this->app->notify([$email], $this->app->loc->translateSafe('invit_message_subject'), $message);
   }
 
   public function getActiveModeratorsMails() {

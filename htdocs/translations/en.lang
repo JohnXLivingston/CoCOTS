@@ -98,3 +98,18 @@ new_moderator_message = New moderator.
 moderator_email = Email
 new_moderator_signature = Best regards.
 
+title_invit = Choose your password
+invit_text = Please choose your password
+invit_password = Password
+invit_password_constraints = At least 8 characters
+confirm_invit_password = Confirm your password
+error_confirm_invit_password = The two password do not match
+invalid_invit = This invitation link is no more valid
+invalid_invit_text = Please contact the team
+invit_ok = Password saved
+invit_ok_text = You can now authenticate yourself on the administration interface.
+
+invit_message_subject = Account creation
+invit_message = Your admnistrator account has been created.
+invit_message_url = To setup your password, please click on this link
+invit_message_signature = Best regards.

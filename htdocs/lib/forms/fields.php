@@ -183,6 +183,14 @@ class TextField extends InputField {
   }
 }
 
+class PasswordField extends TextField {
+  public function getAttributes() {
+    $attrs = parent::getAttributes();
+    $attrs['type'] = 'password';
+    return $attrs;
+  }
+}
+
 class EmailField extends TextField {
   public function getAttributes() {
     $attrs = parent::getAttributes();

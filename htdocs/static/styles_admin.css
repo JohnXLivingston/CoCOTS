@@ -96,3 +96,12 @@ form input[type="submit"].status-button-disabled {
 .activation-mail-sent {
   white-space: nowrap;
 }
+
+.invalid-invit {
+  background: var(--main-bg-color);
+  border: 2px solid var(--error-color);
+  border-radius: 10px;
+  width: 470px;
+  margin: 50px auto;
+  padding: 20px 50px;
+}
