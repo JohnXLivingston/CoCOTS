@@ -24,6 +24,7 @@ function print_usage() {
   echo("  moderators list;                      list moderators.\n");
   echo("  moderators list verbose;              list moderators with additionnal informations.\n");
   echo("  moderators create 'mail@example.com'; Creates a moderator, and send invitation mail.\n");
+  echo("  moderators invit_link 1;              Print the invitation link for this moderator.\n");
   echo("  moderators activate 1 'password';     Equivalent to using the invitation link to setup a password. Use the moderator id as key.\n");
   echo("  moderators revoke 1;                  Revokes a moderator by his id.\n");
   echo("  moderators delete 1;                  Delete a moderator by his id. Please prefer revocation, and use only deletion before re-creating.\n");
@@ -58,6 +59,15 @@ switch ($scope) {
         }
         
         create_moderator($email);
+        break;
+      case 'invit_link':
+        if (!$argv[3]) {
+          echo "Missing id.\n";
+          exit(1);
+        }
+        $id = $argv[3];
+
+        moderator_invit_link($id);
         break;
       case 'activate':
         if (!$argv[3]) {
@@ -157,6 +167,24 @@ function create_moderator($email) {
   
   echo "SUCCESS.\n\n";
   list_moderators();
+}
+
+function moderator_invit_link($id) {
+  global $app;
+
+  $moderator = $app->moderators->getById($id);
+  if (!$moderator) {
+    echo "Error: moderator {$id} not found.\n";
+    exit(1);
+  }
+
+  if ($moderator['status'] !== 'waiting') {
+    echo "Error: moderator {$id} is not waiting, but '{$moderator['status']}'.\n";
+    exit(1);
+  }
+
+  $invit_link = $app->getInvitUrl($moderator['email'], $moderator['invitation']);
+  echo $invit_link . "\n\n";
 }
 
 function activate_moderator($id, $password) {
