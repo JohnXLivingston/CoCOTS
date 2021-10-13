@@ -10,10 +10,11 @@ require(realpath(__DIR__ . '/../htdocs/lib/init.php'));
 $app = new Application();
 $app->connectToDB(true);
 
-if (!$app->presets->checkConfig()) {
-  echo("Presets is not well configured\n");
-  exit(1);
-}
+// FIXME: does not work when outside the chroot env with ansible presets. Not necessary for now.
+// if (!$app->presets->checkConfig()) {
+//   echo("Presets is not well configured\n");
+//   exit(1);
+// }
 
 function print_usage() {
   global $argv;
