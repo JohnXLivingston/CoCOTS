@@ -27,6 +27,7 @@ function print_usage() {
   echo("  moderators activate 1 'password';     Equivalent to using the invitation link to setup a password. Use the moderator id as key.\n");
   echo("  moderators revoke 1;                  Revokes a moderator by his id.\n");
   echo("  moderators delete 1;                  Delete a moderator by his id. Please prefer revocation, and use only deletion before re-creating.\n");
+  echo("  test mail;                            Send a test mail to admins (not moderators).");
   echo("\n");
 }
 
@@ -41,6 +42,14 @@ switch ($scope) {
   case 'help':
     print_usage();
     break;
+  case 'test':
+    if ($command === 'mail') {
+      echo "Sending test mail...\n";
+      $app->notifyAdmins('Test mail', 'This is a test.');
+      exit(0);
+    }
+    echo "Invalid test '$command'.\n";
+    exit(1);
   case 'moderators':
     switch ($command) {
       case 'list':
