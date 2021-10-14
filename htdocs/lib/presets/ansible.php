@@ -91,16 +91,16 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       $facteur_config = array(
         'mailer' => 'smtp',
         'adresse_envoi' => 'oui',
-        'adresse_envoi_email' => COCOTS_MAIL_FROM,
+        'adresse_envoi_email' => ''.COCOTS_MAIL_FROM,
         # 'adresse_envoi_nom'
-        'smtp_host' => COCOTS_MAIL_SMTP_HOST,
-        'smtp_port' => COCOTS_MAIL_SMTP_PORT,
+        'smtp_host' => ''.COCOTS_MAIL_SMTP_HOST,
+        'smtp_port' => ''.COCOTS_MAIL_SMTP_PORT,
         'smtp_auth' => 'oui',
-        'smtp_secure' => COCOTS_MAIL_SMTP_SECURE ? COCOTS_MAIL_SMTP_SECURE : 'non'
+        'smtp_secure' => COCOTS_MAIL_SMTP_SECURE ? ''.COCOTS_MAIL_SMTP_SECURE : 'non'
       );
-      if (COCOTS_MAIL_SMTP_AUTH) {
-        $facteur_config['smtp_username'] = COCOTS_MAIL_SMTP_AUTH_USER;
-        $facteur_config['smtp_password'] = COCOTS_MAIL_SMTP_AUTH_PASS;
+      if (defined('COCOTS_MAIL_SMTP_AUTH') && COCOTS_MAIL_SMTP_AUTH) {
+        $facteur_config['smtp_username'] = ''.COCOTS_MAIL_SMTP_AUTH_USER;
+        $facteur_config['smtp_password'] = ''.COCOTS_MAIL_SMTP_AUTH_PASS;
       }
       $spip_config['facteur'] = $facteur_config;
     }
