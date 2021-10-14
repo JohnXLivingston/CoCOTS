@@ -95,10 +95,11 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
         # 'adresse_envoi_nom'
         'smtp_host' => ''.COCOTS_MAIL_SMTP_HOST,
         'smtp_port' => ''.COCOTS_MAIL_SMTP_PORT,
-        'smtp_auth' => 'oui',
+        'smtp_auth' => 'non',
         'smtp_secure' => COCOTS_MAIL_SMTP_SECURE ? ''.COCOTS_MAIL_SMTP_SECURE : 'non'
       );
       if (defined('COCOTS_MAIL_SMTP_AUTH') && COCOTS_MAIL_SMTP_AUTH) {
+        $facteur_config['smtp_auth'] = 'oui';
         $facteur_config['smtp_username'] = ''.COCOTS_MAIL_SMTP_AUTH_USER;
         $facteur_config['smtp_password'] = ''.COCOTS_MAIL_SMTP_AUTH_PASS;
       }
