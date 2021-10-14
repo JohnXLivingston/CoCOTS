@@ -50,11 +50,15 @@ try {
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles_admin.css">
       <?php
-        if(defined('COCOTS_CUSTOM_CSS')) {
+        if(defined('COCOTS_CUSTOM_CSS') || defined('COCOTS_CUSTOM_ADMIN_CSS')) {
           echo '<style>';
-          echo COCOTS_CUSTOM_CSS;
-          echo "\n";
-          echo COCOTS_CUSTOM_ADMIN_CSS;
+          if(defined('COCOTS_CUSTOM_CSS')) {
+            echo COCOTS_CUSTOM_CSS;
+            echo "\n";
+          }
+          if(defined('COCOTS_CUSTOM_ADMIN_CSS')) {
+            echo COCOTS_CUSTOM_ADMIN_CSS;
+          }
           echo '</style>';
         }
       ?>
