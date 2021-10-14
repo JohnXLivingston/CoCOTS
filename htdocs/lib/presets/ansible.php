@@ -82,11 +82,11 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
 
     $spip_config = array();
     $write_spip_config = false;
-    if (defined(COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG) && is_array(COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG)) {
+    if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG') && is_array(COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG)) {
       $write_spip_config = true;
       $spip_config = array_merge($spip_config, COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG);
     }
-    if (defined(COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP) && COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP) {
+    if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP') && COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP) {
       $write_spip_config = true;
       $facteur_config = array(
         'mailer' => 'smtp',
