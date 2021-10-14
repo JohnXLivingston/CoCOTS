@@ -80,6 +80,31 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       $spip_plugins = "plugins: [" . implode(', ', $plugins_escaped) . "]";
     }
 
+    $spip_config = array();
+    $write_spip_config = false;
+    if (defined(COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG) && is_array(COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG)) {
+      $write_spip_config = true;
+      $spip_config = COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG;
+    }
+    if (defined(COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP) && COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP) {
+      $write_spip_config = true;
+      $facteur_config = array(
+        'mailer' => 'smtp',
+        'adresse_envoi' => 'oui',
+        'adresse_envoi_email' => COCOTS_MAIL_FROM,
+        # 'adresse_envoi_nom'
+        'smtp_host' => COCOTS_MAIL_SMTP_HOST,
+        'smtp_port' => COCOTS_MAIL_SMTP_PORT,
+        'smtp_auth' => 'oui',
+        'smtp_secure' => COCOTS_MAIL_SMTP_SECURE ? COCOTS_MAIL_SMTP_SECURE : 'non'
+      );
+      if (COCOTS_MAIL_SMTP_AUTH) {
+        $facteur_config['smtp_username'] = COCOTS_MAIL_SMTP_AUTH_USER;
+        $facteur_config['smtp_password'] = COCOTS_MAIL_SMTP_AUTH_PASS;
+      }
+      $spip_config['facteur'] = $facteur_config;
+    }
+
     $content = <<<EOF
 mutu__users:
   - name: '{$name_prefix}{$account["name"]}'
@@ -96,6 +121,17 @@ mutu__users:
         email: '{$email_escaped}'
 
 EOF;
+
+    if ($write_spip_config) {
+      $spip_config = json_encode($spip_config);
+      $spip_config_escaped = str_replace("'", "''", $spip_config);
+      $content .= <<<EOF
+      config:
+        - name: cocots_config
+          rawjson: '{$spip_config_escaped}'
+
+EOF;
+    }
 
     if (file_put_contents($file_name, $content) === false) {
       error_log('Error writing ' . $file_name);

@@ -52,7 +52,8 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 // define("COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH", "3.2"); // optionnal spip branch
 // define("COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS", ["https://plugins.spip.net/depots/principal.xml"]); // optionnal spip depots
 // define("COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS", ["facteur", "nospam"]); // optionnal spip plugins prefix
-
+// define("COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP", true); // use same smtp as cocots
+// define("COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG", array('forums_publics' => 'non')); // custom spip config
 
 define("COCOTS_HOSTING_DOMAIN", 'example.com');
 
