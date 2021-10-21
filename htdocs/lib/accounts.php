@@ -118,8 +118,8 @@ class Accounts {
   }
 
   public function readSort($sort_param = null) {
-    $field = 'name';
-    $direction = 'ASC';
+    $field = 'id';
+    $direction = 'DESC';
     if (isset($sort_param)) {
       if (preg_match('/^(id|name|email|status)-(asc|desc)$/', $sort_param, $matches)) {
         $field = $matches[1];
