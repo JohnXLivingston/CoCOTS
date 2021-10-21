@@ -344,9 +344,14 @@ class Accounts {
       if (!$account['activation_mail_sent']) {
         $subject = $this->app->loc->translateSafe('account_created_subject');
         $message = '';
-        $message.= $this->app->loc->translateSafe('account_created_message') . "\n";
-        $message.= 'https://' . $account['name'] . '.' . $account['domain'] . "\n\n";
-        $message.= $this->app->loc->translateSafe('account_created_signature') . "\n";
+        if (defined('COCOTS_CUSTOM_ACCOUNT_CREATED_NOTIFICATION')) {
+          $message = '' . COCOTS_CUSTOM_ACCOUNT_CREATED_NOTIFICATION;
+          $message = str_replace('%URL%', 'https://' . $account['name'] . '.' . $account['domain'], $message);
+        } else {
+          $message.= $this->app->loc->translateSafe('account_created_message') . "\n";
+          $message.= 'https://' . $account['name'] . '.' . $account['domain'] . "\n\n";
+          $message.= $this->app->loc->translateSafe('account_created_signature') . "\n";
+        }
         $this->app->notifyAccountCreated($account, $subject, $message);
 
         $this->_updateActivationMailSent($account['id'], true);
