@@ -106,12 +106,18 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       $spip_config['facteur'] = $facteur_config;
     }
 
+    $sftp = 'False';
+    if (defined('COCOTS_PRESETS_ANSIBLE_SFTP') && COCOTS_PRESETS_ANSIBLE_SFTP === true) {
+      $sftp = 'True';
+    }
+
     $content = <<<EOF
 mutu__users:
   - name: '{$name_prefix}{$account["name"]}'
     state: '$state'
     domains: [ '{$url}' ]
     spip: True
+    sftp: {$sftp}
     site_options:
       {$spip_branch_line}
       {$spip_depots}
