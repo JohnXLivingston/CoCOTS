@@ -6,7 +6,7 @@
   },
   "scripts": {
     "post-update-cmd": [
-      "mkdir htdocs/static",
+      "mkdir -p htdocs/static",
       "php vendor/scssphp/scssphp/bin/pscss --load-path=vendor/twbs/ --sourcemap --embed-sources --style=compressed scss/styles.scss htdocs/static/styles.css"
     ]
   }
