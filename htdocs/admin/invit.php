@@ -46,9 +46,9 @@ try {
 >
   <head>
       <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <title><?php echo $app->loc->translate('title_invit') ?></title>
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
-      <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles_admin.css">
       <?php
         if(defined('COCOTS_CUSTOM_CSS') || defined('COCOTS_CUSTOM_ADMIN_CSS')) {
           echo '<style>';
@@ -63,13 +63,13 @@ try {
         }
       ?>
   </head>
-  <body>
+  <body class="container mt-3">
 
     <?php
     if (!$form) {
       // The invitation link is not valid.
       ?>
-      <div class="invalid-invit">
+      <div class="alert alert-warning">
           <h1>
             <?php echo $app->loc->translate('invalid_invit'); ?>
           </h2>
@@ -81,7 +81,7 @@ try {
     } else if ($saved) {
       // Yeah!
       ?>
-        <div class="request-transmitted">
+        <div class="alert alert-success">
           <h1>
             <?php echo $app->loc->translate('invit_ok'); ?>
           </h2>
@@ -99,31 +99,31 @@ try {
       // Display the form.
       ?>
       <form method="POST" <?php if ($app->debug_mode) { ?>novalidate<?php } ?>>
-        <p>
+        <div class="mt-3 alert alert-info">
           <?php echo $app->loc->translate('invit_text'); ?>
-        </p>
-        <p>
+        </div>
+        <div class="mt-3">
           <?php echo htmlspecialchars($moderator['email']); ?>
-        </p>
-        <p>
-          <?php echo $form->getField('password')->getLabelHtml(); ?>
+        </div>
+        <div class="mt-3">
+          <?php echo $form->getField('password')->getLabelHtml('form-label'); ?>
           <?php echo $form->getField('password')->html(); ?>
-        </p>
-        <p>
-          <?php echo $form->getField('confirm_password')->getLabelHtml(); ?>
+        </div>
+        <div class="mt-3">
+          <?php echo $form->getField('confirm_password')->getLabelHtml('form-label'); ?>
           <?php echo $form->getField('confirm_password')->html(); ?>
-        </p>
+        </div>
         <?php
           if ($form->getField('confirm_password')->hasErrorCode('error_confirm_invit_password')) {
-            ?><div class="error field-error-annotation">
+            ?><div class="invalid-feedback d-block">
               <?php echo $app->loc->translate('error_confirm_invit_password'); ?>
             </div><?php
           }
         ?>
-        <input name="submit" id="submit" tabindex="5" value="<?php echo $app->loc->translate('validate') ?>" type="submit">
+        <input name="submit" class="btn btn-primary mt-3" id="submit" tabindex="5" value="<?php echo $app->loc->translate('validate') ?>" type="submit">
           <?php
             if ($error_on_save) {
-              ?><div class="error form-error-annotation">
+              ?><div class="alert alert-danger mt-3">
                 <?php echo $app->loc->translate('error_on_save'); ?>
               </div><?php
             }
@@ -134,7 +134,7 @@ try {
           $error_messages_html = $form->getErrorMessagesHtml();
           if (count($error_messages_html) > 0) {
             ?>
-              <div class="error_messages">
+              <div class="alert alert-danger mt-3">
                 <ul>
                   <?php
                     foreach ($error_messages_html as $error_message_html) {

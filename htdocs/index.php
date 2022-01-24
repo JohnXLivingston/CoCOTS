@@ -36,6 +36,7 @@ try {
 >
   <head>
       <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <title><?php echo $app->loc->translate('title') ?></title>
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
       <?php
@@ -46,52 +47,52 @@ try {
         }
       ?>
   </head>
-  <body>
+  <body id="register-form">
     <?php if (!$saved) { ?>
       <form method="POST" <?php if ($app->debug_mode) { ?>novalidate<?php } ?>>
         <?php if (defined('COCOTS_HELP_TEXT')) { ?>
-          <p>
+          <div class="alert alert-primary">
             <?php echo COCOTS_HELP_TEXT; ?>
-          </p>
+        </div>
         <?php } ?>
-        <p>
-          <?php echo $form->getField('website_name')->getLabelHtml(); ?>
-          <span class="surrounded">
-            <span>https://</span>
+        <div class="mt-3">
+          <?php echo $form->getField('website_name')->getLabelHtml('form-label'); ?>
+          <span class="input-group">
+            <span class="input-group-text">https://</span>
             <?php echo $form->getField('website_name')->html(); ?>
-            <span>.<?php echo htmlspecialchars(COCOTS_HOSTING_DOMAIN); ?></span>
+            <span class="input-group-text">.<?php echo htmlspecialchars(COCOTS_HOSTING_DOMAIN); ?></span>
           </span>
-        </p>
+        </row>
         <?php
           if ($form->getField('website_name')->hasErrorCode('error_website_name_already_exists')) {
-            ?><div class="error field-error-annotation">
+            ?><div class="invalid-feedback d-block">
               <?php echo $app->loc->translate('error_website_name_already_exists'); ?>
             </div><?php
           }
         ?>
 
-        <p>
-          <?php echo $form->getField('email')->getLabelHtml(); ?>
+        <div class="mt-3">
+          <?php echo $form->getField('email')->getLabelHtml('form-label'); ?>
           <?php echo $form->getField('email')->html(); ?>
-        </p>
+        </div>
 
-        <p>
-          <?php echo $form->getField('confirm_email')->getLabelHtml(); ?>
+        <div class="mt-3">
+          <?php echo $form->getField('confirm_email')->getLabelHtml('form-label'); ?>
           <?php echo $form->getField('confirm_email')->html(); ?>
-        </p>
+        </div>
         <?php
           if ($form->getField('confirm_email')->hasErrorCode('error_confirm_email')) {
-            ?><div class="error field-error-annotation">
+            ?><div class="invalid-feedback d-block">
               <?php echo $app->loc->translate('error_confirm_email'); ?>
             </div><?php
           }
         ?>
 
         <?php if ($form->hasField('website_type')) { ?>
-          <p>
-            <?php echo $form->getField('website_type')->getLabelHtml(); ?>
+          <div class="mt-3">
+            <?php echo $form->getField('website_type')->getLabelHtml('form-label'); ?>
             <?php echo $form->getField('website_type')->html(); ?>
-          </p>
+          </div>
         <?php } ?>
 
         <?php
@@ -102,37 +103,40 @@ try {
               <legend>
                 <?php echo $app->loc->translate('plugins_list') ?>
               </legend>
-              <ul>
-                <?php foreach($plugins_fields as $idx => $plugin_field) { ?>
-                  <li>
-                    <?php echo $plugin_field->html(); ?>
-                    <?php echo $plugin_field->getLabelHtml(); ?>
-                  </li>
-                <?php } ?>
-              </ul>
+              <?php foreach($plugins_fields as $idx => $plugin_field) { ?>
+                <div class="form-check">
+                  <?php echo $plugin_field->html(); ?>
+                  <?php echo $plugin_field->getLabelHtml('form-check-label'); ?>
+                </div>
+              <?php } ?>
             </fieldset>
             <?php
           }
         ?>
 
         <?php if ($form->hasField('security_question')) { ?>
-          <p>
-            <?php echo $form->getField('security_question')->getLabelHtml(); ?>
+          <div class="mt-3">
+            <?php echo $form->getField('security_question')->getLabelHtml('form-label'); ?>
             <?php echo $form->getField('security_question')->html(); ?>
-          </p>
+          </div>
           <?php
             if ($form->getField('security_question')->hasErrorCode('error_security_question')) {
-              ?><div class="error field-error-annotation">
+              ?><div class="invalid-feedback d-block">
                 <?php echo $app->loc->translate('error_security_question'); ?>
               </div><?php
             }
           ?>
         <?php } ?>
 
-        <input name="submit" id="submit" tabindex="5" value="<?php echo $app->loc->translate('validate') ?>" type="submit">
+        <input name="submit" id="submit"
+          tabindex="5"
+          value="<?php echo $app->loc->translate('validate') ?>"
+          type="submit"
+          class="btn btn-primary mt-3"
+        >
         <?php
           if ($error_on_save) {
-            ?><div class="error form-error-annotation">
+            ?><div class="alert alert-danger">
               <?php echo $app->loc->translate('error_on_save'); ?>
             </div><?php
           }
@@ -143,7 +147,7 @@ try {
         $error_messages_html = $form->getErrorMessagesHtml();
         if (count($error_messages_html) > 0) {
           ?>
-            <div class="error_messages">
+            <div class="alert alert-danger mt-3">
               <ul>
                 <?php
                   foreach ($error_messages_html as $error_message_html) {
@@ -157,7 +161,7 @@ try {
         ?>
       <?php } ?>
     <?php } else { ?>
-      <div class="request-transmitted">
+      <div class="alert alert-success mt-3">
         <h1>
           <?php echo $app->loc->translate('request_transmitted'); ?>
         </h2>

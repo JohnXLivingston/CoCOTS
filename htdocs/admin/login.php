@@ -65,35 +65,33 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 >
   <head>
       <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <title><?php echo $app->loc->translate('login_title') ?></title>
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
-      <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles_admin.css">
   </head>
   <body>
-    <form method="POST" class="login-form">
-      <fieldset>
-        <legend><?php echo $app->loc->translate('login') ?></legend>
-        <p>
-          <label for="login"><?php echo $app->loc->translate('login_user') ?></label>
-          <input type="text" name="login" autofocus id="login" value="<?php echo htmlspecialchars($_POST['login'] ?? '') ?>">
-        </p>
-        <p>
-          <label for="password"><?php echo $app->loc->translate('login_password') ?></label>
-          <input type="password" name="password" id="password" value="">
-        </p>
-        <?php
-          if ($loginError) {
-            ?>
-              <div class="error">
-                <?php echo $app->loc->translate('login_error') ?>
-              </div>
-            <?php
-          }
-        ?>
-        <p>
-          <input type="submit" name="submit" value="<?php echo $app->loc->translate('login'); ?>">
-        </p>
-      </fieldset>
+    <form method="POST" class="container mt-3">
+      <h1><?php echo $app->loc->translate('login') ?></h1>
+      <div class="mt-3">
+        <label for="login" class="form-label"><?php echo $app->loc->translate('login_user') ?></label>
+        <input type="text" name="login" class="form-control" autofocus id="login" value="<?php echo htmlspecialchars($_POST['login'] ?? '') ?>">
+      </div>
+      <div class="mt-3">
+        <label for="password" class="form-label"><?php echo $app->loc->translate('login_password') ?></label>
+        <input type="password" name="password" class="form-control" id="password" value="">
+      </div>
+
+      <?php
+        if ($loginError) {
+          ?>
+            <div class="alert alert-danger mt-3">
+              <?php echo $app->loc->translate('login_error') ?>
+            </div>
+          <?php
+        }
+      ?>
+
+      <input type="submit" name="submit" class="btn btn-primary mt-3" value="<?php echo $app->loc->translate('login'); ?>">
     </form>
   </body>
 </html>

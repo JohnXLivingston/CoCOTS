@@ -146,6 +146,18 @@ $ret=`sudo chmod -R u+rwX,go+rX,go-w "$INSTALL_CLI_DIR"`;
 $ret=`sudo chmod u+x,g+x,o-x "$INSTALL_CLI_DIR"/*php`;
 if ($? != 0) { die "Failed to set cli chmod.\n"; }
 
+# Copy scss files
+#------------------------------
+print "Copying scss files...\n";
+my $INSTALL_SCSS_DIR = $INSTALL_DIR . 'scss';
+$ret=`sudo rm -rf "$INSTALL_SCSS_DIR"`;
+if ($? != 0) { die "Failed to delete scss.\n"; }
+
+$ret=`sudo cp -pr "scss" "$INSTALL_SCSS_DIR" && sudo chown -R $INSTALL_USER:$INSTALL_GROUP "$INSTALL_SCSS_DIR"`;
+if ($? != 0) { die "Failed to copy scss.\n"; }
+$ret=`sudo chmod -R u+rwX,go+rX,go-w "$INSTALL_SCSS_DIR"`;
+if ($? != 0) { die "Failed to set scss chmod.\n"; }
+
 # Install Composer
 #------------------------------
 print "Installing composer...\n";

@@ -39,8 +39,13 @@ abstract class Field {
     return $this->label;
   }
 
-  public function getLabelHtml() {
-    $html = '<label for="' . htmlspecialchars($this->name) . '">';
+  public function getLabelHtml($classes = '') {
+    $html = '<label ';
+    $html.= ' for="' . htmlspecialchars($this->name) . '" ';
+    if (!empty($classes)) {
+      $html.= ' class="' .htmlspecialchars($classes). '"';
+    }
+    $html.= '>';
     $html.= htmlspecialchars($this->getLabel());
     $html.= '</label>';
     return $html;
@@ -60,22 +65,27 @@ abstract class Field {
     if ($this->isRequired()) {
       $attrs['required'] = 'required';
     }
+    $attrs['class'] = '';
     if (count($this->error_codes) > 0) {
-      $attrs['class'] = 'error';
+      $attrs['class'] = $attrs['class'] . ' is-invalid';
     }
     return $attrs;
   }
 
-  public function attributesHtml() {
+  public function attributesHtml($classes = '') {
     $attrs = $this->getAttributes();
     $html = '';
     foreach ($attrs as $key => $value) {
-      $html.= ' ' . $key . '="' . htmlspecialchars($value) . '" ';
+      $html.= ' ' . $key . '="' . htmlspecialchars($value);
+      if ($key === 'class' && !empty($classes)) {
+        $html.= ' ' . htmlspecialchars($classes);
+      }
+      $html.= '" ';
     }
     return $html;
   }
 
-  abstract public function html();
+  abstract public function html($classes = '');
 
   public function check() {
     $value = $this->getValue();
@@ -130,6 +140,7 @@ abstract class InputField extends Field {
   public function getAttributes() {
     $attrs = parent::getAttributes();
     $attrs['name'] = $this->name;
+    $attrs['class'] = $attrs['class'] . ' form-control';
     if ($this->autofocus) {
       $attrs['autofocus'] = '';
     }
@@ -141,8 +152,8 @@ abstract class InputField extends Field {
     return $attrs;
   }
 
-  function html() {
-    return '<input ' . $this->attributesHtml() . '>';
+  function html($classes = '') {
+    return '<input ' . $this->attributesHtml($classes) . '>';
   }
 }
 
@@ -226,11 +237,12 @@ class SelectField extends Field {
   public function getAttributes() {
     $attrs = parent::getAttributes();
     $attrs['name'] = $this->name;
+    $attrs['class'] = $attrs['class'] . ' form-select';
     return $attrs;
   }
 
-  function html() {
-    $html = '<select ' . $this->attributesHtml() . '>';
+  function html($classes = '') {
+    $html = '<select ' . $this->attributesHtml($classes) . '>';
     $html.= '<option value=""';
     if (!isset($this->value)) {
       $html.= ' selected="selected" ';
@@ -302,6 +314,7 @@ class CheckboxField extends Field {
     $attrs['name'] = $this->name;
     $attrs['type'] = 'checkbox';
     $attrs['value'] = '1';
+    $attrs['class'] = $attrs['class'] . ' form-check-input';
     if ($this->getValue()) {
       $attrs['checked'] = 'checked';
     }
@@ -311,8 +324,8 @@ class CheckboxField extends Field {
     return $attrs;
   }
 
-  function html() {
-    return '<input ' . $this->attributesHtml() . '>';
+  function html($classes = '') {
+    return '<input ' . $this->attributesHtml($classes) . '>';
   }
 
   public function check() {

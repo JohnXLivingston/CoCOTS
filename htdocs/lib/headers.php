@@ -7,7 +7,7 @@ header("Content-Security-Policy: "
   . "block-all-mixed-content; "
   . "font-src 'self'; "
   . "frame-ancestors 'self'; "
-  . "img-src 'self'; "
+  . "img-src 'self' data:; "
   . "object-src 'none'; "
   . "script-src 'self'; "
   . "script-src-attr 'none'; " // NB: not compatible with Firefox (for now).

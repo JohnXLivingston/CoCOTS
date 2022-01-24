@@ -33,3 +33,19 @@ sudo -u www-data php bin/composer.phar update;
 ```
 
 Connect to the admin interface to update DB if necessary.
+
+## Develop
+
+TODO: be more explicit
+
+Install composer in dev env:
+
+```bash
+mkdir bin && cd bin && sh ../build/install-composer.sh && cd ..
+```
+
+To try to compile SCSS, just do a compiler update:
+
+```bash
+php bin/composer.phar update
+```

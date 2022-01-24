@@ -81,17 +81,47 @@ try {
   exit(1);
 }
 
-function display_status_button($id, $value, $label) {
+function display_status_button($id, $value, $label, $class) {
   global $app;
-  ?><form class="invisible" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
+  ?><form class="mb-3" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
     <input type="hidden" name="action" value="set_status">
     <input type="hidden" name="status" value="<?php echo htmlspecialchars($value); ?>">
     <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
     <input type="submit"
-      class="status-button-<?php echo htmlspecialchars($value); ?>"
+      class="btn <?php echo htmlspecialchars($class); ?>"
       value="<?php echo $label; ?>"
     >
   </form><?php
+}
+
+function display_status_badge($status) {
+  global $app;
+  $account_status_class = '';
+  switch($status) {
+    case 'waiting':
+    case 'processing':
+    case 'processing_disabled':
+    case 'processing_deleted':
+      $account_status_class = 'bg-warning';
+      break;
+    case 'active':
+      $account_status_class = 'bg-success';
+      break;
+    case 'disabled':
+    case 'rejected':
+    case 'deleted':
+      $account_status_class = 'bg-secondary';
+      break;
+    default:
+      $account_status_class = 'bg-danger';
+  }
+  echo '<span class="badge ' . $account_status_class . '">';
+  if ($app->loc->hasTranslation('status_label_' . $status)) {
+    echo $app->loc->translate('status_label_' . $status);
+  } else {
+    echo htmlspecialchars($status);
+  }
+  echo '</span>';
 }
 
 function display_sort_title($label, $field, $current_sort_info) {
@@ -124,9 +154,9 @@ function display_sort_title($label, $field, $current_sort_info) {
 >
   <head>
       <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <title><?php echo $app->loc->translate('admin_title') ?></title>
       <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
-      <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles_admin.css">
       <?php
         if(defined('COCOTS_CUSTOM_CSS') || defined('COCOTS_CUSTOM_ADMIN_CSS')) {
           echo '<style>';
@@ -141,24 +171,26 @@ function display_sort_title($label, $field, $current_sort_info) {
         }
       ?>
   </head>
-  <body>
-    <ul class="top-menu">
-      <li>
+  <body class="container">
+    <div class="row justify-content-between mt-3">
+      <div class="col-10">
         <h1><a href="<?php echo $app->getAdminUrl(); ?>">
           <?php echo $app->loc->translate('admin_title') ?>
         </a></h1>
-      </li>
-      <li><a class="logout" href="<?php echo $app->getLogoutUrl(); ?>">
-        <?php echo $app->loc->translate('logout'); ?>
-      </a></li>
-    </ul>
+      </div>
+      <div class="col-2">
+        <a class="btn btn-primary text-nowrap" href="<?php echo $app->getLogoutUrl(); ?>">
+          <?php echo $app->loc->translate('logout'); ?>
+        </a>
+      </div>
+    </div>
     <?php if ($error_message) { ?>
-      <div class="error_messages">
+      <div class="alert alert-danger">
         <?php echo $error_message; ?>
       </div>
     <?php } ?>
     <?php if ($confirmation_message && $confirmation_message['type'] === 'set_status') { ?>
-      <form method="POST" action="<?php echo $app->getAdminUrl(); ?>">
+      <form class="alert alert-warning" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
         <input type="hidden" name="action" value="set_status">
         <input type="hidden" name="confirm" value="1">
         <input type="hidden" name="status" value="<?php echo htmlspecialchars($confirmation_message['status']); ?>">
@@ -173,45 +205,35 @@ function display_sort_title($label, $field, $current_sort_info) {
         <p>
           <?php echo $app->loc->translate('account_status'); ?>:
           <?php
-            if ($app->loc->hasTranslation('status_label_' . $confirmation_message['account']['status'])) {
-              echo $app->loc->translate('status_label_' . $confirmation_message['account']['status']);
-            } else {
-              echo htmlspecialchars($confirmation_message['account']['status']);
-            }
-
+            echo display_status_badge($confirmation_message['account']['status']);
             echo ' => ';
-
-            if ($app->loc->hasTranslation('status_label_' . $confirmation_message['status'])) {
-              echo $app->loc->translate('status_label_' . $confirmation_message['status']);
-            } else {
-              echo htmlspecialchars($confirmation_message['status']);
-            }
+            echo display_status_badge($confirmation_message['status']);
           ?>
         </p>
-        <input type="submit" value="<?php echo $app->loc->translate('validate'); ?>">
-        <a class="cancel" href="<?php echo htmlspecialchars($app->getAdminUrl()); ?>"><?php echo $app->loc->translate('cancel'); ?></a>
+        <input class="btn btn-primary" type="submit" value="<?php echo $app->loc->translate('validate'); ?>">
+        <a class="btn btn-secondary" href="<?php echo htmlspecialchars($app->getAdminUrl()); ?>"><?php echo $app->loc->translate('cancel'); ?></a>
       </form>
     <?php } else if ($confirmation_message && $confirmation_message['type'] === 'send_test_mail') { ?>
-      <form method="POST" action="<?php echo $app->getAdminUrl(); ?>">
+      <form class="alert alert-warning" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
         <input type="hidden" name="action" value="send_test_mail">
         <input type="hidden" name="confirm" value="1">
         <p>
           Please confirm: sending a mail to «<?php echo htmlspecialchars(join(', ', $app->getModeratorsMails())); ?>»?
         </p>
-        <input type="submit" value="<?php echo $app->loc->translate('validate'); ?>">
-        <a class="cancel" href="<?php echo htmlspecialchars($app->getAdminUrl()); ?>"><?php echo $app->loc->translate('cancel'); ?></a>
+        <input class="btn btn-primary" type="submit" value="<?php echo $app->loc->translate('validate'); ?>">
+        <a class="btn btn-secondary" href="<?php echo htmlspecialchars($app->getAdminUrl()); ?>"><?php echo $app->loc->translate('cancel'); ?></a>
       </form>
     <?php } ?>
-    <table>
+    <div class="table-responsive"><table class="table table-striped table-hover table-bordered">
       <thead>
-        <tr>
-          <th><?php echo display_sort_title($app->loc->translate('account_id'), 'id', $sort_info); ?></th>
-          <th><?php echo display_sort_title($app->loc->translate('account_name'), 'name', $sort_info); ?></th>
-          <th><?php echo display_sort_title($app->loc->translate('account_email'), 'email', $sort_info); ?></th>
-          <th><?php echo $app->loc->translate('account_type'); ?></th>
-          <th><?php echo $app->loc->translate('account_plugins'); ?></th>
-          <th><?php echo display_sort_title($app->loc->translate('account_status'), 'status', $sort_info); ?></th>
-          <th><?php echo $app->loc->translate('account_action'); ?></th>
+        <tr class="text-nowrap">
+          <th scope="col"><?php echo display_sort_title($app->loc->translate('account_id'), 'id', $sort_info); ?></th>
+          <th scope="col"><?php echo display_sort_title($app->loc->translate('account_name'), 'name', $sort_info); ?></th>
+          <th scope="col"><?php echo display_sort_title($app->loc->translate('account_email'), 'email', $sort_info); ?></th>
+          <th scope="col"><?php echo $app->loc->translate('account_type'); ?></th>
+          <th scope="col"><?php echo $app->loc->translate('account_plugins'); ?></th>
+          <th scope="col"><?php echo display_sort_title($app->loc->translate('account_status'), 'status', $sort_info); ?></th>
+          <th scope="col"><?php echo $app->loc->translate('account_action'); ?></th>
         </tr>
       </thead>
       <tbody>
@@ -231,38 +253,11 @@ function display_sort_title($label, $field, $current_sort_info) {
               echo htmlspecialchars(implode(', ', $plugins));
             ?></td>
             <td>
-              <?php
-                $account_status_class = '';
-                switch($account['status']) {
-                  case 'waiting':
-                  case 'processing':
-                  case 'processing_disabled':
-                  case 'processing_deleted':
-                    $account_status_class = 'status-warning';
-                    break;
-                  case 'active':
-                    $account_status_class = 'status-ok';
-                    break;
-                  case 'disabled':
-                  case 'rejected':
-                  case 'deleted':
-                    $account_status_class = 'status-inactive';
-                    break;
-                  default:
-                    $account_status_class = 'status-error';
-                }
-                echo '<div class="status-label ' . $account_status_class . '">';
-                if ($app->loc->hasTranslation('status_label_' . $account['status'])) {
-                  echo $app->loc->translate('status_label_' . $account['status']);
-                } else {
-                  echo htmlspecialchars($account['status']);
-                }
-                echo '</div>';
-              ?>
+              <?php display_status_badge($account['status']) ?>
               <?php
                 foreach (array('creation_date', 'activation_date', 'deactivation_date', 'deletion_date', 'rejection_date') as $date_field) {
                   if (!isset($account[$date_field])) { continue; }
-                  echo '<div class="status-date">';
+                  echo '<div class="text-nowrap">';
                   echo $app->loc->translate('account_' . $date_field);
                   echo ': ';
                   echo htmlspecialchars($account[$date_field]);
@@ -270,7 +265,7 @@ function display_sort_title($label, $field, $current_sort_info) {
                 }
 
                 if ($account['activation_mail_sent']) {
-                  echo '<div class="activation-mail-sent">';
+                  echo '<div class="text-nowrap">';
                   echo $app->loc->translate('account_activation_mail_sent');
                   echo '</div>';
                 }
@@ -278,46 +273,46 @@ function display_sort_title($label, $field, $current_sort_info) {
             </td>
             <td><?php
               if ($account['status'] === 'waiting') {
-                display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
-                display_status_button($account['id'], 'rejected', $app->loc->translate('account_action_status_rejected'));
+                display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'), 'btn-success');
+                display_status_button($account['id'], 'rejected', $app->loc->translate('account_action_status_rejected'), 'btn-danger');
               } elseif ($account['status'] === 'disabled') {
-                display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'));
-                display_status_button($account['id'], 'deleted', $app->loc->translate('account_action_status_deleted'));
+                display_status_button($account['id'], 'active', $app->loc->translate('account_action_status_active'), 'btn-success');
+                display_status_button($account['id'], 'deleted', $app->loc->translate('account_action_status_deleted'), 'btn-danger');
               } elseif ($account['status'] === 'active') {
-                display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_status_disabled'));
-                display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));
+                display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_status_disabled'), 'btn-secondary');
+                display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'), 'btn-success');
               } elseif ($account['status'] === 'failed') {
-                display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'));
+                display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'), 'btn-success');
               } elseif ($account['status'] === 'failed_disabled') {
-                display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_reprocess'));
+                display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_reprocess'), 'btn-secondary');
               }
             ?></td>
           </tr>
         <?php } ?>
       </tbody>
-    </table>
-    <ul class="bottom-menu">
-      <li>
+    </table></div>
+    <ul class="row justify-content-between mt-3">
+      <div class="col-4">
         <?php echo htmlspecialchars($_SESSION['login']); ?>
-      </li>
+      </div>
       <?php if (COCOTS_ENABLE_DEBUG) { ?>
         <?php if ($app->debug_mode) { ?>
-          <li><a target="_blank" href="<?php echo $app->getBaseUrl() ?>/script/check_processing.php">Check Processing</a></li>
+          <div class="col-2"><a class="btn btn-secondary" target="_blank" href="<?php echo $app->getBaseUrl() ?>/script/check_processing.php">Check Processing</a></div>
           <?php if (isset($_SESSION['superadmin']) && $_SESSION['superadmin'] === 1) { ?>
-            <li><form class="invisible" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
+            <div class="col-2"><form class="" method="POST" action="<?php echo $app->getAdminUrl(); ?>">
               <input type="hidden" name="action" value="send_test_mail">
               <input type="submit"
-                class="test-mail-button"
+                class="btn btn-secondary"
                 value="Send test mail"
               >
-            </form></li>
+            </form></div>
           <?php } ?>
         <?php } ?>
-        <li>
-          <a href="<?php echo $app->getAdminUrl(null, $app->debug_mode ? false : true); ?>">
+        <div class="col-2">
+          <a class="btn btn-secondary" href="<?php echo $app->getAdminUrl(null, $app->debug_mode ? false : true); ?>">
             Debug <?php echo $app->debug_mode ? 'OFF' : 'ON'; ?>
           </a>
-        </li>
+        </div>
       <?php } ?>
     </ul>
   </body>
