@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.1.7
+
+* No hyphens in website-names. It brokes ansible installations.
+
 ## v0.1.6
 
 * Better website validation.
