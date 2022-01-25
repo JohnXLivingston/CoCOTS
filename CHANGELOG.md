@@ -1,6 +1,6 @@
 # CoCOTS Changelog
 
-## v0.1.0 (Not Released Yet)
+## v0.1.0
 
 * Fix composer post update script.
 * Add a config parameter to choose who receives the notifyAccountCreated mail.
