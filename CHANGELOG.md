@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.1.3
+
+* Fix typo
+
 ## v0.1.2
 
 * Trying to fix an SPIP Ansible problem.
