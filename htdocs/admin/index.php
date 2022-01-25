@@ -233,11 +233,11 @@ function display_sort_title($label, $field, $current_sort_info) {
         <tr class="text-nowrap">
           <th scope="col"><?php echo display_sort_title($app->loc->translate('account_id'), 'id', $sort_info); ?></th>
           <th scope="col"><?php echo display_sort_title($app->loc->translate('account_name'), 'name', $sort_info); ?></th>
+          <th scope="col"><?php echo display_sort_title($app->loc->translate('account_status'), 'status', $sort_info); ?></th>
+          <th scope="col"><?php echo $app->loc->translate('account_action'); ?></th>
           <th scope="col"><?php echo display_sort_title($app->loc->translate('account_email'), 'email', $sort_info); ?></th>
           <th scope="col"><?php echo $app->loc->translate('account_type'); ?></th>
           <th scope="col"><?php echo $app->loc->translate('account_plugins'); ?></th>
-          <th scope="col"><?php echo display_sort_title($app->loc->translate('account_status'), 'status', $sort_info); ?></th>
-          <th scope="col"><?php echo $app->loc->translate('account_action'); ?></th>
         </tr>
       </thead>
       <tbody>
@@ -252,12 +252,6 @@ function display_sort_title($label, $field, $current_sort_info) {
               echo htmlspecialchars($account['title']);
               ?>
             </td>
-            <td><?php echo htmlspecialchars($account['email']); ?></td>
-            <td><?php echo htmlspecialchars($account['type']); ?></td>
-            <td><?php
-              $plugins = json_decode($account['plugins'] ?? '[]');
-              echo htmlspecialchars(implode(', ', $plugins));
-            ?></td>
             <td>
               <?php display_status_badge($account['status']) ?>
               <?php
@@ -292,6 +286,12 @@ function display_sort_title($label, $field, $current_sort_info) {
               } elseif ($account['status'] === 'failed_disabled') {
                 display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_reprocess'), 'btn-secondary');
               }
+            ?></td>
+            <td><?php echo htmlspecialchars($account['email']); ?></td>
+            <td><?php echo htmlspecialchars($account['type']); ?></td>
+            <td><?php
+              $plugins = json_decode($account['plugins'] ?? '[]');
+              echo htmlspecialchars(implode(', ', $plugins));
             ?></td>
           </tr>
         <?php } ?>
