@@ -22,7 +22,7 @@ class CreationForm extends Form {
       'required' => true,
       'label' => $this->app->loc->translateSafe('website_name'),
       'placeholder' => true,
-      'pattern' => '[a-z0-9][a-z0-9]{2,40}',
+      'pattern' => '[a-z0-9]{2,40}',
       'title' => $this->app->loc->translateSafe('website_name_constraints'),
       'aria-label' => $this->app->loc->translateSafe('website_name_constraints')
     ));
