@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.1.6
+
+* Better website validation.
+
 ## v0.1.5
 
 * Website: min length to 2, and authorize - and _.

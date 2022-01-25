@@ -18,7 +18,7 @@ website_plugin_2 = Plugin 2
 website_plugin_3 = Plugin 3
 website_plugin_4 = Plugin 4
 
-website_name_constraints = 3 à 40 caractères alphanumériques minuscules
+website_name_constraints = 2 à 40 caractères alphanumériques minuscules
 error_field_required = Ce champ est requis
 error_field_pattern = Valeur invalide
 error_field_maxlength = Valeur trop longue

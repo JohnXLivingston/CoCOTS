@@ -22,7 +22,7 @@ class CreationForm extends Form {
       'required' => true,
       'label' => $this->app->loc->translateSafe('website_name'),
       'placeholder' => true,
-      'pattern' => '[a-z0-9_-]{2,40}',
+      'pattern' => '[a-z0-9][a-z0-9-]{1,40}',
       'title' => $this->app->loc->translateSafe('website_name_constraints'),
       'aria-label' => $this->app->loc->translateSafe('website_name_constraints')
     ));
@@ -105,6 +105,12 @@ class CreationForm extends Form {
     }
 
     $name = $this->fields['website_name']->getValue();
+
+    $tmpurl = $name . '.example.com';
+    if (!filter_var($tmpurl, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+      $this->fields['website_name']->addErrorCode('error_website_name_invalid');
+      return false;
+    }
 
     if (defined('COCOTS_RESERVED_NAMES') && is_array(COCOTS_RESERVED_NAMES)) {
       if (in_array($name, COCOTS_RESERVED_NAMES)) {
