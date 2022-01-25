@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.1.5
+
+* Website: min length to 2, and authorize - and _.
+
 ## v0.1.4
 
 * Fix
