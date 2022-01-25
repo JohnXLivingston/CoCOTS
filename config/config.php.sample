@@ -74,3 +74,6 @@ define("COCOTS_SECURITY_ANSWERS", array("Red", "red", "RED"));
 // Here is some custome message.
 // Click here: %URL%?test=1&p=2
 // EOF);
+
+// Recipients for the «notifyAccountCreated» mail (user | admins | moderators) (with user, admins+moderators will be in BCC):
+// defined("COCOTS_ACCOUNT_CREATED_NOTIFICATION_RECIPIENTS", 'admins');

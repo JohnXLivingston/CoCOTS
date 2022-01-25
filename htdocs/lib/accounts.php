@@ -352,7 +352,11 @@ class Accounts {
           $message.= 'https://' . $account['name'] . '.' . $account['domain'] . "\n\n";
           $message.= $this->app->loc->translateSafe('account_created_signature') . "\n";
         }
-        $this->app->notifyAccountCreated($account, $subject, $message);
+        $notif_recipients = 'user';
+        if (defined('COCOTS_ACCOUNT_CREATED_NOTIFICATION_RECIPIENTS')) {
+          $notif_recipients = '' . COCOTS_ACCOUNT_CREATED_NOTIFICATION_RECIPIENTS;
+        }
+        $this->app->notifyAccountCreated($account, $subject, $message, $notif_recipients);
 
         $this->_updateActivationMailSent($account['id'], true);
       }

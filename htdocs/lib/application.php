@@ -235,21 +235,29 @@ class Application {
     return COCOTS_MAIL_ADMINS;
   }
 
-  public function notifyAccountCreated($account, $subject, $message) {
-    $mail = $this->getMailer();
-    $mail->addAddress($account['email']);
-    $moderators_adresses = $this->getModeratorsMails();
-    foreach ($moderators_adresses as $address) {
-      $mail->addBCC($address);
-    }
-
-    $mail->Subject = (defined('COCOTS_MAIL_PREFIX') ? COCOTS_MAIL_PREFIX : '') . $subject;
-    $mail->Body = $message;
-    try {
-      $mail->send();
-    } catch (Exception $e) {
-      error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}.");
-      // Failing mail should not make fail the query.
+  public function notifyAccountCreated($account, $subject, $message, $notif_recipients) {
+    if ($notif_recipients === 'user') {
+      $mail = $this->getMailer();
+      $mail->addAddress($account['email']);
+      $moderators_adresses = $this->getModeratorsMails();
+      foreach ($moderators_adresses as $address) {
+        $mail->addBCC($address);
+      }
+      $mail->Subject = (defined('COCOTS_MAIL_PREFIX') ? COCOTS_MAIL_PREFIX : '') . $subject;
+      $mail->Body = $message;
+      try {
+        $mail->send();
+      } catch (Exception $e) {
+        error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}.");
+        // Failing mail should not make fail the query.
+      }
+    } else if ($notif_recipients === 'admins') {
+      $this->notifyAdmins($subject, $message);
+    } else if ($notif_recipients === 'moderators') {
+      $this->notifyModerators($subject, $message);
+    } else {
+      error_log("Wrong configuration for COCOTS_ACCOUNT_CREATED_NOTIFICATION_RECIPIENTS, fallback on admins");
+      $this->notifyAdmins($subject, $message);
     }
   }
 }
