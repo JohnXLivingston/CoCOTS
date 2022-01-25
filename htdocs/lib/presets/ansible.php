@@ -66,8 +66,6 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       return false;
     }
     
-    $title_escaped = escapeYaml($account['title']);
-
     $file_name = COCOTS_PRESETS_ANSIBLE_VAR_PATH;
     if (substr($file_name, -1) !== '/') {
       $file_name.= '/';
@@ -128,6 +126,9 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       }
       $spip_config['facteur'] = $facteur_config;
     }
+    if (!empty($account['title'])) {
+      $spip_config['nom_site'] = $account['title'];
+    }
 
     $sftp = 'False';
     if (defined('COCOTS_PRESETS_ANSIBLE_SFTP') && COCOTS_PRESETS_ANSIBLE_SFTP === true) {
@@ -145,7 +146,6 @@ mutu__users:
       {$spip_branch_line}
       {$spip_depots}
       {$spip_plugins}
-      title: {$title_escaped}
       admin:
         name: 'Admin'
         login: 'admin'
