@@ -4,6 +4,27 @@ if(!defined('_COCOTS_INITIALIZED')) {
   return;
 }
 
+const YAML_ESCAPEES = ['\\', '\\\\', '\\"', '"',
+  "\x00",  "\x01",  "\x02",  "\x03",  "\x04",  "\x05",  "\x06",  "\x07",
+  "\x08",  "\x09",  "\x0a",  "\x0b",  "\x0c",  "\x0d",  "\x0e",  "\x0f",
+  "\x10",  "\x11",  "\x12",  "\x13",  "\x14",  "\x15",  "\x16",  "\x17",
+  "\x18",  "\x19",  "\x1a",  "\x1b",  "\x1c",  "\x1d",  "\x1e",  "\x1f",
+  "\x7f",
+  "\xc2\x85", "\xc2\xa0", "\xe2\x80\xa8", "\xe2\x80\xa9",
+];
+const YAML_ESCAPED = ['\\\\', '\\"', '\\\\', '\\"',
+  '\\0',   '\\x01', '\\x02', '\\x03', '\\x04', '\\x05', '\\x06', '\\a',
+  '\\b',   '\\t',   '\\n',   '\\v',   '\\f',   '\\r',   '\\x0e', '\\x0f',
+  '\\x10', '\\x11', '\\x12', '\\x13', '\\x14', '\\x15', '\\x16', '\\x17',
+  '\\x18', '\\x19', '\\x1a', '\\e',   '\\x1c', '\\x1d', '\\x1e', '\\x1f',
+  '\\x7f',
+  '\\N', '\\_', '\\L', '\\P',
+];
+
+function escapeYaml($string) {
+  return sprintf('"%s"', str_replace(YAML_ESCAPEES, YAML_ESCAPED, $string));
+}
+
 abstract class CocotsAnsiblePresets extends CocotsPresets {
   public function websiteTypes() {
     return null;
@@ -44,6 +65,8 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       error_log('Account url is not a valid domain name: "' . $url . '"');
       return false;
     }
+    
+    $title_escaped = escapeYaml($account['title']);
 
     $file_name = COCOTS_PRESETS_ANSIBLE_VAR_PATH;
     if (substr($file_name, -1) !== '/') {
@@ -56,7 +79,7 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       $name_prefix = COCOTS_PRESETS_ANSIBLE_NAME_PREFIX;
     }
 
-    $email_escaped = str_replace("'", "''", $account['email']);
+    $email_escaped = escapeYaml($account['email']);
 
     $spip_branch_line = '';
     if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH')) {
@@ -67,7 +90,7 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
     if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS')) {
       $depots_escaped = [];
       foreach (COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS as $depot) {
-        array_push($depots_escaped, "'" . str_replace("'", "''", $depot) . "'");
+        array_push($depots_escaped, escapeYaml($depot));
       }
       $spip_depots = "depots: [" . implode(', ', $depots_escaped) . "]";
     }
@@ -75,7 +98,7 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
     if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS')) {
       $plugins_escaped = [];
       foreach (COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS as $plugin) {
-        array_push($plugins_escaped, "'" . str_replace("'", "''", $plugin) . "'");
+        array_push($plugins_escaped, escapeYaml($plugin));
       }
       $spip_plugins = "plugins: [" . implode(', ', $plugins_escaped) . "]";
     }
@@ -122,20 +145,21 @@ mutu__users:
       {$spip_branch_line}
       {$spip_depots}
       {$spip_plugins}
+      title: {$title_escaped}
       admin:
         name: 'Admin'
         login: 'admin'
-        email: '{$email_escaped}'
+        email: {$email_escaped}
 
 EOF;
 
     if ($write_spip_config) {
       $spip_config = json_encode($spip_config);
-      $spip_config_escaped = str_replace("'", "''", $spip_config);
+      $spip_config_escaped = escapeYaml($spip_config);
       $content .= <<<EOF
       config:
         - name: cocots_config
-          rawjson: '{$spip_config_escaped}'
+          rawjson: {$spip_config_escaped}
 
 EOF;
     }

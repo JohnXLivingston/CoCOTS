@@ -55,6 +55,12 @@ try {
             <?php echo COCOTS_HELP_TEXT; ?>
         </div>
         <?php } ?>
+
+        <div class="mt-3">
+          <?php echo $form->getField('website_title')->getLabelHtml('form-label'); ?>
+          <?php echo $form->getField('website_title')->html(); ?>
+        </div>
+
         <div class="mt-3">
           <?php echo $form->getField('website_name')->getLabelHtml('form-label'); ?>
           <span class="input-group">

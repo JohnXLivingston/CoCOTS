@@ -10,9 +10,16 @@ class CreationForm extends Form {
   protected $plugins_fields = array();
 
   protected function initFields() {
-    $this->fields['website_name'] = new TextField('website_name', array(
+    $this->fields['website_title'] = new TextField('website_title', array(
       'required' => true,
       'autofocus' => true,
+      'label' => $this->app->loc->translateSafe('website_title'),
+      'placeholder' => true,
+      'maxlength' => '128'
+    ));
+
+    $this->fields['website_name'] = new TextField('website_name', array(
+      'required' => true,
       'label' => $this->app->loc->translateSafe('website_name'),
       'placeholder' => true,
       'pattern' => '[a-z0-9]{3,40}',
@@ -117,6 +124,7 @@ class CreationForm extends Form {
 
   public function save() {
     try {
+      $title = $this->fields['website_title']->getValue();
       $name = $this->fields['website_name']->getValue();
       $domain = COCOTS_HOSTING_DOMAIN;
       $email = $this->fields['email']->getValue();
@@ -138,6 +146,7 @@ class CreationForm extends Form {
         $plugins = null;
       }
       $account_info = array(
+        'title' => $title,
         'name' => $name,
         'domain' => $domain,
         'email' => $email,

@@ -5,7 +5,7 @@ if(!defined('_COCOTS_INITIALIZED')) {
 }
 
 class Accounts {
-  CONST DBVERSION = 2;
+  CONST DBVERSION = 3;
   protected $app;
 
   public function __construct($app) {
@@ -16,6 +16,7 @@ class Accounts {
     if ($current_version === 0) {
       $sql = 'CREATE TABLE IF NOT EXISTS `' . COCOTS_DB_PREFIX . 'account` ( ';
       $sql.= ' `id` MEDIUMINT NOT NULL AUTO_INCREMENT, ';
+      $sql.= ' `title` VARCHAR(255) NOT NULL, ';
       $sql.= ' `name` VARCHAR(255) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL, ';
       $sql.= ' `domain` VARCHAR(255) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL, ';
       $sql.= ' `email` VARCHAR(255) NOT NULL, ';
@@ -58,6 +59,14 @@ class Accounts {
 
       $this->app->setDBVersion('cocots_account', 2);
       $current_version = 2;
+    }
+    if ($current_version === 2) {
+      $sql = 'ALTER TABLE `' . COCOTS_DB_PREFIX . 'account` ';
+      $sql.= ' ADD COLUMN IF NOT EXISTS `title` VARCHAR(255) NOT NULL AFTER `id` ';
+      $this->app->db->exec($sql);
+
+      $this->app->setDBVersion('cocots_account', 3);
+      $current_version = 3;
     }
     if ($required_version !== $current_version) {
       throw new Exception('Unknow required version for cocots_account');
@@ -121,7 +130,7 @@ class Accounts {
     $field = 'id';
     $direction = 'DESC';
     if (isset($sort_param)) {
-      if (preg_match('/^(id|name|email|status)-(asc|desc)$/', $sort_param, $matches)) {
+      if (preg_match('/^(id|name|email|status|title)-(asc|desc)$/', $sort_param, $matches)) {
         $field = $matches[1];
         $direction = strtoupper($matches[2]);
       }
@@ -134,6 +143,7 @@ class Accounts {
 
   public function create($account_info) {
     $columns = array(
+      'title',
       'name',
       'domain',
       'email',
@@ -149,6 +159,7 @@ class Accounts {
     $message = '';
     $message.= $this->app->loc->translateSafe('new_account_message') . "\n\n";
 
+    $message.= $this->app->loc->translateSafe('website_title') . ': ' . $account_info['title'] . "\n";
     $message.= $this->app->loc->translateSafe('website_name') . ': ' . $account_info['name'] . "\n";
     $message.= $this->app->loc->translateSafe('website_domain') . ': ' . $account_info['domain'] . "\n\n";
 
@@ -326,6 +337,7 @@ class Accounts {
       $message = '';
       $message.= $this->app->loc->translateSafe('failed_account_message') . "\n\n";
 
+      $message.= $this->app->loc->translateSafe('website_title') . ': ' . $account['title'] . "\n";
       $message.= $this->app->loc->translateSafe('website_name') . ': ' . $account['name'] . "\n";
       $message.= $this->app->loc->translateSafe('website_domain') . ': ' . $account['domain'] . "\n\n";
       $message.= $this->app->loc->translateSafe('account_status') . ': ' . $failed_status . "\n\n";
@@ -367,6 +379,7 @@ class Accounts {
       $message = '';
       $message.= $this->app->loc->translateSafe('disabled_account_message') . "\n\n";
 
+      $message.= $this->app->loc->translateSafe('website_title') . ': ' . $account['title'] . "\n";
       $message.= $this->app->loc->translateSafe('website_name') . ': ' . $account['name'] . "\n";
       $message.= $this->app->loc->translateSafe('website_domain') . ': ' . $account['domain'] . "\n\n";
 
@@ -379,6 +392,7 @@ class Accounts {
       $message = '';
       $message.= $this->app->loc->translateSafe('deleted_account_message') . "\n\n";
 
+      $message.= $this->app->loc->translateSafe('website_title') . ': ' . $account['title'] . "\n";
       $message.= $this->app->loc->translateSafe('website_name') . ': ' . $account['name'] . "\n";
       $message.= $this->app->loc->translateSafe('website_domain') . ': ' . $account['domain'] . "\n\n";
 

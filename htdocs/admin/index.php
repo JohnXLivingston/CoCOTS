@@ -203,6 +203,10 @@ function display_sort_title($label, $field, $current_sort_info) {
           <?php echo htmlspecialchars($confirmation_message['account']['name'])  . '.' . $confirmation_message['account']['domain'] ?>
         </p>
         <p>
+          <?php echo $app->loc->translate('account_title'); ?>:
+          <?php echo htmlspecialchars($confirmation_message['account']['title']); ?>
+        </p>
+        <p>
           <?php echo $app->loc->translate('account_status'); ?>:
           <?php
             echo display_status_badge($confirmation_message['account']['status']);
@@ -244,6 +248,8 @@ function display_sort_title($label, $field, $current_sort_info) {
               <?php
               $account_url_html = htmlspecialchars($account['name'] . '.' . $account['domain']);
               echo '<a href="https://' . $account_url_html . '" target="_blank">' . $account_url_html . '</a>';
+              echo '<br>';
+              echo htmlspecialchars($account['title']);
               ?>
             </td>
             <td><?php echo htmlspecialchars($account['email']); ?></td>

@@ -4,6 +4,7 @@
 
 * Fix composer post update script.
 * Add a config parameter to choose who receives the notifyAccountCreated mail.
+* New «website title» field.
 
 ## v0.0.2
 

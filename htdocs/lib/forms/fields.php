@@ -159,10 +159,14 @@ abstract class InputField extends Field {
 
 class TextField extends InputField {
   protected $pattern = null;
+  protected $maxlength = null;
   public function __construct($name, $options) {
     parent::__construct($name, $options);
     if (isset($options['pattern'])) {
       $this->pattern = $options['pattern'];
+    }
+    if (isset($options['maxlength'])) {
+      $this->maxlength = $options['maxlength'];
     }
   }
 
@@ -172,6 +176,9 @@ class TextField extends InputField {
     $attrs['value'] = $this->getValue();
     if (isset($this->pattern)) {
       $attrs['pattern'] = $this->pattern;
+    }
+    if (isset($this->maxlength)) {
+      $attrs['maxlength'] = $this->maxlength;
     }
     return $attrs;
   }
@@ -186,6 +193,15 @@ class TextField extends InputField {
       $string = isset($value) ? strval($value) : '';
       if (!preg_match('/^' . $this->pattern . '$/', $string)) {
         $this->addErrorCode('error_field_pattern');
+        return false;
+      }
+    }
+
+    if ($this->maxlength) {
+      $value = $this->getValue();
+      $string = isset($value) ? strval($value) : '';
+      if (!preg_match('/^.{0,' . $this->maxlength . '}$/', $string)) {
+        $this->addErrorCode('error_field_maxlength');
         return false;
       }
     }

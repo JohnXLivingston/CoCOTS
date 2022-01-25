@@ -1,5 +1,6 @@
 title = Créer un site
 admin_title = Administration des sites web
+website_title = Titre du site web
 website_name = Nom du site web
 website_domain = Domaine du site web
 email = Adresse mail
@@ -20,6 +21,7 @@ website_plugin_4 = Plugin 4
 website_name_constraints = 3 à 40 caractères alphanumériques minuscules
 error_field_required = Ce champ est requis
 error_field_pattern = Valeur invalide
+error_field_maxlength = Valeur trop longue
 error_field_email_invalid = Email invalide
 error_field_select_invalid_value = Valeur invalide
 

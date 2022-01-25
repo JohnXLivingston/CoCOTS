@@ -1,5 +1,6 @@
 title = Create website
 admin_title = Websites Administration
+website_title = Website title
 website_name = Website name
 website_domain = Website domain
 email = email
@@ -20,6 +21,7 @@ website_plugin_4 = Plugin 4
 website_name_constraints = 3 to 40 lowercase alphanumeric characters
 error_field_required = This field is mandatory
 error_field_pattern = Invalid value
+error_field_maxlength = Value too long
 error_field_email_invalid = Invalid email
 error_field_select_invalid_value = Invalid value
 
