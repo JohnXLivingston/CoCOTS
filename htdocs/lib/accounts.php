@@ -354,7 +354,11 @@ class Accounts {
 
       // Check if it is a reactivation. Don't send the mail twice.
       if (!$account['activation_mail_sent']) {
-        $subject = $this->app->loc->translateSafe('account_created_subject');
+        if (defined('COCOTS_CUSTOM_ACCOUNT_CREATED_NOTIFICATION_SUBJECT')) {
+          $subject = '' . COCOTS_CUSTOM_ACCOUNT_CREATED_NOTIFICATION_SUBJECT;
+        } else {
+          $subject = $this->app->loc->translateSafe('account_created_subject');
+        }
         $message = '';
         if (defined('COCOTS_CUSTOM_ACCOUNT_CREATED_NOTIFICATION')) {
           $message = '' . COCOTS_CUSTOM_ACCOUNT_CREATED_NOTIFICATION;

@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.1.1
+
+* Custom subject for the notifyAccountCreated mail.
+
 ## v0.1.0
 
 * Fix composer post update script.
