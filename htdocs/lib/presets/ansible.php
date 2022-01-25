@@ -153,6 +153,7 @@ mutu__users:
         - name: cocots_nom_site
           data:
             nom_site: {$title_escaped}
+
 EOF;
     if ($write_spip_config) {
       $spip_config = json_encode($spip_config);
