@@ -127,7 +127,7 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       $spip_config['facteur'] = $facteur_config;
     }
 
-    $title_escaped = escapeYaml($account['title']);
+    $title_config_escaped = escapeYaml(json_encode(array('nom_site' => $account['title'])));
 
     $sftp = 'False';
     if (defined('COCOTS_PRESETS_ANSIBLE_SFTP') && COCOTS_PRESETS_ANSIBLE_SFTP === true) {
@@ -151,8 +151,7 @@ mutu__users:
         email: {$email_escaped}
       config:
         - name: cocots_nom_site
-          data:
-            nom_site: {$title_escaped}
+          rawjson: {$title_config_escaped}
 
 EOF;
     if ($write_spip_config) {
