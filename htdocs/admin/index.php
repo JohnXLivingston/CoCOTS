@@ -280,7 +280,9 @@ function display_sort_title($label, $field, $current_sort_info) {
                 display_status_button($account['id'], 'deleted', $app->loc->translate('account_action_status_deleted'), 'btn-danger');
               } elseif ($account['status'] === 'active') {
                 display_status_button($account['id'], 'disabled', $app->loc->translate('account_action_status_disabled'), 'btn-secondary');
-                display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'), 'btn-success');
+                if ($app->debug_mode) {
+                  display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'), 'btn-success');
+                }
               } elseif ($account['status'] === 'failed') {
                 display_status_button($account['id'], 'active', $app->loc->translate('account_action_reprocess'), 'btn-success');
               } elseif ($account['status'] === 'failed_disabled') {

@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.1.9 (not released yet)
+
+* Admin page: hide reprocess button if not in debug mode.
+
 ## v0.1.8
 
 * Fix
