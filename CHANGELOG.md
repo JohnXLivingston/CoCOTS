@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.1.11
+
+* Debug button: on and off display.
+
 ## v0.1.10
 
 * Fix missing filter.

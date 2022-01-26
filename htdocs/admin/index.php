@@ -352,7 +352,7 @@ function display_sort_title($label, $field, $current_sort_info) {
           <?php } ?>
         <?php } ?>
         <div class="col-2">
-          <a class="btn btn-secondary" href="<?php echo $app->getAdminUrl(null, null, $app->debug_mode ? false : true); ?>">
+          <a class="btn btn-<?php if (!$app->debug_mode) { echo 'outline-'; } ?>secondary" href="<?php echo $app->getAdminUrl(null, null, $app->debug_mode ? false : true); ?>">
             Debug <?php echo $app->debug_mode ? 'OFF' : 'ON'; ?>
           </a>
         </div>
