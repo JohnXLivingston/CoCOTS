@@ -253,6 +253,7 @@ function display_sort_title($label, $field, $current_sort_info) {
           </a>
         <?php }
 
+        display_status_filter('warning', 'waiting', array('waiting'));        
         display_status_filter('success', 'active', array('active'));
         display_status_filter('warning', 'processing', array('processing', 'processing_disabled', 'processing_deleted'));
         display_status_filter('warning', 'disabled', array('disabled'));
