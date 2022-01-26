@@ -93,6 +93,9 @@ status_label_processing_deleted = Traitement en cours (suppression)
 status_label_deleted = Supprimé
 status_label_rejected = Refusé
 
+filter_menu = Filtrer :
+filter_status_label_all = Tous
+
 confirm_set_status = Merci de confirmer l'action suivante :
 
 new_moderator_subject = Ajout d'un nouveau modérateur.

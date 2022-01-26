@@ -70,7 +70,8 @@ try {
   }
 
   $sort_info = $app->accounts->readSort(isset($_GET['sort']) ? $_GET['sort'] : null);
-  $accounts = $app->accounts->list(isset($_GET['sort']) ? $_GET['sort'] : null);
+  $filters_info = $app->accounts->readFilters(isset($_GET['filters']) ? $_GET['filters'] : null);
+  $accounts = $app->accounts->list(isset($_GET['sort']) ? $_GET['sort'] : null, isset($_GET['filters']) ? $_GET['filters'] : null);
 
 } catch (CocotsSmartException $e) {
   http_response_code(500);
@@ -228,6 +229,39 @@ function display_sort_title($label, $field, $current_sort_info) {
         <a class="btn btn-secondary" href="<?php echo htmlspecialchars($app->getAdminUrl()); ?>"><?php echo $app->loc->translate('cancel'); ?></a>
       </form>
     <?php } ?>
+
+    <div class="mb-3 mt-3">
+      <span class=""><?php echo $app->loc->translate('filter_menu'); ?></span>
+      <a class="btn btn-<?php echo $filters_info['status_all'] ? '' : 'outline-' ?>primary" href="<?php echo $app->getAdminUrl(null, '*'); ?>">
+        <?php echo $app->loc->translate('filter_status_label_all'); ?>
+      </a>
+      <?php
+        function display_status_filter($color, $status, $statusses) {
+          global $app, $filters_info;
+          $active = array_key_exists($status, $filters_info['by_status']) && $filters_info['by_status'][$status];
+          $status_actions = array();
+          foreach ($statusses as $s) {
+            array_push($status_actions, ($active ? '-' : '+') . 'status-' . $s);
+          }
+        ?>
+          <a class="btn <?php echo 'btn-' . ($active ? '' : 'outline-') . $color; ?>" href="<?php echo $app->getAdminUrl(null, $status_actions); ?>">
+            <?php if ($app->loc->hasTranslation('status_label_' . $status)) {
+              echo $app->loc->translate('status_label_' . $status);
+            } else {
+              echo htmlspecialchars($status);
+            } ?>
+          </a>
+        <?php }
+
+        display_status_filter('success', 'active', array('active'));
+        display_status_filter('warning', 'processing', array('processing', 'processing_disabled', 'processing_deleted'));
+        display_status_filter('warning', 'disabled', array('disabled'));
+        display_status_filter('danger', 'rejected', array('rejected'));
+        display_status_filter('danger', 'deleted', array('deleted'));
+        display_status_filter('danger', 'failed', array('failed', 'failed_disabled', 'failed_deleted'));
+      ?>
+    </div>
+
     <div class="table-responsive"><table class="table table-striped table-hover table-bordered">
       <thead>
         <tr class="text-nowrap">
@@ -317,7 +351,7 @@ function display_sort_title($label, $field, $current_sort_info) {
           <?php } ?>
         <?php } ?>
         <div class="col-2">
-          <a class="btn btn-secondary" href="<?php echo $app->getAdminUrl(null, $app->debug_mode ? false : true); ?>">
+          <a class="btn btn-secondary" href="<?php echo $app->getAdminUrl(null, null, $app->debug_mode ? false : true); ?>">
             Debug <?php echo $app->debug_mode ? 'OFF' : 'ON'; ?>
           </a>
         </div>

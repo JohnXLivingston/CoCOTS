@@ -35,7 +35,7 @@ class Application {
     return preg_match('/^https:/', $this->getBaseUrl());
   }
 
-  public function getAdminUrl($sort_param = null, $debug_mode = null, $send_test_mail = null) {
+  public function getAdminUrl($sort_param = null, $filters_changes = null, $debug_mode = null, $send_test_mail = null) {
     $url = $this->getBaseUrl() . '/admin/';
     if (($this->debug_mode && !isset($debug_mode)) || $debug_mode) {
       $url.= '?debug=1&';
@@ -47,6 +47,27 @@ class Application {
       $url.= substr($url, -1) === '&' ? '' : '?';
       $url.= 'sort=' . urlencode($sort_param) . '&';
     }
+
+    $filters = isset($_GET['filters']) && !empty($_GET['filters']) ? explode(',', $_GET['filters']) : array();
+    if (!empty($filters_changes)) {
+      if (!is_array($filters_changes)) {
+        $filters_changes = array($filters_changes);
+      }
+      foreach ($filters_changes as $filters_change) {
+        if ($filters_change === '*') {
+          $filters = [];
+        } else if (substr($filters_change, 0, 1) === '+') {
+          array_push($filters, substr($filters_change, 1));
+        } else if (substr($filters_change, 0, 1) === '-') {
+          $filters = array_diff($filters, [substr($filters_change, 1)]);
+        }
+      }
+    }
+    if (count($filters) > 0) {
+      $url.= substr($url, -1) === '&' ? '' : '?';
+      $url.= 'filters=' . urlencode(implode(',', $filters));
+    }
+
     if (isset($send_test_mail)) {
       $url.= substr($url, -1) === '&' ? '' : '?';
       $url.= 'send_test_mail=1&';

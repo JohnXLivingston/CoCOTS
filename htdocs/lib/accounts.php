@@ -112,15 +112,33 @@ class Accounts {
     return $sth->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function list($sort_param = null) {
+  public function list($sort_param = null, $filters_param = null) {
     $sort_info = $this->readSort($sort_param); // This ensure that $sort_info['field'] and $sort_info['direction'] are safe.
+    $filters_info = $this->readFilters($filters_param);
 
     $sql = 'SELECT * FROM `' . COCOTS_DB_PREFIX . 'account` ';
+
+    $bind_filters = array();
+    if (!$filters_info['status_all']) {
+      $i = 0;
+      $status_sql_params = array();
+      foreach ($filters_info['status_list'] as $st) {
+        $i++;
+        array_push($bind_filters, array(':status' . $i, $st, PDO::PARAM_STR));
+        array_push($status_sql_params, ':status' . $i);
+      }
+
+      $sql.= ' WHERE status in (' . implode(', ', $status_sql_params) . ') ';
+    }
+
     $sql.= ' ORDER BY `' . $sort_info['field'] . '` ' . $sort_info['direction'] . ' ';
     if (in_array($sort_info['field'], array('email', 'status'))) { // these fields are not unique... adding a second column
       $sql.= ' , `name` ' . $sort_info['direction'] . ' ';
     }
     $sth = $this->app->db->prepare($sql);
+    foreach ($bind_filters as $bind) {
+      $sth->bindParam($bind[0], $bind[1], $bind[2]);
+    }
     $sth->execute();
     $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
     return $rows;
@@ -138,6 +156,26 @@ class Accounts {
     return array(
       'field' => $field,
       'direction' => $direction
+    );
+  }
+
+  public function readFilters($filters_param = null) {
+    $by_status = array();
+    $status_list = array();
+    if (isset($filters_param)) {
+      $filters = explode(',', $filters_param);
+      foreach ($filters as $filter) {
+        if (preg_match('/^status-([a-z_]+)$/', $filter, $matches)) {
+          $status = $matches[1];
+          $by_status[$status] = true;
+          array_push($status_list, $status);
+        }
+      }
+    }
+    return array(
+      'by_status' => $by_status,
+      'status_list' => $status_list,
+      'status_all' => count($status_list) === 0 ? true : false
     );
   }
 

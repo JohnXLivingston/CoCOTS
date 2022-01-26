@@ -93,6 +93,9 @@ status_label_processing_deleted = Processing (deletion)
 status_label_deleted = Deleted
 status_label_rejected = Rejected
 
+filter_menu = Filter:
+filter_status_label_all = All
+
 confirm_set_status = Please confirm the following action:
 
 new_moderator_subject = New moderator.
