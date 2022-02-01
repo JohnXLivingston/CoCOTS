@@ -35,6 +35,7 @@ will_be_notified_when_approved = Vous serez prévenu par mail quand elle sera va
 
 account_id = ID
 account_name = Nom
+account_title = Titre
 account_email = Mail
 account_type = Type
 account_plugins = Plugins

@@ -35,6 +35,7 @@ will_be_notified_when_approved = You will be notified by email when it is valida
 
 account_id = ID
 account_name = Name
+account_title = Title
 account_email = Email
 account_type = Type
 account_plugins = Plugins
