@@ -51,7 +51,8 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
       return false;
     }
     if (defined('COCOTS_PRESETS_ANSIBLE_NAME_PREFIX')) {
-      if (!preg_match('/^[a-z]+_?$/', '' . COCOTS_PRESETS_ANSIBLE_NAME_PREFIX)) {
+      // max length 10: max unix username lenght is 32. So website_name(max 20) + 10 + _(1) < 32
+      if (!preg_match('/^[a-z]{1,10}_?$/', '' . COCOTS_PRESETS_ANSIBLE_NAME_PREFIX)) {
         error_log('Invalid COCOTS_PRESETS_ANSIBLE_NAME_PREFIX constant');
         return false;
       }
@@ -59,7 +60,8 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
     if (defined('COCOTS_PRESETS_ANSIBLE_USE_DOMAIN_KEY_AS_PREFIX') && COCOTS_PRESETS_ANSIBLE_USE_DOMAIN_KEY_AS_PREFIX) {
       if (defined('COCOTS_HOSTING_DOMAINS') && is_array(COCOTS_HOSTING_DOMAINS)) {
         foreach (COCOTS_HOSTING_DOMAINS as $key => $domain) {
-          if (!preg_match('/^[a-z]+_?$/', '' . $key)) {
+          // max length 10: max unix username lenght is 32. So website_name(max 20) + 10 + _(1) < 32
+          if (!preg_match('/^[a-z]{1,10}_?$/', '' . $key)) {
             error_log('Invalid value "'.$key.'" in COCOTS_PRESETS_ANSIBLE_NAME_PREFIX\'s keys.');
             return false;
           }

@@ -1,9 +1,13 @@
 # CoCOTS Changelog
 
+## v0.2.1
+
+* website_name: max length to 20.
+
 ## v0.2.0
 
-* Multi domain
-* Fix missing translation
+* Multi domain.
+* Fix missing translation.
 
 ## v0.1.11
 
