@@ -1,5 +1,10 @@
 # CoCOTS Changelog
 
+## v0.2.0 (not released yet)
+
+* Multi domain
+* Fix missing translation
+
 ## v0.1.11
 
 * Debug button: on and off display.

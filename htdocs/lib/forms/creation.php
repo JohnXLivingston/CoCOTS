@@ -27,6 +27,30 @@ class CreationForm extends Form {
       'aria-label' => $this->app->loc->translateSafe('website_name_constraints')
     ));
 
+    if (defined('COCOTS_HOSTING_DOMAINS') && is_array(COCOTS_HOSTING_DOMAINS)) {
+      $website_domain_options = array();
+      foreach (COCOTS_HOSTING_DOMAINS as $dkey => $d) {
+        array_push($website_domain_options, array(
+          'label' => $d,
+          'value' => $dkey
+        ));
+      }
+      $this->fields['website_domain'] = new SelectField('website_domain', array(
+        'required' => true,
+        'label' => $this->app->loc->translateSafe('website_domain'),
+        'options' => $website_domain_options,
+        'hide_empty_value' => true
+      ));
+
+      // Default value:
+      if (defined('COCOTS_HOSTING_DOMAIN')) {
+        $default_website_domain = array_search(COCOTS_HOSTING_DOMAINS, $website_domain_options, true);
+        if (!empty($default_website_domain)) {
+          $this->fields['website_domain']->setValue($default_website_domain);
+        }
+      }
+    }
+
     $this->fields['email'] = new EmailField('email', array(
       'required' => true,
       'label' => $this->app->loc->translateSafe('email'),
@@ -77,13 +101,23 @@ class CreationForm extends Form {
     return $this->plugins_fields;
   }
 
-  protected function getWebsiteHostname() {
-    $name_field = $this->fields['website_name']->getValue();
-    if (!filter_var(COCOTS_HOSTING_DOMAIN, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
-      throw new Exception('Missing or invalid config COCOTS_HOSTING_DOMAIN');
-    }
-    return $name_field . '.' . COCOTS_HOSTING_DOMAIN;
-  }
+  // protected function getWebsiteHostname() {
+  //   $name_field = $this->fields['website_name']->getValue();
+  //   if ($this->hasField('website_domain')) {
+  //     $option = $this->fields['website_domain']->getSelectedOption();
+  //     if ($option) {
+  //       $domain = $option['label'];
+  //     } else {
+  //       throw new Exception('Option not found');
+  //     }
+  //   } else {
+  //     $domain = COCOTS_HOSTING_DOMAIN;
+  //   }
+  //   if (!filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+  //     throw new Exception('Missing or invalid config COCOTS_HOSTING_DOMAIN / COCOTS_HOSTING_DOMAINS');
+  //   }
+  //   return $name_field . '.' . $domain;
+  // }
 
   public function check() {
     if (!parent::check()) {
@@ -132,7 +166,18 @@ class CreationForm extends Form {
     try {
       $title = $this->fields['website_title']->getValue();
       $name = $this->fields['website_name']->getValue();
-      $domain = COCOTS_HOSTING_DOMAIN;
+      if ($this->hasField('website_domain')) {
+        $domain_option = $this->fields['website_domain']->getSelectedOption();
+        if (!$domain_option) {
+          throw new Exception('getSelectedOption returned a falsey value.');
+        }
+        $domain = $domain_option['label'];
+      } else {
+        $domain = COCOTS_HOSTING_DOMAIN;
+      }
+      if (!filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+        throw new Exception('Missing or invalid config COCOTS_HOSTING_DOMAIN / COCOTS_HOSTING_DOMAINS: domain is invalid.');
+      }
       $email = $this->fields['email']->getValue();
       if (isset($this->fields['website_type'])) {
         $type = $this->fields['website_type']->getValue();

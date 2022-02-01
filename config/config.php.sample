@@ -46,6 +46,7 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 // define("COCOTS_PRESETS_CLASS", 'CocotsAnsibleSpipPresets');
 // define("COCOTS_PRESETS_ANSIBLE_VAR_PATH", '/xxx/host_vars/'); // The path to the folder where files should be created
 // define("COCOTS_PRESETS_ANSIBLE_NAME_PREFIX", 'account_'); // optionnal prefix for username, dbname, mysql user name, ...
+// define("COCOTS_PRESETS_ANSIBLE_USE_DOMAIN_KEY_AS_PREFIX", true); // optionnal. If true, will use the key in COCOTS_HOSTING_DOMAINS as prefix. Fallback on COCOTS_PRESETS_ANSIBLE_NAME_PREFIX if not found.
 // define("COCOTS_PRESETS_ANSIBLE_STATE_ENABLED", 'enabled'); // optionnal state value to write in ansible vars
 // define("COCOTS_PRESETS_ANSIBLE_STATE_DISABLED", 'disabled'); // optionnal state value to write in ansible vars
 // define("COCOTS_PRESETS_ANSIBLE_STATE_DELETED", 'deleted'); // optionnal state value to write in ansible vars
@@ -56,7 +57,11 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 // define("COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG", array('forums_publics' => 'non')); // custom spip config
 // define("COCOTS_PRESETS_ANSIBLE_SFTP", true); // to activate sftp access
 
-define("COCOTS_HOSTING_DOMAIN", 'example.com');
+define("COCOTS_HOSTING_DOMAIN", 'example.com'); // The domain where we are hosting services. If COCOTS_HOSTING_DOMAINS is defined, this is the default one.
+// Optionnal COCOTS_HOSTING_DOMAINS: an optionnal array of domains to host.
+// COCOTS_HOSTING_DOMAIN must be part of (and is the default value).
+// The keys could be used for other purpose (for example, with Ansible preset, it will be used as prefix).
+// define("COCOTS_HOSTING_DOMAINS", array('local' => 'local.example.test', 'extern' => 'extern.example.test'));
 
 // The text to display on top of the form, to explain what is this interface.
 // Note: it can contain HTML. You have to correctly escape this.

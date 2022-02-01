@@ -65,8 +65,18 @@ try {
           <?php echo $form->getField('website_name')->getLabelHtml('form-label'); ?>
           <span class="input-group">
             <span class="input-group-text">https://</span>
-            <?php echo $form->getField('website_name')->html(); ?>
-            <span class="input-group-text">.<?php echo htmlspecialchars(COCOTS_HOSTING_DOMAIN); ?></span>
+            <?php
+              echo $form->getField('website_name')->html();
+              echo '<span class="input-group-text">';
+              echo '.';
+              if ($form->hasField('website_domain')) {
+                echo '</span>';
+                echo $form->getField('website_domain')->html();
+              } else {
+                echo htmlspecialchars(COCOTS_HOSTING_DOMAIN); 
+                echo '</span>';
+              }
+            ?>
           </span>
         </row>
         <?php

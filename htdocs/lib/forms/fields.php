@@ -242,11 +242,15 @@ class EmailField extends TextField {
 
 class SelectField extends Field {
   protected $options = array();
+  protected $hide_empty_value = true;
 
   public function __construct($name, $options) {
     parent::__construct($name, $options);
     if(is_array($options['options'])) {
       $this->options = $options['options'];
+    }
+    if (($options['hide_empty_value'] ?? false) === true) {
+      $this->hide_empty_value = true;
     }
   }
 
@@ -259,11 +263,13 @@ class SelectField extends Field {
 
   function html($classes = '') {
     $html = '<select ' . $this->attributesHtml($classes) . '>';
-    $html.= '<option value=""';
-    if (!isset($this->value)) {
-      $html.= ' selected="selected" ';
+    if (!$this->hide_empty_value) {
+      $html.= '<option value=""';
+      if (!isset($this->value)) {
+        $html.= ' selected="selected" ';
+      }
+      $html.= '></option>';
     }
-    $html.= '></option>';
     foreach ($this->options as $idx => $option) {
       $html.= '<option value="' . htmlspecialchars($option['value']) . '" ';
       if (isset($this->value) && $this->value === $option['value']) {
@@ -274,6 +280,15 @@ class SelectField extends Field {
     }
     $html.= '</select>';
     return $html;
+  }
+
+  public function getSelectedOption() {
+    foreach ($this->options as $idx => $option) {
+      if (isset($this->value) && $this->value === $option['value']) {
+        return $option;
+      }
+    }
+    return null;
   }
 
   public function check() {

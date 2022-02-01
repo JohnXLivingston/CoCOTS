@@ -56,6 +56,16 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
         return false;
       }
     }
+    if (defined('COCOTS_PRESETS_ANSIBLE_USE_DOMAIN_KEY_AS_PREFIX') && COCOTS_PRESETS_ANSIBLE_USE_DOMAIN_KEY_AS_PREFIX) {
+      if (defined('COCOTS_HOSTING_DOMAINS') && is_array(COCOTS_HOSTING_DOMAINS)) {
+        foreach (COCOTS_HOSTING_DOMAINS as $key => $domain) {
+          if (!preg_match('/^[a-z]+_?$/', '' . $key)) {
+            error_log('Invalid value "'.$key.'" in COCOTS_PRESETS_ANSIBLE_NAME_PREFIX\'s keys.');
+            return false;
+          }
+        }
+      }
+    }
     return true;
   }
 
@@ -73,7 +83,17 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
     $file_name.= $url . '.yml';
 
     $name_prefix = '';
-    if (defined('COCOTS_PRESETS_ANSIBLE_NAME_PREFIX')) {
+    if (defined('COCOTS_PRESETS_ANSIBLE_USE_DOMAIN_KEY_AS_PREFIX') && COCOTS_PRESETS_ANSIBLE_USE_DOMAIN_KEY_AS_PREFIX) {
+      if (defined('COCOTS_HOSTING_DOMAINS') && is_array(COCOTS_HOSTING_DOMAINS)) {
+        foreach (COCOTS_HOSTING_DOMAINS as $key => $val) {
+          if ($val === $account['domain']) {
+            $name_prefix = $key;
+            break;
+          }
+        }
+      }
+    }
+    if ($name_prefix === '' && defined('COCOTS_PRESETS_ANSIBLE_NAME_PREFIX')) {
       $name_prefix = COCOTS_PRESETS_ANSIBLE_NAME_PREFIX;
     }
 
