@@ -1,6 +1,6 @@
 # CoCOTS Changelog
 
-## v0.2.0 (not released yet)
+## v0.2.0
 
 * Multi domain
 * Fix missing translation
