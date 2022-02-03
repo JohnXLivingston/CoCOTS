@@ -1,6 +1,6 @@
 # CoCOTS Changelog
 
-## v0.2.2 (not released yet)
+## v0.2.2
 
 * Antispam field.
 * Adding a mecanisme to avoid css cache issues.
