@@ -3,7 +3,7 @@
 ## v0.2.2
 
 * Antispam field.
-* Adding a mecanisme to avoid css cache issues.
+* Adding a mecanism to avoid css cache issues.
 * Updated composer dependencies.
 * Fix composer.json file (cmd must be done on install, not update).
 * Fix: close i18n files after reading.
