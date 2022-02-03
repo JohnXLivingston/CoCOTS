@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.2.2 (not released yet)
+
+* updated composer dependencies
+
 ## v0.2.1
 
 * website_name: max length to 20.
