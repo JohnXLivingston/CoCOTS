@@ -67,7 +67,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title><?php echo $app->loc->translate('login_title') ?></title>
-      <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
+      <link rel="stylesheet" href="<?php echo $app->getCSSUrl(); ?>">
   </head>
   <body>
     <form method="POST" class="container mt-3">

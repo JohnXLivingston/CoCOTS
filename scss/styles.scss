@@ -19,3 +19,7 @@
   @extend .container;
   @extend .mt-3;
 }
+
+input[name=comment] {
+  display: none;
+}

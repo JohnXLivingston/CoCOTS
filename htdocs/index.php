@@ -10,13 +10,19 @@ try {
   $form = $app->getForm('creation');
   
   if ($_POST['submit'] ?? false) {
-    $form->readPost();
+    if (!empty($_POST['comment'])) {
+      // This is an anti-bot field. If filled, must be a bot...
+      $error_on_save = true;
+      error_log('COCOTS_BOT_ALERT_COMMENT: comment field is not empty: "' . $_POST['comment'] . '"');
+    } else {
+      $form->readPost();
 
-    if ($form->check()) {
-      if ($form->save()) {
-        $saved = true;
-      } else {
-        $error_on_save = true;
+      if ($form->check()) {
+        if ($form->save()) {
+          $saved = true;
+        } else {
+          $error_on_save = true;
+        }
       }
     }
   }
@@ -38,7 +44,7 @@ try {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title><?php echo $app->loc->translate('title') ?></title>
-      <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
+      <link rel="stylesheet" href="<?php echo $app->getCSSUrl(); ?>">
       <?php
         if(defined('COCOTS_CUSTOM_CSS')) {
           echo '<style>';
@@ -143,6 +149,8 @@ try {
             }
           ?>
         <?php } ?>
+
+        <input type="text" name="comment" id="comment" value="" aria-hidden="true">
 
         <input name="submit" id="submit"
           tabindex="5"

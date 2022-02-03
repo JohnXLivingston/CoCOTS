@@ -48,7 +48,7 @@ try {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title><?php echo $app->loc->translate('title_invit') ?></title>
-      <link rel="stylesheet" href="<?php echo $app->getBaseUrl(); ?>/static/styles.css">
+      <link rel="stylesheet" href="<?php echo $app->getCSSUrl(); ?>">
       <?php
         if(defined('COCOTS_CUSTOM_CSS') || defined('COCOTS_CUSTOM_ADMIN_CSS')) {
           echo '<style>';

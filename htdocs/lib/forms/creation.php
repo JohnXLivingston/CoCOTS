@@ -133,6 +133,7 @@ class CreationForm extends Form {
     if ($this->hasField('security_question')) {
       $valid_answers = defined('COCOTS_SECURITY_ANSWERS') ? COCOTS_SECURITY_ANSWERS : array();
       if (!in_array($this->fields['security_question']->getValue(), $valid_answers, true)) {
+        error_log('COCOTS_BOT_ALERT_QUESTION: invalid security question answer: "' . $this->fields['security_question']->getValue() . '"');
         $this->fields['security_question']->addErrorCode('error_security_question');
         return false;
       }

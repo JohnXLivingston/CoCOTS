@@ -46,6 +46,7 @@ class I18n {
           $this->translations[$key] = $value;
         }
       }
+      fclose($fp);
     }
   }
 

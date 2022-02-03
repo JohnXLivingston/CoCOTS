@@ -281,4 +281,24 @@ class Application {
       $this->notifyAdmins($subject, $message);
     }
   }
+
+  public function getCSSUrl() {
+    $path = realpath(COCOTS_ROOT_DIR . 'static/styles.css');
+    // Searching for a version with a md5 in filename...
+    $file = '';
+    $nb = 0;
+    foreach (glob($path . '.md5*') as $filename) {
+      $nb++;
+      $file = basename($filename);
+    }
+    if ($nb > 1) {
+      error_log('There are multiple css files, dont know which to choose.');
+      $file = '';
+    }
+    if (empty($file)) {
+      $file = 'styles.css';
+    }
+    $u = $this->getBaseUrl() . '/static/' . $file;
+    return $u;
+  }
 }

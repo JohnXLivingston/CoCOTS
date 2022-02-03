@@ -2,7 +2,12 @@
 
 ## v0.2.2 (not released yet)
 
-* updated composer dependencies
+* Antispam field.
+* Adding a mecanisme to avoid css cache issues.
+* Updated composer dependencies.
+* Fix composer.json file (cmd must be done on install, not update).
+* Fix: close i18n files after reading.
+* Adding custom logs when security question answer is not valid.
 
 ## v0.2.1
 

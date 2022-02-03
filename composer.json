@@ -5,9 +5,11 @@
     "scssphp/scssphp": "^1.10"
   },
   "scripts": {
-    "post-update-cmd": [
+    "post-install-cmd": [
       "mkdir -p htdocs/static",
-      "php vendor/scssphp/scssphp/bin/pscss --load-path=vendor/twbs/ --sourcemap --embed-sources --style=compressed scss/styles.scss htdocs/static/styles.css"
+      "rm -rf htdocs/static/styles.css.md5*",
+      "php vendor/scssphp/scssphp/bin/pscss --load-path=vendor/twbs/ --sourcemap --embed-sources --style=compressed scss/styles.scss htdocs/static/styles.css",
+      "cp htdocs/static/styles.css htdocs/static/styles.css.md5$(md5sum htdocs/static/styles.css | awk '{print $1}')"
     ]
   }
 }
