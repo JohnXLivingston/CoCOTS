@@ -10,8 +10,10 @@ abstract class Field {
   protected $value;
   protected $error_codes = array();
   protected $required = false;
+  protected $form;
 
-  public function __construct($name, $options) {
+  public function __construct($form, $name, $options) {
+    $this->form = $form;
     $this->name = $name;
     $this->value = null;
     if (($options['required'] ?? false) === true) {
@@ -54,9 +56,12 @@ abstract class Field {
   protected function getHelpContent() {
     if (!defined('COCOTS_FIELDS_HELP')) { return null; }
     if (!is_array(COCOTS_FIELDS_HELP)) { return null; }
-    if (!array_key_exists($this->name, COCOTS_FIELDS_HELP)) { return null; }
-    if (empty(COCOTS_FIELDS_HELP[$this->name])) { return null; }
-    return COCOTS_FIELDS_HELP[$this->name];
+    $form_name = $this->form->getFormName();
+    if (!array_key_exists($form_name, COCOTS_FIELDS_HELP)) { return null; }
+    if (empty(COCOTS_FIELDS_HELP[$form_name])) { return null; }
+    if (!array_key_exists($this->name, COCOTS_FIELDS_HELP[$form_name])) { return null; }
+    if (empty(COCOTS_FIELDS_HELP[$form_name][$this->name])) { return null; }
+    return COCOTS_FIELDS_HELP[$form_name][$this->name];
   }
 
   public function getHelpHtml($classes = 'form-text') {
@@ -138,8 +143,8 @@ abstract class InputField extends Field {
   protected $aria_label = null;
   protected $autofocus = false;
 
-  public function __construct($name, $options) {
-    parent::__construct($name, $options);
+  public function __construct($form, $name, $options) {
+    parent::__construct($form, $name, $options);
     if (isset($options['placeholder'])) {
       if ($options['placeholder'] === true) {
         // By default, we take the label as placeholder.
@@ -181,8 +186,8 @@ abstract class InputField extends Field {
 class TextField extends InputField {
   protected $pattern = null;
   protected $maxlength = null;
-  public function __construct($name, $options) {
-    parent::__construct($name, $options);
+  public function __construct($form, $name, $options) {
+    parent::__construct($form, $name, $options);
     if (isset($options['pattern'])) {
       $this->pattern = $options['pattern'];
     }
@@ -265,8 +270,8 @@ class SelectField extends Field {
   protected $options = array();
   protected $hide_empty_value = true;
 
-  public function __construct($name, $options) {
-    parent::__construct($name, $options);
+  public function __construct($form, $name, $options) {
+    parent::__construct($form, $name, $options);
     if(is_array($options['options'])) {
       $this->options = $options['options'];
     }
@@ -337,8 +342,8 @@ class CheckboxField extends Field {
   protected $disabled = false;
   protected $default = false;
 
-  public function __construct($name, $options) {
-    parent::__construct($name, $options);
+  public function __construct($form, $name, $options) {
+    parent::__construct($form, $name, $options);
     $this->value = false;
     if(isset($options['disabled'])) {
       $this->disabled = boolval($options['disabled']);

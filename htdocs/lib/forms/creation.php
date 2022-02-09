@@ -9,8 +9,12 @@ require_once(COCOTS_ROOT_DIR . 'lib/forms/abstract.php');
 class CreationForm extends Form {
   protected $plugins_fields = array();
 
+  public function getFormName() {
+    return 'creation';
+  }
+
   protected function initFields() {
-    $this->fields['website_title'] = new TextField('website_title', array(
+    $this->fields['website_title'] = new TextField($this, 'website_title', array(
       'required' => true,
       'autofocus' => true,
       'label' => $this->app->loc->translateSafe('website_title'),
@@ -18,7 +22,7 @@ class CreationForm extends Form {
       'maxlength' => '128'
     ));
 
-    $this->fields['website_name'] = new TextField('website_name', array(
+    $this->fields['website_name'] = new TextField($this, 'website_name', array(
       'required' => true,
       'label' => $this->app->loc->translateSafe('website_name'),
       'placeholder' => true,
@@ -35,7 +39,7 @@ class CreationForm extends Form {
           'value' => $dkey
         ));
       }
-      $this->fields['website_domain'] = new SelectField('website_domain', array(
+      $this->fields['website_domain'] = new SelectField($this, 'website_domain', array(
         'required' => true,
         'label' => $this->app->loc->translateSafe('website_domain'),
         'options' => $website_domain_options,
@@ -51,13 +55,13 @@ class CreationForm extends Form {
       }
     }
 
-    $this->fields['email'] = new EmailField('email', array(
+    $this->fields['email'] = new EmailField($this, 'email', array(
       'required' => true,
       'label' => $this->app->loc->translateSafe('email'),
       'placeholder' => $this->app->loc->translateSafe('email_example')
     ));
 
-    $this->fields['confirm_email'] = new EmailField('confirm_email', array(
+    $this->fields['confirm_email'] = new EmailField($this, 'confirm_email', array(
       'required' => true,
       'label' => $this->app->loc->translateSafe('confirm_email'),
       'placeholder' => $this->app->loc->translateSafe('email_example')
@@ -65,7 +69,7 @@ class CreationForm extends Form {
 
     $website_types = $this->app->presets->websiteTypes();
     if ($website_types) {
-      $this->fields['website_type'] = new SelectField('website_type', array(
+      $this->fields['website_type'] = new SelectField($this, 'website_type', array(
         'required' => true,
         'label' => $this->app->loc->translateSafe('website_type'),
         'options' => $website_types
@@ -79,7 +83,7 @@ class CreationForm extends Form {
           throw new Exception('Invalid plugin name: ' . $plugin['value']);
         }
         $fname = 'plugin_' . $plugin['value'];
-        $this->fields[$fname] = new CheckboxField($fname, array(
+        $this->fields[$fname] = new CheckboxField($this, $fname, array(
           'label' => $plugin['label'],
           'disabled' => boolval($plugin['disabled'] ?? false),
           'default' => boolval($plugin['default'] ?? false)
@@ -89,7 +93,7 @@ class CreationForm extends Form {
     }
 
     if (defined('COCOTS_SECURITY_QUESTION')) {
-      $this->fields['security_question'] = new TextField('security_question', array(
+      $this->fields['security_question'] = new TextField($this, 'security_question', array(
         'required' => true,
         'label' => strval(COCOTS_SECURITY_QUESTION),
         'placeholder' => true

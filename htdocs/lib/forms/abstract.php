@@ -18,6 +18,8 @@ abstract class Form {
 
   abstract protected function initFields();
 
+  abstract public function getFormName();
+
   public function hasField($name) {
     return isset($this->fields[$name]);
   }

@@ -12,8 +12,12 @@ class InvitForm extends Form {
     $this->moderator_id = $id;
   }
 
+  public function getFormName() {
+    return 'invit';
+  }
+
   protected function initFields() {
-    $this->fields['password'] = new PasswordField('password', array(
+    $this->fields['password'] = new PasswordField($this, 'password', array(
       'required' => true,
       'autofocus' => true,
       'label' => $this->app->loc->translateSafe('invit_password'),
@@ -23,7 +27,7 @@ class InvitForm extends Form {
       'aria-label' => $this->app->loc->translateSafe('invit_password_constraints')
     ));
 
-    $this->fields['confirm_password'] = new PasswordField('confirm_password', array(
+    $this->fields['confirm_password'] = new PasswordField($this, 'confirm_password', array(
       'required' => true,
       'label' => $this->app->loc->translateSafe('confirm_invit_password'),
       'placeholder' => true

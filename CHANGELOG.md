@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.3.1
+
+* Fix: help texts must be form specific.
+
 ## v0.3.0
 
 * Changing label for website_name.
