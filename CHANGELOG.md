@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.3.0
+
+* Changement du libellé du champs website_name
+
 ## v0.2.2
 
 * Antispam field.

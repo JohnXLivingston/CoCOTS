@@ -1,7 +1,7 @@
 title = Create website
 admin_title = Websites Administration
 website_title = Website title
-website_name = Website name
+website_name = Website address
 website_domain = Website domain
 email = email
 confirm_email = Confirm email
