@@ -2,7 +2,8 @@
 
 ## v0.3.0
 
-* Changement du libellé du champs website_name
+* Changing label for website_name.
+* Mecanism to add help texts near to form fields.
 
 ## v0.2.2
 

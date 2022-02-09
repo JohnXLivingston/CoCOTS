@@ -65,6 +65,7 @@ try {
         <div class="mt-3">
           <?php echo $form->getField('website_title')->getLabelHtml('form-label'); ?>
           <?php echo $form->getField('website_title')->html(); ?>
+          <?php echo $form->getField('website_title')->getHelpHtml(); ?>
         </div>
 
         <div class="mt-3">
@@ -84,6 +85,8 @@ try {
               }
             ?>
           </span>
+          <?php echo $form->getField('website_name')->getHelpHtml(); ?>
+          <?php if ($form->hasField('website_domain')) { echo $form->getField('website_domain')->getHelpHtml(); } ?>
         </row>
         <?php
           if ($form->getField('website_name')->hasErrorCode('error_website_name_already_exists')) {
@@ -96,11 +99,13 @@ try {
         <div class="mt-3">
           <?php echo $form->getField('email')->getLabelHtml('form-label'); ?>
           <?php echo $form->getField('email')->html(); ?>
+          <?php echo $form->getField('email')->getHelpHtml(); ?>
         </div>
 
         <div class="mt-3">
           <?php echo $form->getField('confirm_email')->getLabelHtml('form-label'); ?>
           <?php echo $form->getField('confirm_email')->html(); ?>
+          <?php echo $form->getField('confirm_email')->getHelpHtml(); ?>
         </div>
         <?php
           if ($form->getField('confirm_email')->hasErrorCode('error_confirm_email')) {
@@ -114,6 +119,7 @@ try {
           <div class="mt-3">
             <?php echo $form->getField('website_type')->getLabelHtml('form-label'); ?>
             <?php echo $form->getField('website_type')->html(); ?>
+            <?php echo $form->getField('website_type')->getHelpHtml(); ?>
           </div>
         <?php } ?>
 
@@ -140,6 +146,7 @@ try {
           <div class="mt-3">
             <?php echo $form->getField('security_question')->getLabelHtml('form-label'); ?>
             <?php echo $form->getField('security_question')->html(); ?>
+            <?php echo $form->getField('security_question')->getHelpHtml(); ?>
           </div>
           <?php
             if ($form->getField('security_question')->hasErrorCode('error_security_question')) {

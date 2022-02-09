@@ -73,6 +73,14 @@ define("COCOTS_SECURITY_QUESTION", "What is you favorite color?");
 // possible answers (case sensitive);
 define("COCOTS_SECURITY_ANSWERS", array("Red", "red", "RED"));
 
+// Optionnal help texts to add besides form fields (can contain HTML tags):
+// define("COCOTS_FIELDS_HELP", array(
+//   'website_name' => 'Here is the help text for website_name',
+//   'email' => null, // no help for this field
+//   [...]
+//   // you can find fields name in the php form file
+// ));
+
 // The «notifyAccountCreated» mail content can be customized.
 // Use the «%URL%» placeholder to insert the link.
 // define("COCOTS_CUSTOM_ACCOUNT_CREATED_NOTIFICATION", <<<EOF

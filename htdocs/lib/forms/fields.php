@@ -51,6 +51,24 @@ abstract class Field {
     return $html;
   }
 
+  protected function getHelpContent() {
+    if (!defined('COCOTS_FIELDS_HELP')) { return null; }
+    if (!is_array(COCOTS_FIELDS_HELP)) { return null; }
+    if (!array_key_exists($this->name, COCOTS_FIELDS_HELP)) { return null; }
+    if (empty(COCOTS_FIELDS_HELP[$this->name])) { return null; }
+    return COCOTS_FIELDS_HELP[$this->name];
+  }
+
+  public function getHelpHtml($classes = 'form-text') {
+    $help = $this->getHelpContent();
+    if (empty($help)) { return ''; }
+    $r = '<div ';
+    $r.= 'id="' . $this->name . '__Help" ';
+    $r.= 'class="' . htmlspecialchars($classes) . '" ';
+    $r.= '>' . $help . '</div>'; // help can contain html
+    return $r;
+  }
+
   public function readPost() {
     $this->setValue($_POST[$this->name] ?? '');
   }
@@ -68,6 +86,9 @@ abstract class Field {
     $attrs['class'] = '';
     if (count($this->error_codes) > 0) {
       $attrs['class'] = $attrs['class'] . ' is-invalid';
+    }
+    if (!empty($this->getHelpContent())) {
+      $attrs['aria-describedby'] = $this->name . '__Help';
     }
     return $attrs;
   }

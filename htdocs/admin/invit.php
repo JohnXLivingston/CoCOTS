@@ -108,10 +108,12 @@ try {
         <div class="mt-3">
           <?php echo $form->getField('password')->getLabelHtml('form-label'); ?>
           <?php echo $form->getField('password')->html(); ?>
+          <?php echo $form->getField('password')->getHelpHtml(); ?>
         </div>
         <div class="mt-3">
           <?php echo $form->getField('confirm_password')->getLabelHtml('form-label'); ?>
           <?php echo $form->getField('confirm_password')->html(); ?>
+          <?php echo $form->getField('confirm_password')->getHelpHtml(); ?>
         </div>
         <?php
           if ($form->getField('confirm_password')->hasErrorCode('error_confirm_invit_password')) {
