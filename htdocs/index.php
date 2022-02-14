@@ -157,6 +157,20 @@ try {
           ?>
         <?php } ?>
 
+        <?php
+          $terms_fields = $form->getTermsFields();
+          if (count($terms_fields) > 0) {
+            foreach($terms_fields as $term_field) { ?>
+              <div class="mt-3 alert alert-primary">
+                <div class="form-check">
+                  <?php echo $term_field->html(); ?>
+                  <?php echo $term_field->getLabelHtml('form-check-label'); ?>
+                </div>
+              </div>
+            <?php }
+          }
+        ?>
+
         <input type="text" name="comment" id="comment" value="" aria-hidden="true">
 
         <input name="submit" id="submit"

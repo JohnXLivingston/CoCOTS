@@ -8,6 +8,7 @@ require_once(COCOTS_ROOT_DIR . 'lib/forms/abstract.php');
 
 class CreationForm extends Form {
   protected $plugins_fields = array();
+  protected $terms_fields = array();
 
   public function getFormName() {
     return 'creation';
@@ -92,6 +93,31 @@ class CreationForm extends Form {
       }
     }
 
+    if (defined('COCOTS_TERMS')) {
+      if (!is_array(COCOTS_TERMS)) {
+        throw new Exception('Invalid config COCOTS_TERMS');
+      }
+      foreach (COCOTS_TERMS as $terms_key => $terms) {
+        if (!is_array($terms)) {
+          throw new Exception('Invalid config COCOTS_TERMS for ' . $terms_key);
+        }
+        if (!preg_match('/^\w{1,255}$/', $terms_key)) {
+          throw new Exception('Invalid config COCOTS_TERMS, terms key invalid: ' . $terms_key);
+        }
+        if (empty($terms['html']) || empty($terms['version']) || !preg_match('/^(\w|\.){1,255}$/', $terms_key)) {
+          throw new Exception('Invalid config COCOTS_TERMS for ' . $terms_key);
+        }
+        $fname = 'terms_' . $terms_key;
+        $this->fields[$fname] = new CheckboxField($this, $fname, array(
+          'label' => $terms['html'],
+          'checkbox_value' => $terms['version'],
+          'required' => $terms['required'] ? true : false,
+          'label_is_html' => true
+        ));
+        array_push($this->terms_fields, $this->fields[$fname]);
+      }
+    }
+
     if (defined('COCOTS_SECURITY_QUESTION')) {
       $this->fields['security_question'] = new TextField($this, 'security_question', array(
         'required' => true,
@@ -103,6 +129,10 @@ class CreationForm extends Form {
 
   public function getPluginsFields() {
     return $this->plugins_fields;
+  }
+
+  public function getTermsFields() {
+    return $this->terms_fields;
   }
 
   // protected function getWebsiteHostname() {
@@ -210,7 +240,17 @@ class CreationForm extends Form {
         'plugins' => $plugins
       );
 
-      $this->app->accounts->create($account_info);
+      $aid = $this->app->accounts->create($account_info);
+      $terms_fields = $this->getTermsFields();
+      if (count($terms_fields) > 0) {
+        foreach ($terms_fields as $term_field) {
+          $term_val = $term_field->getValue();
+          if ($term_val !== false) {
+            $term = preg_replace('/^terms_/', '', $term_field->getName());
+            $this->app->terms->create($aid, $term, $term_val);
+          }
+        }
+      }
 
       return true;
     } catch (Exception | Error $e) {

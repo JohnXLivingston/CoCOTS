@@ -59,6 +59,7 @@ class Moderators {
       'email' => $email,
       'invitation' => $invitation_key
     ));
+    $id = $this->app->db->lastInsertId();
 
     $message = '';
     $message.= $this->app->loc->translateSafe('new_moderator_message') . "\n\n";
@@ -78,6 +79,8 @@ class Moderators {
 
     $message.= $this->app->loc->translateSafe('invit_message_signature') . "\n\n";
     $this->app->notify([$email], $this->app->loc->translateSafe('invit_message_subject'), $message);
+
+    return $id;
   }
 
   public function getActiveModeratorsMails() {

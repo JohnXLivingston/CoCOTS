@@ -10,6 +10,7 @@ abstract class Field {
   protected $value;
   protected $error_codes = array();
   protected $required = false;
+  protected $label_is_html = false;
   protected $form;
 
   public function __construct($form, $name, $options) {
@@ -21,6 +22,9 @@ abstract class Field {
     }
     if (isset($options['label'])) {
       $this->label = $options['label'];
+    }
+    if (isset($options['label_is_html']) && $options['label_is_html'] === true) {
+      $this->label_is_html = true;
     }
   }
 
@@ -48,7 +52,11 @@ abstract class Field {
       $html.= ' class="' .htmlspecialchars($classes). '"';
     }
     $html.= '>';
-    $html.= htmlspecialchars($this->getLabel());
+    if ($this->label_is_html) {
+      $html.= $this->getLabel();
+    } else {
+      $html.= htmlspecialchars($this->getLabel());
+    }
     $html.= '</label>';
     return $html;
   }
@@ -341,6 +349,7 @@ class SelectField extends Field {
 class CheckboxField extends Field {
   protected $disabled = false;
   protected $default = false;
+  protected $checkbox_value = true; // value of the checked field. If true, value will be false/true. If this is a string, will be false or 'string'.
 
   public function __construct($form, $name, $options) {
     parent::__construct($form, $name, $options);
@@ -350,6 +359,9 @@ class CheckboxField extends Field {
     }
     if(isset($options['default'])) {
       $this->default = boolval($options['default']);
+    }
+    if (isset($options['checkbox_value']) && is_string($options['checkbox_value'])) {
+      $this->checkbox_value = $options['checkbox_value'];
     }
   }
 
@@ -362,7 +374,11 @@ class CheckboxField extends Field {
 
   public function setValue($value) {
     if ($this->disabled) { return $this; }
-    $this->value = boolval($value);
+    if ($this->checkbox_value !== true) {
+      $this->value = $value === $this->checkbox_value ? $value : false;
+    } else {
+      $this->value = boolval($value);
+    }
     return $this;
   }
 
@@ -370,7 +386,11 @@ class CheckboxField extends Field {
     $attrs = parent::getAttributes();
     $attrs['name'] = $this->name;
     $attrs['type'] = 'checkbox';
-    $attrs['value'] = '1';
+    if ($this->checkbox_value === true) {
+      $attrs['value'] = '1';
+    } else {
+      $attrs['value'] = $this->checkbox_value;
+    }
     $attrs['class'] = $attrs['class'] . ' form-check-input';
     if ($this->getValue()) {
       $attrs['checked'] = 'checked';
@@ -390,7 +410,7 @@ class CheckboxField extends Field {
       return false;
     }
 
-    if ($this->isRequired() && $this->getValue() !== true) {
+    if ($this->isRequired() && $this->getValue() !== $this->checkbox_value) {
       $this->addErrorCode('error_field_required');
       return false;
     }

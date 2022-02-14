@@ -16,7 +16,7 @@ define("COCOTS_MAIL_SMTP_AUTH_USER", "user@example.com");
 define("COCOTS_MAIL_SMTP_AUTH_PASS", "pass");
 define("COCOTS_MAIL_SMTP_DEBUG", true);
 define("COCOTS_MAIL_ADMINS", array('admin@example.com')); // List of admins mails to notify. If empty, no notification will be send.
-define("COCOTS_MAIL_PREFIX", "[CoCOTS] "); // Optionnal prefix to add to mail subjets. false if no prefix.
+define("COCOTS_MAIL_PREFIX", "[CoCOTS] "); // Optional prefix to add to mail subjets. false if no prefix.
 
 define("COCOTS_ADMIN_USER", "admin");
 define("COCOTS_ADMIN_PASSWORD", "secretpassw0rd");
@@ -45,20 +45,20 @@ define("COCOTS_PRESETS_CLASS", 'CocotsExamplePresets');
 // define("COCOTS_PRESETS_PATH", 'ansible.php');
 // define("COCOTS_PRESETS_CLASS", 'CocotsAnsibleSpipPresets');
 // define("COCOTS_PRESETS_ANSIBLE_VAR_PATH", '/xxx/host_vars/'); // The path to the folder where files should be created
-// define("COCOTS_PRESETS_ANSIBLE_NAME_PREFIX", 'account_'); // optionnal prefix for username, dbname, mysql user name, ...
-// define("COCOTS_PRESETS_ANSIBLE_USE_DOMAIN_KEY_AS_PREFIX", true); // optionnal. If true, will use the key in COCOTS_HOSTING_DOMAINS as prefix. Fallback on COCOTS_PRESETS_ANSIBLE_NAME_PREFIX if not found.
-// define("COCOTS_PRESETS_ANSIBLE_STATE_ENABLED", 'enabled'); // optionnal state value to write in ansible vars
-// define("COCOTS_PRESETS_ANSIBLE_STATE_DISABLED", 'disabled'); // optionnal state value to write in ansible vars
-// define("COCOTS_PRESETS_ANSIBLE_STATE_DELETED", 'deleted'); // optionnal state value to write in ansible vars
-// define("COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH", "3.2"); // optionnal spip branch
-// define("COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS", ["https://plugins.spip.net/depots/principal.xml"]); // optionnal spip depots
-// define("COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS", ["facteur", "nospam"]); // optionnal spip plugins prefix
+// define("COCOTS_PRESETS_ANSIBLE_NAME_PREFIX", 'account_'); // optional prefix for username, dbname, mysql user name, ...
+// define("COCOTS_PRESETS_ANSIBLE_USE_DOMAIN_KEY_AS_PREFIX", true); // optional. If true, will use the key in COCOTS_HOSTING_DOMAINS as prefix. Fallback on COCOTS_PRESETS_ANSIBLE_NAME_PREFIX if not found.
+// define("COCOTS_PRESETS_ANSIBLE_STATE_ENABLED", 'enabled'); // optional state value to write in ansible vars
+// define("COCOTS_PRESETS_ANSIBLE_STATE_DISABLED", 'disabled'); // optional state value to write in ansible vars
+// define("COCOTS_PRESETS_ANSIBLE_STATE_DELETED", 'deleted'); // optional state value to write in ansible vars
+// define("COCOTS_PRESETS_ANSIBLE_SPIP_BRANCH", "3.2"); // optional spip branch
+// define("COCOTS_PRESETS_ANSIBLE_SPIP_DEPOTS", ["https://plugins.spip.net/depots/principal.xml"]); // optional spip depots
+// define("COCOTS_PRESETS_ANSIBLE_SPIP_PLUGINS", ["facteur", "nospam"]); // optional spip plugins prefix
 // define("COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP", true); // use same smtp as cocots
 // define("COCOTS_PRESETS_ANSIBLE_SPIP_CONFIG", array('forums_publics' => 'non')); // custom spip config
 // define("COCOTS_PRESETS_ANSIBLE_SFTP", true); // to activate sftp access
 
 define("COCOTS_HOSTING_DOMAIN", 'example.com'); // The domain where we are hosting services. If COCOTS_HOSTING_DOMAINS is defined, this is the default one.
-// Optionnal COCOTS_HOSTING_DOMAINS: an optionnal array of domains to host.
+// Optional COCOTS_HOSTING_DOMAINS: an optional array of domains to host.
 // COCOTS_HOSTING_DOMAIN must be part of (and is the default value).
 // The keys could be used for other purpose (for example, with Ansible preset, it will be used as prefix).
 // define("COCOTS_HOSTING_DOMAINS", array('local' => 'local.example.test', 'extern' => 'extern.example.test'));
@@ -73,7 +73,7 @@ define("COCOTS_SECURITY_QUESTION", "What is you favorite color?");
 // possible answers (case sensitive);
 define("COCOTS_SECURITY_ANSWERS", array("Red", "red", "RED"));
 
-// Optionnal help texts to add besides form fields (can contain HTML tags):
+// Optional help texts to add besides form fields (can contain HTML tags):
 // define("COCOTS_FIELDS_HELP", array(
 //   'creation' => array( // The form name
 //    'website_name' => 'Here is the help text for website_name',
@@ -81,6 +81,19 @@ define("COCOTS_SECURITY_ANSWERS", array("Red", "red", "RED"));
 //    // [...]
 //    // you can find fields name in the php form file
 // )));
+
+// Optional terms and conditions:
+// You can use this to add one or more checkbox at the end of the form.
+// These checkbox can be required (Terms&Conditions for example) or optional (Accept email commercial use for example).
+// Terms are associated by a version number.
+// Accepted terms versions will be stored in database.
+// define('COCOTS_TERMS', array(
+//   'key' => array( // the term identifier. Please use only alphabetical, numerical or _ characters.
+//     'version' => '1.0', // the version of terms. Please use only alphabetical, numerical, . or _ characters.
+//     'html' => 'Read and accept the <a href="..." target="_blank">Terms</a>', // HTML to display
+//     'required' => true // Required or optional.
+//   )
+// ));
 
 // The «notifyAccountCreated» mail content can be customized.
 // Use the «%URL%» placeholder to insert the link.

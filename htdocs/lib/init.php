@@ -15,4 +15,5 @@ require_once(COCOTS_ROOT_DIR . 'lib/exceptions.php');
 require_once(COCOTS_ROOT_DIR . 'lib/i18n.php');
 require_once(COCOTS_ROOT_DIR . 'lib/accounts.php');
 require_once(COCOTS_ROOT_DIR . 'lib/moderators.php');
+require_once(COCOTS_ROOT_DIR . 'lib/terms.php');
 require_once(COCOTS_ROOT_DIR . 'lib/application.php');

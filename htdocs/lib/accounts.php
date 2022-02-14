@@ -193,6 +193,7 @@ class Accounts {
     $sql.= ' VALUES ( :'. implode(', :', $columns) . ' ) ';
     $sth = $this->app->db->prepare($sql);
     $sth->execute($account_info);
+    $id = $this->app->db->lastInsertId();
 
     $message = '';
     $message.= $this->app->loc->translateSafe('new_account_message') . "\n\n";
@@ -204,6 +205,8 @@ class Accounts {
     $message.= $this->app->getBaseUrl() . '/admin' . "\n\n";
     $message.= $this->app->loc->translateSafe('new_account_signature') . "\n\n";
     $this->app->notifyModerators($this->app->loc->translateSafe('new_account_subject'), $message);
+
+    return $id;
   }
 
   protected function _updateStatus($id, $status, $date_field=null) {

@@ -10,6 +10,7 @@ class Application {
   public $db;
   public $accounts;
   public $moderators;
+  public $terms;
   public $debug_mode = false;
 
   public function __construct() {
@@ -19,6 +20,7 @@ class Application {
     $this->loc = new I18n(COCOTS_DEFAULT_LANGUAGE);
     $this->accounts = new Accounts($this);
     $this->moderators = new Moderators($this);
+    $this->terms = new Terms($this);
     $this->loadPresets();
   }
 
@@ -117,6 +119,7 @@ class Application {
     $this->testDBVersion('cocots', 1, 'createTableVersion', $migrate);
     $this->testDBVersion('cocots_account', $this->accounts::DBVERSION, 'createTableAccount', $migrate);
     $this->testDBVersion('cocots_moderator', $this->moderators::DBVERSION, 'createTableModerator', $migrate);
+    $this->testDBVersion('cocots_terms', $this->terms::DBVERSION, 'createTableTerms', $migrate);
   }
 
   protected function testDBVersion($name, $required_version, $method, $migrate = false) {
@@ -185,6 +188,10 @@ class Application {
 
   protected function createTableModerator($current_version, $required_version) {
     $this->moderators->createTable($current_version, $required_version);
+  }
+
+  protected function createTableTerms($current_version, $required_version) {
+    $this->terms->createTable($current_version, $required_version);
   }
 
   public function setDBVersion($name, $version) {

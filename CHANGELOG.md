@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.4.0
+
+* Optional terms and conditions.
+
 ## v0.3.1
 
 * Fix: help texts must be form specific.
