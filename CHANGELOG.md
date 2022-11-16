@@ -1,5 +1,9 @@
 # CoCOTS Changelog
 
+## v0.4.1
+
+* Facteur v3.7.2 settings format.
+
 ## v0.4.0
 
 * Optional terms and conditions.

@@ -131,22 +131,18 @@ abstract class CocotsAnsiblePresets extends CocotsPresets {
     }
     if (defined('COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP') && COCOTS_PRESETS_ANSIBLE_SPIP_USE_COCOTS_SMTP) {
       $write_spip_config = true;
-      $facteur_config = array(
-        'mailer' => 'smtp',
-        'adresse_envoi' => 'oui',
-        'adresse_envoi_email' => ''.COCOTS_MAIL_FROM,
-        # 'adresse_envoi_nom'
-        'smtp_host' => ''.COCOTS_MAIL_SMTP_HOST,
-        'smtp_port' => ''.COCOTS_MAIL_SMTP_PORT,
-        'smtp_auth' => 'non',
-        'smtp_secure' => COCOTS_MAIL_SMTP_SECURE ? ''.COCOTS_MAIL_SMTP_SECURE : 'non'
-      );
+      $spip_config['facteur_smtp'] = 'oui';
+      $spip_config['facteur_adresse_envoi'] = 'oui';
+      $spip_config['facteur_adresse_envoi_email'] = ''.COCOTS_MAIL_FROM;
+      $spip_config['facteur_smtp_host'] = ''.COCOTS_MAIL_SMTP_HOST;
+      $spip_config['facteur_smtp_port'] = ''.COCOTS_MAIL_SMTP_PORT;
+      $spip_config['facteur_smtp_auth'] = 'non';
+      $spip_config['facteur_smtp_secure'] = 'non';
       if (defined('COCOTS_MAIL_SMTP_AUTH') && COCOTS_MAIL_SMTP_AUTH) {
-        $facteur_config['smtp_auth'] = 'oui';
-        $facteur_config['smtp_username'] = ''.COCOTS_MAIL_SMTP_AUTH_USER;
-        $facteur_config['smtp_password'] = ''.COCOTS_MAIL_SMTP_AUTH_PASS;
+        $spip_config['facteur_smtp_auth'] = 'oui';
+        $spip_config['facteur_smtp_username'] = ''.COCOTS_MAIL_SMTP_AUTH_USER;
+        $spip_config['facteur_smtp_password'] = ''.COCOTS_MAIL_SMTP_AUTH_PASS;
       }
-      $spip_config['facteur'] = $facteur_config;
     }
 
     $title_config_escaped = escapeYaml(json_encode(array('nom_site' => $account['title'])));
